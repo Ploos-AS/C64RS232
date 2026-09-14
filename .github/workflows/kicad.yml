@@ -1,0 +1,39 @@
+name: KiCad
+
+on:
+  push:
+    paths:
+      - 'hardware/**'
+      - 'tools/**'
+      - '.github/workflows/kicad.yml'
+  pull_request:
+    paths:
+      - 'hardware/**'
+      - 'tools/**'
+      - '.github/workflows/kicad.yml'
+
+jobs:
+  schematic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install KiCad CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y kicad
+
+      - name: Upgrade legacy schematic
+        run: |
+          chmod +x tools/upgrade_legacy_schematic.sh
+          tools/upgrade_legacy_schematic.sh
+
+      - name: Verify native schematic
+        run: |
+          test -s hardware/C64RS232.kicad_sch
+          grep -q '(kicad_sch ' hardware/C64RS232.kicad_sch
+
+      - name: Run ERC
+        run: |
+          kicad-cli sch erc hardware/C64RS232.kicad_sch --exit-code-violations --severity-error
