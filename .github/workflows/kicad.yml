@@ -22,12 +22,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install KiCad 9
+      - name: Install KiCad 9 and headless GUI dependencies
         run: |
           sudo add-apt-repository -y ppa:kicad/kicad-9.0-releases
           sudo apt-get update
-          sudo apt-get install -y kicad
+          sudo apt-get install -y kicad xvfb xdotool
           kicad-cli version
+          eeschema --version
 
       - name: Convert and validate schematic
         run: |
