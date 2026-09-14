@@ -17,6 +17,7 @@ mkdir -p "$OUTDIR"
 
 XVFB_PID=""
 EESCHEMA_PID=""
+REMAP_TRIGGERED=0
 
 capture_diagnostics() {
   {
@@ -74,6 +75,40 @@ press_enter_on_dialog() {
   return 0
 }
 
+click_remap_symbols() {
+  dialog_id="$(xdotool search --onlyvisible --name '^Remap Symbols$' 2>/dev/null | head -n1 || true)"
+  [ -n "$dialog_id" ] || return 1
+
+  if [ "$REMAP_TRIGGERED" -eq 1 ]; then
+    return 0
+  fi
+
+  # In KiCad 9 the Remap Symbols window is not an ordinary confirmation
+  # dialog: Return does not activate the action button.  Click the actual
+  # "Remap Symbols" button explicitly.  Its centre is at roughly 90% of the
+  # dialog width and 10% of the dialog height; use window-relative coordinates
+  # so this remains independent of the dialog's absolute screen position.
+  geometry="$(xdotool getwindowgeometry --shell "$dialog_id" 2>/dev/null || true)"
+  width="$(printf '%s\n' "$geometry" | sed -n 's/^WIDTH=//p')"
+  height="$(printf '%s\n' "$geometry" | sed -n 's/^HEIGHT=//p')"
+
+  if [ -z "$width" ] || [ -z "$height" ]; then
+    echo "ERROR: could not determine Remap Symbols dialog geometry" >&2
+    return 1
+  fi
+
+  click_x=$((width * 90 / 100))
+  click_y=$((height * 10 / 100))
+  echo "INFO: clicking KiCad Remap Symbols action at relative ${click_x},${click_y} (${width}x${height})"
+
+  xdotool windowactivate --sync "$dialog_id" >/dev/null 2>&1 || true
+  xdotool mousemove --window "$dialog_id" "$click_x" "$click_y" >/dev/null 2>&1 || true
+  xdotool click 1 >/dev/null 2>&1 || true
+  REMAP_TRIGGERED=1
+  sleep 3
+  return 0
+}
+
 if [ ! -s "$NATIVE" ]; then
   rm -f "$NATIVE"
   LOG="$OUTDIR/eeschema-convert.log"
@@ -90,16 +125,15 @@ if [ ! -s "$NATIVE" ]; then
   EESCHEMA_PID=$!
 
   WINDOW_ID=""
-  for _ in $(seq 1 60); do
+  for _ in $(seq 1 90); do
     # Fresh GitHub runners start KiCad with this modal dialog. The
     # recommended "Copy default global symbol library table" option is
     # already selected, so Return accepts it safely.
     press_enter_on_dialog '^Configure Global Symbol Library Table$' || true
 
-    # KiCad 9 then asks to migrate legacy project-library symbol references.
-    # The dialog's primary/default action is "Remap Symbols"; accepting it is
-    # required to finish loading the legacy .sch and preserves a rescue backup.
-    press_enter_on_dialog '^Remap Symbols$' || true
+    # KiCad 9 then presents a migration window.  Trigger its explicit action
+    # once; repeatedly pressing Return leaves this window open forever.
+    click_remap_symbols || true
 
     WINDOW_ID="$(xdotool search --onlyvisible --name 'C64RS232_M1' 2>/dev/null | head -n1 || true)"
     if [ -n "$WINDOW_ID" ]; then
@@ -112,7 +146,7 @@ if [ ! -s "$NATIVE" ]; then
   done
 
   if [ -z "$WINDOW_ID" ]; then
-    echo "ERROR: Eeschema schematic window did not appear within 60 seconds" >&2
+    echo "ERROR: Eeschema schematic window did not appear within 90 seconds" >&2
     capture_diagnostics
     cat "$LOG" >&2 || true
     exit 4
