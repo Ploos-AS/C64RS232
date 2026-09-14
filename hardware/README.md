@@ -16,11 +16,16 @@ The baseline transceiver is **MAX3243** rather than MAX232. MAX3243 provides thr
 
 ### Files
 
-- `C64RS232_M1.sch` — KiCad legacy schematic baseline, intentionally kept simple so it can be opened/imported by modern KiCad.
-- `C64RS232_M1-cache.lib` — embedded legacy symbol cache used by the schematic.
-- `M1_NETLIST.md` — authoritative signal and pin mapping for M1.
+- `C64RS232_M1.sch` — KiCad legacy schematic baseline.
+- `C64RS232_M1-cache.lib` — embedded legacy symbol cache.
+- `M1_NETLIST.md` — M1 electrical design and signal mapping.
+- `M1_1_CONNECTIONS.md` — authoritative M1.1 logical connection matrix.
 - `BOM_M1.csv` — initial bill of materials.
+
+## M1.1 status — connection freeze
+
+The logical connectivity is now frozen before conversion to a native modern KiCad schematic. The M1.1 matrix explicitly defines every User Port, MAX3243 and DE-9 connection, the charge-pump network, enable controls and the protected +5 V entry.
 
 ### Important
 
-The legacy schematic is an M1 baseline, not a manufacturing release. Modern KiCad should import it and save a native `.kicad_sch`. ERC/DRC, footprints, board mechanics, and final net connectivity must be completed before Gerbers are considered release-ready.
+The legacy schematic is **not yet a manufacturing release**. The next hardware step is to create the native `.kicad_sch`, assign verified footprints and run ERC. PCB routing and DRC follow after that gate. Do not manufacture from the current legacy schematic.
