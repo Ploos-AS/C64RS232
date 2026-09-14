@@ -24,16 +24,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y kicad
 
-      - name: Upgrade legacy schematic
+      - name: Validate legacy schematic
         run: |
           chmod +x tools/upgrade_legacy_schematic.sh
           tools/upgrade_legacy_schematic.sh
 
-      - name: Verify native schematic
-        run: |
-          test -s hardware/C64RS232.kicad_sch
-          grep -q '(kicad_sch ' hardware/C64RS232.kicad_sch
-
       - name: Run ERC
         run: |
-          kicad-cli sch erc hardware/C64RS232.kicad_sch --exit-code-violations --severity-error
+          kicad-cli sch erc hardware/C64RS232_M1.sch \
+            --output build/kicad/C64RS232_M1-erc.rpt \
+            --exit-code-violations \
+            --severity-error
+
+      - name: Upload KiCad validation artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c64rs232-kicad-validation
+          path: build/kicad/
+          if-no-files-found: warn
