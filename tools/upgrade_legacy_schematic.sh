@@ -63,6 +63,17 @@ wait_for_exit() {
   return 1
 }
 
+press_enter_on_dialog() {
+  title="$1"
+  dialog_id="$(xdotool search --onlyvisible --name "$title" 2>/dev/null | head -n1 || true)"
+  [ -n "$dialog_id" ] || return 1
+  echo "INFO: handling KiCad dialog: $title"
+  xdotool windowactivate --sync "$dialog_id" >/dev/null 2>&1 || true
+  xdotool key --window "$dialog_id" Return >/dev/null 2>&1 || true
+  sleep 2
+  return 0
+}
+
 if [ ! -s "$NATIVE" ]; then
   rm -f "$NATIVE"
   LOG="$OUTDIR/eeschema-convert.log"
@@ -79,8 +90,13 @@ if [ ! -s "$NATIVE" ]; then
   EESCHEMA_PID=$!
 
   WINDOW_ID=""
-  for _ in $(seq 1 45); do
-    WINDOW_ID="$(xdotool search --name 'C64RS232_M1' 2>/dev/null | head -n1 || true)"
+  for _ in $(seq 1 60); do
+    # Fresh GitHub runners start KiCad with this modal dialog.  The
+    # recommended "Copy default global symbol library table" option is
+    # already selected, so Return accepts it safely.
+    press_enter_on_dialog '^Configure Global Symbol Library Table$' || true
+
+    WINDOW_ID="$(xdotool search --onlyvisible --name 'C64RS232_M1' 2>/dev/null | head -n1 || true)"
     if [ -n "$WINDOW_ID" ]; then
       break
     fi
@@ -91,7 +107,7 @@ if [ ! -s "$NATIVE" ]; then
   done
 
   if [ -z "$WINDOW_ID" ]; then
-    echo "ERROR: Eeschema window did not appear within 45 seconds" >&2
+    echo "ERROR: Eeschema schematic window did not appear within 60 seconds" >&2
     capture_diagnostics
     cat "$LOG" >&2 || true
     exit 4
@@ -100,8 +116,13 @@ if [ ! -s "$NATIVE" ]; then
   xdotool windowactivate --sync "$WINDOW_ID" || true
   xdotool key --window "$WINDOW_ID" ctrl+s || true
 
-  for _ in $(seq 1 30); do
+  for _ in $(seq 1 45); do
     [ -s "$NATIVE" ] && break
+
+    # Legacy-to-native conversion can open a Save As dialog.  KiCad proposes
+    # the converted .kicad_sch name, so accepting the default is intentional.
+    press_enter_on_dialog '^Save As$' || true
+
     if ! kill -0 "$EESCHEMA_PID" >/dev/null 2>&1; then
       break
     fi
@@ -109,7 +130,7 @@ if [ ! -s "$NATIVE" ]; then
   done
 
   if [ ! -s "$NATIVE" ]; then
-    echo "ERROR: native schematic was not created within 30 seconds after Ctrl+S" >&2
+    echo "ERROR: native schematic was not created within 45 seconds after Ctrl+S" >&2
     capture_diagnostics
     cat "$LOG" >&2 || true
     exit 5
