@@ -91,10 +91,15 @@ if [ ! -s "$NATIVE" ]; then
 
   WINDOW_ID=""
   for _ in $(seq 1 60); do
-    # Fresh GitHub runners start KiCad with this modal dialog.  The
+    # Fresh GitHub runners start KiCad with this modal dialog. The
     # recommended "Copy default global symbol library table" option is
     # already selected, so Return accepts it safely.
     press_enter_on_dialog '^Configure Global Symbol Library Table$' || true
+
+    # KiCad 9 then asks to migrate legacy project-library symbol references.
+    # The dialog's primary/default action is "Remap Symbols"; accepting it is
+    # required to finish loading the legacy .sch and preserves a rescue backup.
+    press_enter_on_dialog '^Remap Symbols$' || true
 
     WINDOW_ID="$(xdotool search --onlyvisible --name 'C64RS232_M1' 2>/dev/null | head -n1 || true)"
     if [ -n "$WINDOW_ID" ]; then
@@ -119,7 +124,7 @@ if [ ! -s "$NATIVE" ]; then
   for _ in $(seq 1 45); do
     [ -s "$NATIVE" ] && break
 
-    # Legacy-to-native conversion can open a Save As dialog.  KiCad proposes
+    # Legacy-to-native conversion can open a Save As dialog. KiCad proposes
     # the converted .kicad_sch name, so accepting the default is intentional.
     press_enter_on_dialog '^Save As$' || true
 
