@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
 SCHEMATIC="$ROOT/hardware/C64RS232_M1.sch"
-OUT="$ROOT/hardware/C64RS232.kicad_sch"
+OUTDIR="$ROOT/build/kicad"
 
 command -v kicad-cli >/dev/null 2>&1 || {
   echo "ERROR: kicad-cli is required" >&2
@@ -15,13 +15,25 @@ command -v kicad-cli >/dev/null 2>&1 || {
   exit 3
 }
 
-# KiCad's schematic upgrade command reads legacy .sch files and writes the
-# current native schematic format. The legacy source remains untouched.
-kicad-cli sch upgrade "$SCHEMATIC"
+mkdir -p "$OUTDIR"
 
-[ -f "$OUT" ] || {
-  echo "ERROR: native schematic was not produced: $OUT" >&2
+# KiCad 7's kicad-cli does not provide a schematic 'upgrade' subcommand.
+# Legacy schematics are converted to native .kicad_sch when opened and saved
+# by Eeschema; until that native file is committed, CI validates the legacy
+# source directly through KiCad's supported export path.
+kicad-cli sch export pdf --output "$OUTDIR/C64RS232_M1.pdf" "$SCHEMATIC"
+kicad-cli sch export netlist --output "$OUTDIR/C64RS232_M1.net" "$SCHEMATIC"
+
+[ -s "$OUTDIR/C64RS232_M1.pdf" ] || {
+  echo "ERROR: KiCad PDF export was not produced" >&2
   exit 4
 }
 
-echo "NATIVE SCHEMATIC PASS: $OUT"
+[ -s "$OUTDIR/C64RS232_M1.net" ] || {
+  echo "ERROR: KiCad netlist export was not produced" >&2
+  exit 5
+}
+
+echo "LEGACY SCHEMATIC VALIDATION PASS"
+echo "PDF: $OUTDIR/C64RS232_M1.pdf"
+echo "NETLIST: $OUTDIR/C64RS232_M1.net"
