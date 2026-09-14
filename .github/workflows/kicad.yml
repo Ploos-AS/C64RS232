@@ -18,6 +18,7 @@ permissions:
 jobs:
   schematic:
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,13 +27,15 @@ jobs:
         run: |
           sudo add-apt-repository -y ppa:kicad/kicad-9.0-releases
           sudo apt-get update
-          sudo apt-get install -y kicad xvfb xdotool
+          sudo apt-get install -y kicad xvfb xdotool imagemagick
           kicad-cli version
           command -v eeschema
           command -v Xvfb
           command -v xdotool
+          command -v import
 
       - name: Convert and validate schematic
+        timeout-minutes: 3
         run: |
           chmod +x tools/upgrade_legacy_schematic.sh
           tools/upgrade_legacy_schematic.sh
