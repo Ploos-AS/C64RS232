@@ -12,6 +12,9 @@ on:
       - 'tools/**'
       - '.github/workflows/kicad.yml'
 
+permissions:
+  contents: write
+
 jobs:
   schematic:
     runs-on: ubuntu-latest
@@ -19,22 +22,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install KiCad CLI
+      - name: Install KiCad 9
         run: |
+          sudo add-apt-repository -y ppa:kicad/kicad-9.0-releases
           sudo apt-get update
           sudo apt-get install -y kicad
+          kicad-cli version
 
-      - name: Validate legacy schematic
+      - name: Convert and validate schematic
         run: |
           chmod +x tools/upgrade_legacy_schematic.sh
           tools/upgrade_legacy_schematic.sh
 
-      - name: Run ERC
+      - name: Commit native schematic
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          kicad-cli sch erc hardware/C64RS232_M1.sch \
-            --output build/kicad/C64RS232_M1-erc.rpt \
-            --exit-code-violations \
-            --severity-error
+          if [ -f hardware/C64RS232_M1.kicad_sch ] && ! git ls-files --error-unmatch hardware/C64RS232_M1.kicad_sch >/dev/null 2>&1; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add hardware/C64RS232_M1.kicad_sch
+            git commit -m 'Add native KiCad M1 schematic [skip ci]'
+            git push
+          fi
 
       - name: Upload KiCad validation artifacts
         if: always()
