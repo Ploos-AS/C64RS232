@@ -2,7 +2,7 @@
 
 C64RS232 is an open hardware and software project for connecting a Commodore 64 User Port to a conventional RS-232 interface, with a long-term goal of providing SLIP/IP networking.
 
-## M0 — Architecture baseline
+## M0 — Architecture baseline — COMPLETE
 
 - Define hardware/software boundaries.
 - Target the C64 User Port as the native interface.
@@ -12,7 +12,7 @@ C64RS232 is an open hardware and software project for connecting a Commodore 64 
 - Reserve the software architecture for future SLIP and IP networking.
 - Define test and qualification strategy.
 
-## M1 — Hardware schematic
+## M1 — Hardware schematic — IN PROGRESS
 
 - KiCad project and schematic.
 - User Port connector and signal mapping.
@@ -21,6 +21,25 @@ C64RS232 is an open hardware and software project for connecting a Commodore 64 
 - DB9 interface.
 - Optional status LEDs and configuration provisions.
 - ERC clean.
+
+### M1.1 — Logical connection freeze — COMPLETE
+
+- Authoritative User Port → MAX3243 mapping defined.
+- RXD/FLAG2 dual connection defined.
+- MAX3243 → DE-9 DTE mapping defined.
+- Charge-pump capacitor connections defined.
+- FORCEON/FORCEOFF/unused-control handling defined.
+- +5 V protection policy defined.
+- 9 VAC explicitly excluded.
+
+### M1.2 — Native KiCad schematic + ERC
+
+- Convert the legacy baseline to native `.kicad_sch`.
+- Assign exact manufacturer-verified footprints.
+- Complete all physical net wiring.
+- Add power flags and design-rule annotations as appropriate.
+- Run ERC and resolve all intended warnings/errors.
+- Freeze schematic before PCB placement.
 
 ## M2 — PCB layout
 
