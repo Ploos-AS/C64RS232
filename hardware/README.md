@@ -6,7 +6,7 @@ M1 establishes the electrical design for a manufacturable C64 User Port to RS-23
 
 ### Core device
 
-The baseline transceiver is **MAX3243** rather than MAX232. MAX3243 provides three drivers and five receivers, which allows the board to expose the complete C64 RS-232 signal set: TXD, RXD, RTS, CTS, DTR, DSR, DCD and RI. It operates from the C64's +5 V User Port supply and generates true RS-232 levels with an integrated charge pump.
+The baseline transceiver is **MAX3243** rather than MAX232. MAX3243 provides three drivers and five receivers, allowing the board to expose TXD, RXD, RTS, CTS, DTR, DSR, DCD and RI. It operates from the C64's +5 V User Port supply and generates true RS-232 levels with an integrated charge pump.
 
 ### Interfaces
 
@@ -14,18 +14,25 @@ The baseline transceiver is **MAX3243** rather than MAX232. MAX3243 provides thr
 - U1: MAX3243, 28-pin package.
 - J2: DE-9 female, DTE pinout.
 
-### Files
+### Native KiCad status
 
-- `C64RS232_M1.sch` — KiCad legacy schematic baseline.
-- `C64RS232_M1-cache.lib` — embedded legacy symbol cache.
-- `M1_NETLIST.md` — M1 electrical design and signal mapping.
-- `M1_1_CONNECTIONS.md` — authoritative M1.1 logical connection matrix.
-- `BOM_M1.csv` — initial bill of materials.
+`C64RS232.kicad_pro` is now present as the native project container.
 
-## M1.1 status — connection freeze
+The M1 electrical design remains authoritative in:
 
-The logical connectivity is now frozen before conversion to a native modern KiCad schematic. The M1.1 matrix explicitly defines every User Port, MAX3243 and DE-9 connection, the charge-pump network, enable controls and the protected +5 V entry.
+- `M1_NETLIST.md`
+- `M1_1_CONNECTIONS.md`
+- `M1_2_NATIVE_KICAD_PLAN.md`
+- `BOM_M1.csv`
 
-### Important
+### M1.3 gate
 
-The legacy schematic is **not yet a manufacturing release**. The next hardware step is to create the native `.kicad_sch`, assign verified footprints and run ERC. PCB routing and DRC follow after that gate. Do not manufacture from the current legacy schematic.
+- native KiCad project container: **PASS**
+- native `.kicad_sch`: **PENDING conversion/verification**
+- exact orderable footprints: **PENDING verification**
+- ERC: **PENDING**
+- PCB: **PENDING**
+- DRC: **PENDING**
+- Gerbers: **NOT RELEASED**
+
+The legacy schematic is **not a manufacturing release**. Do not manufacture from the current baseline. The native schematic must be created/imported and verified with the target KiCad version before PCB routing.
