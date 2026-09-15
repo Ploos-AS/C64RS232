@@ -67,9 +67,6 @@ press_enter_on_dialog() {
   dialog_id="$(xdotool search --onlyvisible --name "$title" 2>/dev/null | head -n1 || true)"
   [ -n "$dialog_id" ] || return 1
   echo "INFO: handling KiCad dialog: $title"
-  # There is deliberately no window manager under Xvfb. Sending directly to
-  # the X11 window is sufficient; windowactivate depends on _NET_ACTIVE_WINDOW
-  # and therefore cannot be relied on in this environment.
   xdotool key --window "$dialog_id" Return >/dev/null 2>&1 || true
   sleep 2
   return 0
@@ -83,7 +80,6 @@ click_window_relative() {
   [ -n "$width" ] && [ -n "$height" ] || { echo "ERROR: could not determine $label dialog geometry" >&2; return 1; }
   click_x=$((width * x_pct / 100)); click_y=$((height * y_pct / 100))
   echo "INFO: clicking KiCad $label action at relative ${click_x},${click_y} (${width}x${height})"
-  # mousemove --window addresses the target directly and does not require a WM.
   xdotool mousemove --window "$dialog_id" "$click_x" "$click_y" >/dev/null 2>&1 || true
   xdotool click 1 >/dev/null 2>&1 || true
   sleep 3
@@ -101,11 +97,20 @@ click_rescue_symbols() {
   dialog_id="$(xdotool search --onlyvisible --name '^Project Rescue Helper$' 2>/dev/null | head -n1 || true)"
   [ -n "$dialog_id" ] || return 1
   [ "$RESCUE_TRIGGERED" -eq 0 ] || return 0
-  # Run #15 shows the Project Rescue Helper is a child dialog occupying roughly
-  # the upper 2/3 of the editor. The Rescue Symbols button is at the lower-right
-  # of that dialog, around 90% width / 96% height.
   click_window_relative "$dialog_id" 90 96 'Project Rescue Helper / Rescue Symbols'
   RESCUE_TRIGGERED=1
+}
+
+close_completed_remap_dialog() {
+  dialog_id="$(xdotool search --onlyvisible --name '^Remap Symbols$' 2>/dev/null | head -n1 || true)"
+  [ -n "$dialog_id" ] || return 1
+  # After rescue/remapping completes, KiCad leaves the Remap Symbols results
+  # window open. Run #17 showed "Symbol library table mapping complete!" with
+  # the Remap Symbols action disabled and Close enabled. Until this child
+  # window is closed, Ctrl+S sent to the editor is ignored.
+  echo "INFO: closing completed KiCad Remap Symbols results dialog"
+  click_window_relative "$dialog_id" 90 19 'Remap Symbols / Close'
+  return 0
 }
 
 if [ ! -s "$NATIVE" ]; then
@@ -136,11 +141,17 @@ if [ ! -s "$NATIVE" ]; then
     exit 4
   fi
 
+  # The editor can become visible while the completed remap-results child is
+  # still modal. Close it explicitly before attempting the legacy-format save.
+  close_completed_remap_dialog || true
+  sleep 2
+
   echo "INFO: sending Ctrl+S directly to schematic window $WINDOW_ID"
   xdotool key --window "$WINDOW_ID" ctrl+s >/dev/null 2>&1 || true
 
   for _ in $(seq 1 60); do
     [ -s "$NATIVE" ] && break
+    close_completed_remap_dialog || true
     press_enter_on_dialog '^Save As$' || true
     press_enter_on_dialog '^File already exists$' || true
     if ! kill -0 "$EESCHEMA_PID" >/dev/null 2>&1; then break; fi
