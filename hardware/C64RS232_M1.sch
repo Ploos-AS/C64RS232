@@ -6,11 +6,11 @@ $Descr A4 11693 8268
 Sheet 1 1
 Title "C64RS232 User Port to RS-232"
 Date "2026-09-14"
-Rev "M1"
+Rev "M1.8"
 Comp "Ploos-AS"
 Comment1 "C64 User Port / MAX3243 / DE-9 DTE"
 Comment2 "SLIP-capable architecture"
-Comment3 "M1 schematic baseline"
+Comment3 "M1.8 electrically connected baseline"
 Comment4 "Verify against datasheets before manufacture"
 $EndDescr
 $Comp
@@ -110,60 +110,140 @@ Text Notes 1400 6050 0 60 ~ 12
 FORCEON is tied high and FORCEOFF low for normal always-on operation.
 Text Notes 1400 6200 0 60 ~ 12
 This is an M1 design baseline; ERC/DRC and manufacturer-specific footprint checks remain required.
-Text Label 2300 3000 0 50 ~ 0
-C64_+5V
-Text Label 2300 3200 0 50 ~ 0
-C64_GND
-Text Label 2300 3400 0 50 ~ 0
-TXD_PA2
-Text Label 2300 3600 0 50 ~ 0
-RXD_PB0_FLAG2
-Text Label 2300 3800 0 50 ~ 0
-RTS_PB1
-Text Label 2300 4000 0 50 ~ 0
-DTR_PB2
-Text Label 2300 4200 0 50 ~ 0
-RI_PB3
-Text Label 2300 4400 0 50 ~ 0
-DCD_PB4
-Text Label 2300 4600 0 50 ~ 0
-CTS_PB6
-Text Label 2300 4800 0 50 ~ 0
-DSR_PB7
-Text Label 6000 3000 0 50 ~ 0
+Text Label 1300 4300 0 50 ~ 0
+C64_TXD
+Text Label 4500 3900 0 50 ~ 0
+C64_TXD
+Text Label 1300 3600 0 50 ~ 0
+C64_RTS
+Text Label 4500 3800 0 50 ~ 0
+C64_RTS
+Text Label 1300 3700 0 50 ~ 0
+C64_DTR
+Text Label 4500 3700 0 50 ~ 0
+C64_DTR
+Text Label 1300 3500 0 50 ~ 0
+C64_RXD
+Text Label 1300 3400 0 50 ~ 0
+C64_RXD
+Text Label 5900 3500 0 50 ~ 0
+C64_RXD
+Text Label 1300 4100 0 50 ~ 0
+C64_CTS
+Text Label 5900 3600 0 50 ~ 0
+C64_CTS
+Text Label 1300 4200 0 50 ~ 0
+C64_DSR
+Text Label 5900 3700 0 50 ~ 0
+C64_DSR
+Text Label 1300 3900 0 50 ~ 0
+C64_DCD
+Text Label 5900 3800 0 50 ~ 0
+C64_DCD
+Text Label 1300 3800 0 50 ~ 0
+C64_RI
+Text Label 5900 3900 0 50 ~ 0
+C64_RI
+Text Label 4500 3400 0 50 ~ 0
 RS232_TXD
-Text Label 6000 3200 0 50 ~ 0
+Text Label 8000 3600 0 50 ~ 0
+RS232_TXD
+Text Label 4500 3500 0 50 ~ 0
 RS232_RTS
-Text Label 6000 3400 0 50 ~ 0
+Text Label 8000 4000 0 50 ~ 0
+RS232_RTS
+Text Label 4500 3600 0 50 ~ 0
 RS232_DTR
-Text Label 6000 3600 0 50 ~ 0
+Text Label 8000 3700 0 50 ~ 0
+RS232_DTR
+Text Label 4500 2900 0 50 ~ 0
 RS232_RXD
-Text Label 6000 3800 0 50 ~ 0
+Text Label 8000 3500 0 50 ~ 0
+RS232_RXD
+Text Label 4500 3000 0 50 ~ 0
 RS232_CTS
-Text Label 6000 4000 0 50 ~ 0
+Text Label 8000 4100 0 50 ~ 0
+RS232_CTS
+Text Label 4500 3100 0 50 ~ 0
 RS232_DSR
-Text Label 6000 4200 0 50 ~ 0
+Text Label 8000 3900 0 50 ~ 0
+RS232_DSR
+Text Label 4500 3200 0 50 ~ 0
 RS232_DCD
-Text Label 6000 4400 0 50 ~ 0
+Text Label 8000 3400 0 50 ~ 0
+RS232_DCD
+Text Label 4500 3300 0 50 ~ 0
 RS232_RI
-Text Label 7700 3000 0 50 ~ 0
-DB9_DCD_1
-Text Label 7700 3200 0 50 ~ 0
-DB9_RXD_2
-Text Label 7700 3400 0 50 ~ 0
-DB9_TXD_3
-Text Label 7700 3600 0 50 ~ 0
-DB9_DTR_4
-Text Label 7700 3800 0 50 ~ 0
-DB9_GND_5
-Text Label 7700 4000 0 50 ~ 0
-DB9_DSR_6
-Text Label 7700 4200 0 50 ~ 0
-DB9_RTS_7
-Text Label 7700 4400 0 50 ~ 0
-DB9_CTS_8
-Text Label 7700 4600 0 50 ~ 0
-DB9_RI_9
+Text Label 8000 4200 0 50 ~ 0
+RS232_RI
+Text Label 2300 3400 0 50 ~ 0
+RAW_5V
+Text Label 6850 1500 0 50 ~ 0
+RAW_5V
+Text Label 7150 1500 0 50 ~ 0
++5V
+Text Label 5900 2800 0 50 ~ 0
++5V
+Text Label 5900 3100 0 50 ~ 0
++5V
+Text Label 5900 1450 0 50 ~ 0
++5V
+Text Label 2300 3300 0 50 ~ 0
+GND
+Text Label 2300 4400 0 50 ~ 0
+GND
+Text Label 1300 3300 0 50 ~ 0
+GND
+Text Label 1300 4400 0 50 ~ 0
+GND
+Text Label 5900 2900 0 50 ~ 0
+GND
+Text Label 5900 3200 0 50 ~ 0
+GND
+Text Label 8000 3800 0 50 ~ 0
+GND
+Text Label 4900 1750 0 50 ~ 0
+GND
+Text Label 5400 1750 0 50 ~ 0
+GND
+Text Label 5900 1750 0 50 ~ 0
+GND
+Text Label 3900 1450 0 50 ~ 0
+C1_PLUS
+Text Label 5900 2600 0 50 ~ 0
+C1_PLUS
+Text Label 3900 1750 0 50 ~ 0
+C1_MINUS
+Text Label 5900 3000 0 50 ~ 0
+C1_MINUS
+Text Label 4400 1450 0 50 ~ 0
+C2_PLUS
+Text Label 4500 2600 0 50 ~ 0
+C2_PLUS
+Text Label 4400 1750 0 50 ~ 0
+C2_MINUS
+Text Label 4500 2700 0 50 ~ 0
+C2_MINUS
+Text Label 4900 1450 0 50 ~ 0
+VPLUS
+Text Label 5900 2700 0 50 ~ 0
+VPLUS
+Text Label 5400 1450 0 50 ~ 0
+VMINUS
+Text Label 4500 2800 0 50 ~ 0
+VMINUS
+NoConn ~ 2300 3500
+NoConn ~ 2300 3600
+NoConn ~ 2300 3700
+NoConn ~ 2300 3800
+NoConn ~ 2300 3900
+NoConn ~ 2300 4000
+NoConn ~ 2300 4100
+NoConn ~ 2300 4200
+NoConn ~ 2300 4300
+NoConn ~ 1300 4000
+NoConn ~ 5900 3400
+NoConn ~ 5900 3300
 Wire Notes Line
 	1300 2500 3200 2500
 Wire Notes Line
