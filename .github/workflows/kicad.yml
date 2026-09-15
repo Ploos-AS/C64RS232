@@ -35,20 +35,24 @@ jobs:
           command -v import
 
       - name: Convert and validate schematic
+        id: convert
+        continue-on-error: true
         timeout-minutes: 3
         run: |
           chmod +x tools/upgrade_legacy_schematic.sh
           tools/upgrade_legacy_schematic.sh
 
       - name: Commit native schematic
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          if [ -f hardware/C64RS232_M1.kicad_sch ] && ! git ls-files --error-unmatch hardware/C64RS232_M1.kicad_sch >/dev/null 2>&1; then
+          if [ -s hardware/C64RS232_M1.kicad_sch ] && ! git ls-files --error-unmatch hardware/C64RS232_M1.kicad_sch >/dev/null 2>&1; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
             git add hardware/C64RS232_M1.kicad_sch
             git commit -m 'Add native KiCad M1 schematic [skip ci]'
             git push
+          else
+            echo 'Native schematic absent, empty, or already tracked; nothing to commit.'
           fi
 
       - name: Upload KiCad validation artifacts
@@ -58,3 +62,11 @@ jobs:
           name: c64rs232-kicad-validation
           path: build/kicad/
           if-no-files-found: warn
+
+      - name: Enforce schematic validation result
+        if: always()
+        run: |
+          if [ '${{ steps.convert.outcome }}' != 'success' ]; then
+            echo 'Conversion/validation reported failure. Native conversion output was preserved when available.'
+            exit 1
+          fi
