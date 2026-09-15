@@ -18,6 +18,7 @@ mkdir -p "$OUTDIR"
 XVFB_PID=""
 EESCHEMA_PID=""
 REMAP_TRIGGERED=0
+RESCUE_TRIGGERED=0
 
 capture_diagnostics() {
   {
@@ -38,13 +39,11 @@ capture_diagnostics() {
 
 cleanup() {
   capture_diagnostics || true
-
   if [ -n "$EESCHEMA_PID" ] && kill -0 "$EESCHEMA_PID" >/dev/null 2>&1; then
     kill "$EESCHEMA_PID" >/dev/null 2>&1 || true
     sleep 2
     kill -9 "$EESCHEMA_PID" >/dev/null 2>&1 || true
   fi
-
   if [ -n "$XVFB_PID" ] && kill -0 "$XVFB_PID" >/dev/null 2>&1; then
     kill "$XVFB_PID" >/dev/null 2>&1 || true
   fi
@@ -52,8 +51,7 @@ cleanup() {
 trap cleanup EXIT
 
 wait_for_exit() {
-  pid="$1"
-  seconds="$2"
+  pid="$1"; seconds="$2"
   for _ in $(seq 1 "$seconds"); do
     if ! kill -0 "$pid" >/dev/null 2>&1; then
       wait "$pid" || true
@@ -75,78 +73,63 @@ press_enter_on_dialog() {
   return 0
 }
 
-click_remap_symbols() {
-  dialog_id="$(xdotool search --onlyvisible --name '^Remap Symbols$' 2>/dev/null | head -n1 || true)"
-  [ -n "$dialog_id" ] || return 1
-
-  if [ "$REMAP_TRIGGERED" -eq 1 ]; then
-    return 0
-  fi
-
-  # In KiCad 9 the Remap Symbols window is not an ordinary confirmation
-  # dialog: Return does not activate the action button.  Click the actual
-  # "Remap Symbols" button explicitly.  Its centre is at roughly 90% of the
-  # dialog width and 10% of the dialog height; use window-relative coordinates
-  # so this remains independent of the dialog's absolute screen position.
+click_window_relative() {
+  dialog_id="$1"; x_pct="$2"; y_pct="$3"; label="$4"
   geometry="$(xdotool getwindowgeometry --shell "$dialog_id" 2>/dev/null || true)"
   width="$(printf '%s\n' "$geometry" | sed -n 's/^WIDTH=//p')"
   height="$(printf '%s\n' "$geometry" | sed -n 's/^HEIGHT=//p')"
-
-  if [ -z "$width" ] || [ -z "$height" ]; then
-    echo "ERROR: could not determine Remap Symbols dialog geometry" >&2
-    return 1
-  fi
-
-  click_x=$((width * 90 / 100))
-  click_y=$((height * 10 / 100))
-  echo "INFO: clicking KiCad Remap Symbols action at relative ${click_x},${click_y} (${width}x${height})"
-
+  [ -n "$width" ] && [ -n "$height" ] || { echo "ERROR: could not determine $label dialog geometry" >&2; return 1; }
+  click_x=$((width * x_pct / 100)); click_y=$((height * y_pct / 100))
+  echo "INFO: clicking KiCad $label action at relative ${click_x},${click_y} (${width}x${height})"
   xdotool windowactivate --sync "$dialog_id" >/dev/null 2>&1 || true
   xdotool mousemove --window "$dialog_id" "$click_x" "$click_y" >/dev/null 2>&1 || true
   xdotool click 1 >/dev/null 2>&1 || true
-  REMAP_TRIGGERED=1
   sleep 3
-  return 0
+}
+
+click_remap_symbols() {
+  dialog_id="$(xdotool search --onlyvisible --name '^Remap Symbols$' 2>/dev/null | head -n1 || true)"
+  [ -n "$dialog_id" ] || return 1
+  [ "$REMAP_TRIGGERED" -eq 0 ] || return 0
+  click_window_relative "$dialog_id" 90 10 'Remap Symbols'
+  REMAP_TRIGGERED=1
+}
+
+click_rescue_symbols() {
+  dialog_id="$(xdotool search --onlyvisible --name '^Project Rescue Helper$' 2>/dev/null | head -n1 || true)"
+  [ -n "$dialog_id" ] || return 1
+  [ "$RESCUE_TRIGGERED" -eq 0 ] || return 0
+  # The diagnostic screenshot from run #14 shows all five cache-only symbols
+  # selected for rescue and the "Rescue Symbols" button at the lower right.
+  # Click that explicit action instead of Skip Symbol Rescue so the legacy
+  # cache definitions are preserved in the converted project.
+  click_window_relative "$dialog_id" 91 93 'Project Rescue Helper / Rescue Symbols'
+  RESCUE_TRIGGERED=1
 }
 
 if [ ! -s "$NATIVE" ]; then
   rm -f "$NATIVE"
   LOG="$OUTDIR/eeschema-convert.log"
-
   Xvfb "$DISPLAY_NUM" -screen 0 1280x1024x24 >"$OUTDIR/xvfb.log" 2>&1 &
   XVFB_PID=$!
   sleep 2
-
   export DISPLAY="$DISPLAY_NUM"
-  (
-    cd "$ROOT/hardware"
-    exec eeschema "$(basename "$SCHEMATIC")"
-  ) >"$LOG" 2>&1 &
+  (cd "$ROOT/hardware"; exec eeschema "$(basename "$SCHEMATIC")") >"$LOG" 2>&1 &
   EESCHEMA_PID=$!
 
   WINDOW_ID=""
-  for _ in $(seq 1 90); do
-    # Fresh GitHub runners start KiCad with this modal dialog. The
-    # recommended "Copy default global symbol library table" option is
-    # already selected, so Return accepts it safely.
+  for _ in $(seq 1 120); do
     press_enter_on_dialog '^Configure Global Symbol Library Table$' || true
-
-    # KiCad 9 then presents a migration window.  Trigger its explicit action
-    # once; repeatedly pressing Return leaves this window open forever.
     click_remap_symbols || true
-
+    click_rescue_symbols || true
     WINDOW_ID="$(xdotool search --onlyvisible --name 'C64RS232_M1' 2>/dev/null | head -n1 || true)"
-    if [ -n "$WINDOW_ID" ]; then
-      break
-    fi
-    if ! kill -0 "$EESCHEMA_PID" >/dev/null 2>&1; then
-      break
-    fi
+    if [ -n "$WINDOW_ID" ]; then break; fi
+    if ! kill -0 "$EESCHEMA_PID" >/dev/null 2>&1; then break; fi
     sleep 1
   done
 
   if [ -z "$WINDOW_ID" ]; then
-    echo "ERROR: Eeschema schematic window did not appear within 90 seconds" >&2
+    echo "ERROR: Eeschema schematic window did not appear within 120 seconds" >&2
     capture_diagnostics
     cat "$LOG" >&2 || true
     exit 4
@@ -155,28 +138,22 @@ if [ ! -s "$NATIVE" ]; then
   xdotool windowactivate --sync "$WINDOW_ID" || true
   xdotool key --window "$WINDOW_ID" ctrl+s || true
 
-  for _ in $(seq 1 45); do
+  for _ in $(seq 1 60); do
     [ -s "$NATIVE" ] && break
-
-    # Legacy-to-native conversion can open a Save As dialog. KiCad proposes
-    # the converted .kicad_sch name, so accepting the default is intentional.
     press_enter_on_dialog '^Save As$' || true
-
-    if ! kill -0 "$EESCHEMA_PID" >/dev/null 2>&1; then
-      break
-    fi
+    press_enter_on_dialog '^File already exists$' || true
+    if ! kill -0 "$EESCHEMA_PID" >/dev/null 2>&1; then break; fi
     sleep 1
   done
 
   if [ ! -s "$NATIVE" ]; then
-    echo "ERROR: native schematic was not created within 45 seconds after Ctrl+S" >&2
+    echo "ERROR: native schematic was not created within 60 seconds after Ctrl+S" >&2
     capture_diagnostics
     cat "$LOG" >&2 || true
     exit 5
   fi
 
   xdotool key --window "$WINDOW_ID" alt+F4 >/dev/null 2>&1 || true
-
   if ! wait_for_exit "$EESCHEMA_PID" 15; then
     echo "WARNING: Eeschema did not exit within 15 seconds; terminating it" >&2
     capture_diagnostics
@@ -189,11 +166,7 @@ if [ ! -s "$NATIVE" ]; then
   EESCHEMA_PID=""
 fi
 
-[ -s "$NATIVE" ] || {
-  echo "ERROR: Eeschema did not produce native schematic: $NATIVE" >&2
-  cat "$OUTDIR/eeschema-convert.log" >&2 || true
-  exit 6
-}
+[ -s "$NATIVE" ] || { echo "ERROR: Eeschema did not produce native schematic: $NATIVE" >&2; cat "$OUTDIR/eeschema-convert.log" >&2 || true; exit 6; }
 
 kicad-cli sch export pdf --output "$OUTDIR/C64RS232_M1.pdf" "$NATIVE"
 kicad-cli sch export netlist --output "$OUTDIR/C64RS232_M1.net" "$NATIVE"
