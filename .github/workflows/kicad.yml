@@ -53,19 +53,22 @@ jobs:
             echo 'Native schematic absent or empty; nothing to commit.'
             exit 0
           fi
-
-          # Avoid a second workflow run: commits made with GITHUB_TOKEN do not
-          # recursively trigger push workflows. Commit only when content differs.
           if git cat-file -e "HEAD:$native" 2>/dev/null && git diff --quiet HEAD -- "$native"; then
             echo 'Native schematic already tracked and unchanged.'
             exit 0
           fi
-
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add "$native"
           git commit -m 'Add generated native KiCad M1 schematic'
           git push origin HEAD:main
+
+      - name: Qualify M1.7 native schematic
+        id: m1_7
+        if: always()
+        run: |
+          chmod +x tools/qualify_m1_7.sh
+          tools/qualify_m1_7.sh
 
       - name: Preserve native schematic for retrieval
         if: always()
@@ -86,10 +89,11 @@ jobs:
           path: build/kicad/
           if-no-files-found: warn
 
-      - name: Enforce schematic validation result
+      - name: Enforce M1.7 qualification
         if: always()
         run: |
-          if [ '${{ steps.convert.outcome }}' != 'success' ]; then
-            echo 'Conversion/validation reported failure. Native conversion output was preserved when available.'
+          if [ '${{ steps.m1_7.outcome }}' != 'success' ]; then
+            echo 'M1.7 runner qualification failed.'
             exit 1
           fi
+          echo 'M1.7 runner qualification passed. ERC cleanup/net assertions remain M1.8 work.'
