@@ -67,7 +67,9 @@ press_enter_on_dialog() {
   dialog_id="$(xdotool search --onlyvisible --name "$title" 2>/dev/null | head -n1 || true)"
   [ -n "$dialog_id" ] || return 1
   echo "INFO: handling KiCad dialog: $title"
-  xdotool windowactivate --sync "$dialog_id" >/dev/null 2>&1 || true
+  # There is deliberately no window manager under Xvfb. Sending directly to
+  # the X11 window is sufficient; windowactivate depends on _NET_ACTIVE_WINDOW
+  # and therefore cannot be relied on in this environment.
   xdotool key --window "$dialog_id" Return >/dev/null 2>&1 || true
   sleep 2
   return 0
@@ -81,7 +83,7 @@ click_window_relative() {
   [ -n "$width" ] && [ -n "$height" ] || { echo "ERROR: could not determine $label dialog geometry" >&2; return 1; }
   click_x=$((width * x_pct / 100)); click_y=$((height * y_pct / 100))
   echo "INFO: clicking KiCad $label action at relative ${click_x},${click_y} (${width}x${height})"
-  xdotool windowactivate --sync "$dialog_id" >/dev/null 2>&1 || true
+  # mousemove --window addresses the target directly and does not require a WM.
   xdotool mousemove --window "$dialog_id" "$click_x" "$click_y" >/dev/null 2>&1 || true
   xdotool click 1 >/dev/null 2>&1 || true
   sleep 3
@@ -101,8 +103,7 @@ click_rescue_symbols() {
   [ "$RESCUE_TRIGGERED" -eq 0 ] || return 0
   # Run #15 shows the Project Rescue Helper is a child dialog occupying roughly
   # the upper 2/3 of the editor. The Rescue Symbols button is at the lower-right
-  # of that dialog, around 90% width / 96% height. The previous 91/93 click hit
-  # the symbol preview area, leaving the rescue dialog open indefinitely.
+  # of that dialog, around 90% width / 96% height.
   click_window_relative "$dialog_id" 90 96 'Project Rescue Helper / Rescue Symbols'
   RESCUE_TRIGGERED=1
 }
@@ -135,8 +136,8 @@ if [ ! -s "$NATIVE" ]; then
     exit 4
   fi
 
-  xdotool windowactivate --sync "$WINDOW_ID" || true
-  xdotool key --window "$WINDOW_ID" ctrl+s || true
+  echo "INFO: sending Ctrl+S directly to schematic window $WINDOW_ID"
+  xdotool key --window "$WINDOW_ID" ctrl+s >/dev/null 2>&1 || true
 
   for _ in $(seq 1 60); do
     [ -s "$NATIVE" ] && break
@@ -153,6 +154,7 @@ if [ ! -s "$NATIVE" ]; then
     exit 5
   fi
 
+  echo "INFO: native schematic created: $NATIVE"
   xdotool key --window "$WINDOW_ID" alt+F4 >/dev/null 2>&1 || true
   if ! wait_for_exit "$EESCHEMA_PID" 15; then
     echo "WARNING: Eeschema did not exit within 15 seconds; terminating it" >&2
