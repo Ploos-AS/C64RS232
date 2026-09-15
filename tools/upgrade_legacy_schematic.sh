@@ -99,11 +99,11 @@ click_rescue_symbols() {
   dialog_id="$(xdotool search --onlyvisible --name '^Project Rescue Helper$' 2>/dev/null | head -n1 || true)"
   [ -n "$dialog_id" ] || return 1
   [ "$RESCUE_TRIGGERED" -eq 0 ] || return 0
-  # The diagnostic screenshot from run #14 shows all five cache-only symbols
-  # selected for rescue and the "Rescue Symbols" button at the lower right.
-  # Click that explicit action instead of Skip Symbol Rescue so the legacy
-  # cache definitions are preserved in the converted project.
-  click_window_relative "$dialog_id" 91 93 'Project Rescue Helper / Rescue Symbols'
+  # Run #15 shows the Project Rescue Helper is a child dialog occupying roughly
+  # the upper 2/3 of the editor. The Rescue Symbols button is at the lower-right
+  # of that dialog, around 90% width / 96% height. The previous 91/93 click hit
+  # the symbol preview area, leaving the rescue dialog open indefinitely.
+  click_window_relative "$dialog_id" 90 96 'Project Rescue Helper / Rescue Symbols'
   RESCUE_TRIGGERED=1
 }
 
