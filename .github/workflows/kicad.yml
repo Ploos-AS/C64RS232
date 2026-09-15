@@ -70,6 +70,13 @@ jobs:
           chmod +x tools/qualify_m1_7.sh
           tools/qualify_m1_7.sh
 
+      - name: Qualify M1.8 exported electrical nets
+        id: m1_8
+        if: always()
+        run: |
+          chmod +x tools/qualify_m1_8.sh
+          tools/qualify_m1_8.sh
+
       - name: Preserve native schematic for retrieval
         if: always()
         run: |
@@ -89,11 +96,15 @@ jobs:
           path: build/kicad/
           if-no-files-found: warn
 
-      - name: Enforce M1.7 qualification
+      - name: Enforce M1.8 qualification
         if: always()
         run: |
           if [ '${{ steps.m1_7.outcome }}' != 'success' ]; then
-            echo 'M1.7 runner qualification failed.'
+            echo 'M1.7 runner qualification regressed.'
             exit 1
           fi
-          echo 'M1.7 runner qualification passed. ERC cleanup/net assertions remain M1.8 work.'
+          if [ '${{ steps.m1_8.outcome }}' != 'success' ]; then
+            echo 'M1.8 exported-net qualification failed.'
+            exit 1
+          fi
+          echo 'M1.8a exported-net qualification passed. ERC classification/cleanup remains.'
