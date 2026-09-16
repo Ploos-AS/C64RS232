@@ -13,14 +13,10 @@ kicad-cli sch export netlist --output "$OUTDIR/C64RS232_M1.net" "$NATIVE"
 [ -s "$OUTDIR/C64RS232_M1.net" ] || { echo 'ERROR: M1.8 netlist export missing' >&2; exit 4; }
 python3 "$ROOT/tools/check_m1_8_netlist.py"
 
-# Keep ERC evidence visible while M1.8 classifies/fixes violations.  A later
-# M1.8 increment will promote the classified ERC result to a hard gate.
-set +e
-kicad-cli sch erc --output "$OUTDIR/C64RS232_M1-erc.rpt" --exit-code-violations "$NATIVE"
-ERC_RC=$?
-set -e
-printf '%s\n' "$ERC_RC" > "$OUTDIR/erc-exit-code.txt"
+# Match the native validation policy exactly: warnings are retained in the
+# report, while error-severity ERC findings fail qualification.
+kicad-cli sch erc --output "$OUTDIR/C64RS232_M1-erc.rpt" --exit-code-violations --severity-error "$NATIVE"
 [ -s "$OUTDIR/C64RS232_M1-erc.rpt" ] || { echo 'ERROR: M1.8 ERC report missing' >&2; exit 5; }
 
-echo 'M1.8a RUNNER QUALIFICATION PASS'
-echo "ERC exit code (classification in progress): $ERC_RC"
+echo 'M1.8b RUNNER QUALIFICATION PASS'
+echo 'ERC error-severity gate: PASS'
