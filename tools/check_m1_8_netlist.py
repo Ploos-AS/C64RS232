@@ -25,7 +25,9 @@ if not NETLIST.is_file() or NETLIST.stat().st_size == 0:
     errors.append(f"missing or empty exported netlist: {NETLIST}")
 else:
     text = NETLIST.read_text(encoding="utf-8", errors="replace")
-    # KiCad 9 default netlist: <net code="..." name="C64_TXD">.
+    # KiCad 9 default netlist: <net code="..." name="/C64_TXD">. Local labels
+    # on the root sheet are exported with a leading '/', so normalize that
+    # sheet-path prefix before comparing with the frozen logical contract.
     try:
         root = ET.fromstring(text)
         names.update(net.get("name") for net in root.findall(".//net") if net.get("name"))
@@ -35,7 +37,9 @@ else:
     names.update(re.findall(r'\(name\s+"([^"\n]+)"\)', text))
     names.update(re.findall(r'\(name\s+([A-Za-z0-9_+./:-]+)\)', text))
 
-    missing = sorted(REQUIRED_NETS - names)
+    logical_names = set(names)
+    logical_names.update(name[1:] for name in names if name.startswith("/") and len(name) > 1)
+    missing = sorted(REQUIRED_NETS - logical_names)
     if missing:
         errors.append("exported netlist missing frozen functional nets: " + ", ".join(missing))
         if names:
