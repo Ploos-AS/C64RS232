@@ -16,6 +16,18 @@ s = s.replace('Text Label 6850 1500 0 50 ~ 0\nRAW_5V\n',
 s = s.replace('Text Label 7150 1500 0 50 ~ 0\n+5V\n',
               'Text Label 7000 1650 0 50 ~ 0\n+5V\n')
 
+# The User Port is the real +5 V source, but the resettable fuse deliberately
+# separates RAW_5V from the protected +5V net. KiCad does not propagate a
+# power-output ERC driver through a passive component, so mark the protected
+# rail with the standard PWR_FLAG semantics. This is an ERC annotation only;
+# it adds no physical component to the BOM.
+pwr_flag = '''$Comp\nL PWR_FLAG #FLG0101\nU 1 1 10\nP 7500 1650\nF 0 "#FLG0101" H 7500 1725 50 0001 C CNN\nF 1 "PWR_FLAG" H 7500 1823 50 0000 C CNN\n\t1    7500 1650\n\t1    0    0    -1\n$EndComp\n'''
+if 'L PWR_FLAG #FLG0101' not in s:
+    marker = '$EndSCHEMATC\n'
+    if marker not in s:
+        raise SystemExit('ERROR: legacy schematic end marker not found')
+    s = s.replace(marker, pwr_flag + 'Text Label 7500 1650 0 50 ~ 0\n+5V\n' + marker)
+
 labels = {
     (1300,4300):"C64_TXD", (4500,3900):"C64_TXD",
     (1300,3600):"C64_RTS", (4500,3800):"C64_RTS",
@@ -55,7 +67,7 @@ required = [
 ]
 if all(token in s for token in required):
     p.write_text(s)
-    print("M1.8b legacy schematic connectivity normalized")
+    print("M1.8c legacy schematic connectivity normalized")
     raise SystemExit(0)
 
 anchor = "Text Label 2300 3000 0 50 ~ 0\nC64_+5V\n"
@@ -69,4 +81,4 @@ for x,y in [(2300,3500),(2300,3600),(2300,3700),(2300,3800),(2300,3900),(2300,40
 s = s[:start] + block + s[end:]
 s = s.replace('Rev "M1"', 'Rev "M1.8"').replace('Comment3 "M1 schematic baseline"', 'Comment3 "M1.8 electrically connected baseline"')
 p.write_text(s)
-print("M1.8b legacy schematic connectivity generated")
+print("M1.8c legacy schematic connectivity generated")
