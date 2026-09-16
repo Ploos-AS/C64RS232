@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""M1.8c exported-netlist assertions for C64RS232.
+"""M1.8d exported-netlist assertions for C64RS232.
 
-Verify both the frozen functional net names and their exact component/pin
-membership in KiCad-exported netlists. KiCad 9 may emit either XML or its
-S-expression netlist format, so both formats are qualified equivalently.
+Verify frozen functional, power, control, and charge-pump nets and their exact
+component/pin membership in KiCad-exported XML netlists.  S-expression parsing
+is retained for functional compatibility, but exact M1.8d qualification is
+based on the same ref/pin membership model.
 """
 from pathlib import Path
 import re
@@ -30,8 +31,25 @@ EXPECTED = {
     "RS232_DSR": {("U1", "6"), ("J2", "6")},
     "RS232_DCD": {("U1", "7"), ("J2", "1")},
     "RS232_RI": {("U1", "8"), ("J2", "9")},
+    "RAW_5V": {("J1", "2"), ("F1", "1")},
+    "+5V": {("F1", "2"), ("U1", "23"), ("U1", "26"), ("C5", "1"), ("#FLG0101", "1")},
+    "GND": {("J1", "1"), ("J1", "12"), ("J1", "A"), ("J1", "N"), ("U1", "22"), ("U1", "25"), ("J2", "5"), ("C3", "2"), ("C4", "2"), ("C5", "2")},
+    "C1_PLUS": {("C1", "1"), ("U1", "28")},
+    "C1_MINUS": {("C1", "2"), ("U1", "24")},
+    "C2_PLUS": {("C2", "1"), ("U1", "1")},
+    "C2_MINUS": {("C2", "2"), ("U1", "2")},
+    "VPLUS": {("C3", "1"), ("U1", "27")},
+    "VMINUS": {("C4", "1"), ("U1", "3")},
 }
-REQUIRED_NETS = set(EXPECTED)
+FUNCTIONAL_NETS = {name for name in EXPECTED if name.startswith("C64_") or name.startswith("RS232_")}
+POWER_NETS = set(EXPECTED) - FUNCTIONAL_NETS
+
+# Pins intentionally left electrically unconnected by the M1 freeze.
+FORBIDDEN_CONNECTED = {
+    ("U1", "20"), ("U1", "21"),
+    ("J1", "3"), ("J1", "4"), ("J1", "5"), ("J1", "6"), ("J1", "7"),
+    ("J1", "8"), ("J1", "9"), ("J1", "10"), ("J1", "11"), ("J1", "J"),
+}
 
 
 def logical_name(name):
@@ -43,7 +61,6 @@ def fmt_nodes(nodes):
 
 
 def parse_sexpr_netlist(text):
-    """Extract net names and node memberships from KiCad's line-oriented netlist."""
     actual = {}
     current = None
     net_re = re.compile(r'^\s*\(net\s+\(code\s+"[^"]+"\)\s+\(name\s+"([^"]+)"\)')
@@ -82,11 +99,9 @@ else:
     else:
         actual = parse_sexpr_netlist(text)
 
-    missing = sorted(REQUIRED_NETS - set(actual))
+    missing = sorted(set(EXPECTED) - set(actual))
     if missing:
-        errors.append("exported netlist missing frozen functional nets: " + ", ".join(missing))
-        if actual:
-            errors.append("exported net names seen: " + ", ".join(sorted(actual)))
+        errors.append("exported netlist missing frozen nets: " + ", ".join(missing))
 
     for name in sorted(EXPECTED):
         expected = EXPECTED[name]
@@ -102,12 +117,19 @@ else:
             detail.append("actual: " + fmt_nodes(got))
             errors.append("; ".join(detail))
 
+    connected = set().union(*actual.values()) if actual else set()
+    bad_nc = FORBIDDEN_CONNECTED & connected
+    if bad_nc:
+        errors.append("pins frozen NC are present on exported nets: " + fmt_nodes(bad_nc))
+
 if errors:
     for error in errors:
         print(f"FAIL: {error}", file=sys.stderr)
     raise SystemExit(1)
 
-print("M1.8c EXACT PIN CONNECTIVITY PASS")
+print("M1.8d POWER/CHARGE/NC CONNECTIVITY PASS")
 print(f"netlist: {NETLIST.relative_to(ROOT)}")
-print(f"functional nets asserted: {len(REQUIRED_NETS)}")
+print(f"functional nets asserted: {len(FUNCTIONAL_NETS)}")
+print(f"power/control/charge nets asserted: {len(POWER_NETS)}")
 print(f"exact pin memberships asserted: {sum(len(nodes) for nodes in EXPECTED.values())}")
+print(f"NC pins asserted absent from nets: {len(FORBIDDEN_CONNECTED)}")
