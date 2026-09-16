@@ -2,16 +2,16 @@
 	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
-	(uuid "3076e7b9-84e9-49dd-8f8c-73f67d5c9a2c")
+	(uuid "258ec6c9-77ec-43ce-9f8f-1428b4d11d7f")
 	(paper "A4")
 	(title_block
 		(title "C64RS232 User Port to RS-232")
 		(date "2026-09-14")
-		(rev "M1.8")
+		(rev "M1.9")
 		(company "Ploos-AS")
 		(comment 1 "C64 User Port / MAX3243 / DE-9 DTE")
 		(comment 2 "SLIP-capable architecture")
-		(comment 3 "M1.8 electrically connected baseline")
+		(comment 3 "M1.9 MAX3243E 5V baseline")
 		(comment 4 "Verify against datasheets before manufacture")
 	)
 	(lib_symbols
@@ -4406,9 +4406,9 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "FORCEON is tied high and FORCEOFF low for normal always-on operation."
+	(text "This is an M1 design baseline; ERC/DRC and manufacturer-specific footprint checks remain required."
 		(exclude_from_sim no)
-		(at 35.56 153.67 0)
+		(at 35.56 157.48 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -4417,33 +4417,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "19f46efb-e94a-4f8e-85bd-eeaa493f741f")
-	)
-	(text "Only required User Port signals are connected. +5V is used; 9VAC and RESET are intentionally NC."
-		(exclude_from_sim no)
-		(at 35.56 142.24 0)
-		(effects
-			(font
-				(size 1.524 1.524)
-				(thickness 0.3048)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "27a3da96-eb50-4535-9829-bdd4d8aadcb8")
-	)
-	(text "RS-232 TRANSCEIVER"
-		(exclude_from_sim no)
-		(at 115.57 60.96 0)
-		(effects
-			(font
-				(size 2.032 2.032)
-				(thickness 0.4064)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "571eaec6-f77a-4db5-a7f2-3ab5dd420852")
+		(uuid "15263dc5-b9ae-4de7-8108-b8ccef10576b")
 	)
 	(text "RXD uses both FLAG2 (B) and PB0 (C), as required by the C64 RS-232 software convention."
 		(exclude_from_sim no)
@@ -4456,11 +4430,11 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "60aae092-f6ea-4bc3-b664-b9b8c13f29b4")
+		(uuid "1c541526-c0f6-4f58-81c5-c4e918e006cf")
 	)
-	(text "C64 USER PORT"
+	(text "RS-232 TRANSCEIVER"
 		(exclude_from_sim no)
-		(at 33.02 60.96 0)
+		(at 115.57 60.96 0)
 		(effects
 			(font
 				(size 2.032 2.032)
@@ -4469,33 +4443,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "800a36e4-ee98-438c-aa3f-e1f7eb5a98e3")
-	)
-	(text "DE-9 DTE"
-		(exclude_from_sim no)
-		(at 203.2 60.96 0)
-		(effects
-			(font
-				(size 2.032 2.032)
-				(thickness 0.4064)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "a87be143-0a1c-401f-833c-2d52f3ff4675")
-	)
-	(text "This is an M1 design baseline; ERC/DRC and manufacturer-specific footprint checks remain required."
-		(exclude_from_sim no)
-		(at 35.56 157.48 0)
-		(effects
-			(font
-				(size 1.524 1.524)
-				(thickness 0.3048)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "b96a1e34-8def-4d4b-903c-4d1be102741b")
+		(uuid "61a37de6-16c1-470c-ab26-80f323dde130")
 	)
 	(text "MAX3243 provides 3 drivers / 5 receivers, matching TXD/RTS/DTR and RXD/CTS/DSR/DCD/RI."
 		(exclude_from_sim no)
@@ -4508,115 +4456,107 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "e0b2e7d4-6b48-4f9e-bb9a-c2e750a54c4f")
+		(uuid "723dd019-6406-4700-a71d-08e80781abd8")
 	)
-	(no_connect
-		(at 58.42 93.98)
-		(uuid "036f8537-e94d-43be-a4d2-04875e514c6f")
+	(text "FORCEON is tied high and FORCEOFF low for normal always-on operation."
+		(exclude_from_sim no)
+		(at 35.56 153.67 0)
+		(effects
+			(font
+				(size 1.524 1.524)
+				(thickness 0.3048)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "a4247a31-1c53-4ad8-9f61-12dd7cdc4668")
 	)
-	(no_connect
-		(at 58.42 96.52)
-		(uuid "1403e1e0-2db7-42f9-9c24-ff345edcc854")
+	(text "C64 USER PORT"
+		(exclude_from_sim no)
+		(at 33.02 60.96 0)
+		(effects
+			(font
+				(size 2.032 2.032)
+				(thickness 0.4064)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "a4b836fb-24f8-4e42-a60c-958bed3e9743")
 	)
-	(no_connect
-		(at 58.42 101.6)
-		(uuid "2961d16e-4e22-4677-b95e-a576561070ac")
+	(text "Only required User Port signals are connected. +5V is used; 9VAC and RESET are intentionally NC."
+		(exclude_from_sim no)
+		(at 35.56 142.24 0)
+		(effects
+			(font
+				(size 1.524 1.524)
+				(thickness 0.3048)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "eb7b301b-52fe-46f2-b4d4-9dfb609c50ff")
 	)
-	(no_connect
-		(at 58.42 88.9)
-		(uuid "350b2acb-0c23-4948-ac20-161d1b627a94")
-	)
-	(no_connect
-		(at 58.42 99.06)
-		(uuid "3e3801a0-ff48-40e1-af30-b19d31524e80")
-	)
-	(no_connect
-		(at 149.86 83.82)
-		(uuid "54338820-3802-47dd-873b-bbf3bce3c87a")
-	)
-	(no_connect
-		(at 149.86 86.36)
-		(uuid "5c2b7696-6fac-498f-96fa-364eda81eb98")
-	)
-	(no_connect
-		(at 58.42 109.22)
-		(uuid "60df045e-0f38-4ff3-8ca9-75e4a0712b5c")
+	(text "DE-9 DTE"
+		(exclude_from_sim no)
+		(at 203.2 60.96 0)
+		(effects
+			(font
+				(size 2.032 2.032)
+				(thickness 0.4064)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "ff866f62-2c0c-4790-bfb4-a765e63f2576")
 	)
 	(no_connect
 		(at 58.42 106.68)
-		(uuid "88ea103e-9787-40d4-8a4d-77ccb6758e38")
+		(uuid "41e3ef86-8c70-4ea4-9c41-9307334e84a3")
 	)
 	(no_connect
-		(at 33.02 101.6)
-		(uuid "c49c83d1-50f8-4b12-b5a3-dcbaae2e7b71")
+		(at 149.86 86.36)
+		(uuid "51c3a43c-8508-4c88-8f5f-232500c4c207")
 	)
 	(no_connect
-		(at 58.42 104.14)
-		(uuid "e456bf3a-a7fd-4be2-bf3a-11c293aa00fb")
+		(at 58.42 101.6)
+		(uuid "5d043bf0-44b7-43b7-82a1-10cdd5ba49c3")
+	)
+	(no_connect
+		(at 58.42 99.06)
+		(uuid "769c5b43-c6c7-4200-bc2a-4d4bfb811efb")
+	)
+	(no_connect
+		(at 58.42 93.98)
+		(uuid "978263fd-068d-4f59-84ad-8e69608b3e4d")
 	)
 	(no_connect
 		(at 58.42 91.44)
-		(uuid "f88cc68c-ddbb-45ca-9f84-dba9b2c6d452")
+		(uuid "9c6ac789-371b-4daf-9f0b-d38d605df45b")
 	)
-	(polyline
-		(pts
-			(xy 109.22 63.5) (xy 154.94 63.5)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "0d0151fc-9321-4d7e-9dd3-662dfa549999")
+	(no_connect
+		(at 33.02 101.6)
+		(uuid "b7086846-618b-4996-b4d5-9bc49675589a")
 	)
-	(polyline
-		(pts
-			(xy 33.02 133.35) (xy 33.02 63.5)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "29a663a4-ddb6-4945-a75f-5386e45a71d9")
+	(no_connect
+		(at 149.86 83.82)
+		(uuid "cac280ab-5c30-4dc6-906d-fe673e18eb5b")
 	)
-	(polyline
-		(pts
-			(xy 33.02 63.5) (xy 81.28 63.5)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "3794546d-cecd-49c0-b5a4-b5c3b922d91e")
+	(no_connect
+		(at 58.42 88.9)
+		(uuid "ce39cbd5-fe54-438a-9a12-33af42f11636")
 	)
-	(polyline
-		(pts
-			(xy 236.22 127) (xy 193.04 127)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "44096905-c34d-4c10-ad99-555729a992d6")
+	(no_connect
+		(at 58.42 104.14)
+		(uuid "d0da7e6d-fc51-4d71-91b6-657d761edc42")
 	)
-	(polyline
-		(pts
-			(xy 81.28 63.5) (xy 81.28 133.35)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "509a3cce-a39c-4abe-b7cb-13771a0ad855")
+	(no_connect
+		(at 58.42 96.52)
+		(uuid "d2917011-abb6-4859-8bc6-ecd60c380cfd")
 	)
-	(polyline
-		(pts
-			(xy 109.22 133.35) (xy 109.22 63.5)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "5d59c279-1e73-4588-999f-8c241c963e9b")
+	(no_connect
+		(at 58.42 109.22)
+		(uuid "d8db53ed-2773-40b8-a472-4d8697fc75e6")
 	)
 	(polyline
 		(pts
@@ -4626,17 +4566,27 @@
 			(width 0)
 			(type dash)
 		)
-		(uuid "83803ea9-5c9e-42ff-a56a-e3b7fb1f2cbd")
+		(uuid "029726e6-f390-416f-9306-f2c2b18a9cb3")
 	)
 	(polyline
 		(pts
-			(xy 236.22 63.5) (xy 236.22 127)
+			(xy 109.22 63.5) (xy 154.94 63.5)
 		)
 		(stroke
 			(width 0)
 			(type dash)
 		)
-		(uuid "83be70d0-89bf-459b-8225-0a4a8144a569")
+		(uuid "1c1666fc-331c-4166-88c8-9cc03080a3bc")
+	)
+	(polyline
+		(pts
+			(xy 109.22 133.35) (xy 109.22 63.5)
+		)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(uuid "1d5b5793-5320-4db6-a897-1648382ab6ba")
 	)
 	(polyline
 		(pts
@@ -4646,17 +4596,17 @@
 			(width 0)
 			(type dash)
 		)
-		(uuid "94d01108-329f-480f-b921-af25df10b0cf")
+		(uuid "371f00d5-71c8-4bee-bd24-8ab4696c1689")
 	)
 	(polyline
 		(pts
-			(xy 154.94 133.35) (xy 109.22 133.35)
+			(xy 33.02 133.35) (xy 33.02 63.5)
 		)
 		(stroke
 			(width 0)
 			(type dash)
 		)
-		(uuid "9fa991fa-b12b-4025-be05-b84f544cca4d")
+		(uuid "482b7bb8-0cd0-41b4-84fa-a7f1cab7e05f")
 	)
 	(polyline
 		(pts
@@ -4666,7 +4616,57 @@
 			(width 0)
 			(type dash)
 		)
-		(uuid "a19dee29-fc22-45bc-bb1b-3f8d6dc2fabe")
+		(uuid "4c58efce-abad-4603-85f3-2fae8e3f4532")
+	)
+	(polyline
+		(pts
+			(xy 236.22 63.5) (xy 236.22 127)
+		)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(uuid "75d82e85-ace7-4f7d-9ea8-aee2a69731c5")
+	)
+	(polyline
+		(pts
+			(xy 236.22 127) (xy 193.04 127)
+		)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(uuid "80926f59-3ca8-437b-bac7-eb7e5f90cf75")
+	)
+	(polyline
+		(pts
+			(xy 81.28 63.5) (xy 81.28 133.35)
+		)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(uuid "9f6464cd-e3d9-4434-8889-77e314a9e345")
+	)
+	(polyline
+		(pts
+			(xy 154.94 133.35) (xy 109.22 133.35)
+		)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(uuid "a33ff68d-8b5a-4d89-a230-18d04a97d7cb")
+	)
+	(polyline
+		(pts
+			(xy 33.02 63.5) (xy 81.28 63.5)
+		)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(uuid "da7c34fe-5aff-4e60-b375-08bc600fcec8")
 	)
 	(polyline
 		(pts
@@ -4676,57 +4676,7 @@
 			(width 0)
 			(type dash)
 		)
-		(uuid "a4d70973-26bc-41a8-bc22-24597d89e99f")
-	)
-	(label "RAW_5V"
-		(at 58.42 86.36 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "00345245-2efd-4192-a6f7-f3cda2ecb6ed")
-	)
-	(label "RS232_DSR"
-		(at 114.3 78.74 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "04115e91-cbf1-41cf-aa32-02dfe619a527")
-	)
-	(label "RS232_RXD"
-		(at 114.3 73.66 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "05bfd7f5-b875-4f0e-9247-63ad66aa6226")
-	)
-	(label "C2_MINUS"
-		(at 114.3 68.58 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "06c68e33-d667-4b7b-b08b-ab623879b472")
-	)
-	(label "+5V"
-		(at 149.86 78.74 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "0a3a255d-1a17-49cf-9798-ef85825161c9")
+		(uuid "ed4c72f3-d3a6-4af9-b03a-f655dc0d3ede")
 	)
 	(label "VMINUS"
 		(at 114.3 71.12 0)
@@ -4736,377 +4686,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "0cf4a1bb-6121-4539-8570-87ffc119478d")
-	)
-	(label "RS232_DCD"
-		(at 203.2 86.36 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "0ea26857-df65-42a1-8143-f1f669db6b36")
-	)
-	(label "C1_PLUS"
-		(at 149.86 66.04 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "19659452-0c5f-4ecb-a816-457948c8cf0f")
-	)
-	(label "C64_TXD"
-		(at 33.02 109.22 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "249db001-9c4b-40e0-a145-a4c4661301c8")
-	)
-	(label "C64_DTR"
-		(at 33.02 93.98 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "2a6b36f0-878b-4ef4-b2bd-1debb05459e7")
-	)
-	(label "GND"
-		(at 58.42 111.76 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "37af0138-2dbb-48cc-ad88-e4a6fe416737")
-	)
-	(label "C1_MINUS"
-		(at 99.06 44.45 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "39589f1c-fcaa-4c20-a79e-3cb04bb127fe")
-	)
-	(label "C64_DCD"
-		(at 149.86 96.52 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "3b6eeee9-129a-414a-8ed4-f155aa0dfd72")
-	)
-	(label "+5V"
-		(at 190.5 41.91 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "3f610008-049e-44da-93c7-90f18a6f144e")
-	)
-	(label "+5V"
-		(at 149.86 71.12 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "40cf2b5c-eceb-41b8-ab42-305b0e58e748")
-	)
-	(label "+5V"
-		(at 149.86 36.83 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "465030ec-77fa-4fa7-8960-e3d0ee4bd492")
-	)
-	(label "RS232_RXD"
-		(at 203.2 88.9 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "4c8882f6-2c7a-42b2-8d1c-6c7fdeb25e30")
-	)
-	(label "VPLUS"
-		(at 124.46 36.83 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "60c2b060-7f64-49f0-818d-f53708dff61a")
-	)
-	(label "C64_DSR"
-		(at 33.02 106.68 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "616db591-dd59-44ad-8b2e-363d7fa247d7")
-	)
-	(label "C64_DTR"
-		(at 114.3 93.98 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "61fc32df-4d05-47a6-bf71-a3c425cc438c")
-	)
-	(label "RS232_RI"
-		(at 114.3 83.82 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "652bba98-39e9-4ce9-a0df-7f8d96165d60")
-	)
-	(label "RS232_DTR"
-		(at 203.2 93.98 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "6a716146-2aff-4580-b1b6-0fff59ed081a")
-	)
-	(label "GND"
-		(at 124.46 44.45 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "6aa7c949-d07d-4e8c-a383-8c5da135f487")
-	)
-	(label "GND"
-		(at 149.86 81.28 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "71225b14-a969-4dab-ac0b-262cfdb15bd9")
-	)
-	(label "C64_RXD"
-		(at 33.02 86.36 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "735f0c9c-b5dc-4fe9-bda6-965a6ef4d641")
-	)
-	(label "C64_CTS"
-		(at 149.86 91.44 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "7590ad65-44ea-46de-96f2-2ab8b8bdd327")
-	)
-	(label "RS232_RI"
-		(at 203.2 106.68 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "76b89fa5-1095-47a1-90ff-5392f2941be0")
-	)
-	(label "RS232_RTS"
-		(at 114.3 88.9 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "8346f09d-3bac-4f99-82f1-caf51b5a123d")
-	)
-	(label "C64_RI"
-		(at 33.02 96.52 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "839fa920-550d-4f1d-b526-08e336b461c1")
-	)
-	(label "GND"
-		(at 149.86 73.66 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "8836cd52-b171-458f-9f3a-3e68b72351e5")
-	)
-	(label "RS232_DSR"
-		(at 203.2 99.06 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "8b5356e6-90c4-4f96-9308-3786166100ef")
-	)
-	(label "GND"
-		(at 33.02 111.76 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "8da1539d-2bda-4e81-89a1-6c72e59e1c76")
-	)
-	(label "C64_DSR"
-		(at 149.86 93.98 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "8e2d71fa-3b25-4e4c-8455-66d18087e88f")
-	)
-	(label "GND"
-		(at 203.2 96.52 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "908603f7-9bc5-4956-84be-125a9e0defe8")
-	)
-	(label "GND"
-		(at 58.42 83.82 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "919cf30c-6ae2-4a68-95f4-8559402a139e")
-	)
-	(label "RS232_CTS"
-		(at 114.3 76.2 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "946a3fd3-e152-47b9-a1db-6d72e895fdc2")
-	)
-	(label "GND"
-		(at 137.16 44.45 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "95491175-de7c-4e5f-8eea-eb960035395b")
-	)
-	(label "RS232_CTS"
-		(at 203.2 104.14 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "99507b90-fc9a-4cd1-a3fa-6788d0de8110")
-	)
-	(label "C64_RI"
-		(at 149.86 99.06 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a1268654-e920-49d0-bbe5-31f0e5e84fb4")
-	)
-	(label "VPLUS"
-		(at 149.86 68.58 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a5c504bf-911c-4c3a-9acf-97ceb4942d13")
-	)
-	(label "RS232_TXD"
-		(at 114.3 86.36 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a6200723-c303-4266-a55f-7472676c9405")
-	)
-	(label "C64_RXD"
-		(at 33.02 88.9 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "aaa73426-5ed6-4f58-85c1-e0ce039440df")
-	)
-	(label "+5V"
-		(at 177.8 41.91 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "aab3a42f-ea4a-48dc-ba66-70cd935f0b70")
+		(uuid "00ea621e-f618-4b57-b926-b858894f6679")
 	)
 	(label "C64_DCD"
 		(at 33.02 99.06 0)
@@ -5116,17 +4696,17 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "ae7be63f-4dbb-4659-b1c7-9c8e7b68f4d3")
+		(uuid "02bbfa9f-85b1-4ae9-8ed1-63f97870ec78")
 	)
-	(label "C2_PLUS"
-		(at 111.76 36.83 0)
+	(label "GND"
+		(at 137.16 44.45 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left bottom)
 		)
-		(uuid "b7c1386c-0a49-4a13-bc18-b94b243a1e7c")
+		(uuid "0a9b70ca-e97a-42f7-8576-380e3c187b1f")
 	)
 	(label "C2_PLUS"
 		(at 114.3 66.04 0)
@@ -5136,47 +4716,7 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "b9deb6b9-467c-4bec-9105-8f9087d39acc")
-	)
-	(label "RAW_5V"
-		(at 177.8 34.29 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "bac24729-4407-4208-9598-5ccc025f6fb3")
-	)
-	(label "C1_PLUS"
-		(at 99.06 36.83 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "c0814297-ade7-4e18-8561-8994daa34461")
-	)
-	(label "RS232_TXD"
-		(at 203.2 91.44 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "c84edf51-8b06-4311-bc29-7304e3f7d445")
-	)
-	(label "C64_RXD"
-		(at 149.86 88.9 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "c887da22-d1ff-4230-b8ee-ab4ccb66f27c")
+		(uuid "0ef86b46-4539-45f6-9b31-08711d609d60")
 	)
 	(label "C64_RTS"
 		(at 114.3 96.52 0)
@@ -5186,97 +4726,17 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "cbd251ff-5763-4506-90dc-1809ac3ebcdc")
+		(uuid "116d5f5b-ba7b-449e-85ce-060ce9a26ef5")
 	)
-	(label "RS232_DCD"
-		(at 114.3 81.28 0)
+	(label "+5V"
+		(at 149.86 36.83 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left bottom)
 		)
-		(uuid "d24643ed-5b81-47eb-ae6e-31299427364d")
-	)
-	(label "C2_MINUS"
-		(at 111.76 44.45 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d260c7fa-fc51-4ca1-8832-3aea38d5673c")
-	)
-	(label "C64_TXD"
-		(at 114.3 99.06 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d2ab8081-c9e5-4237-8606-20c28e6efbef")
-	)
-	(label "VMINUS"
-		(at 137.16 36.83 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d75cc54b-fac3-48c0-a674-ca38d734edfc")
-	)
-	(label "RS232_DTR"
-		(at 114.3 91.44 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d7e6df18-0c50-46da-835f-04000296e336")
-	)
-	(label "GND"
-		(at 149.86 44.45 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "e6aff257-6c41-49ff-9eaf-b7c75e56c8a7")
-	)
-	(label "GND"
-		(at 33.02 83.82 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "ec8f8e20-cafc-4563-baaa-da105d3fd916")
-	)
-	(label "RS232_RTS"
-		(at 203.2 101.6 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f30f9f01-2ee0-4a30-825b-4f9efa447387")
-	)
-	(label "C64_CTS"
-		(at 33.02 104.14 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f3df2b15-67d5-46d5-b0c0-36e6093a2df7")
+		(uuid "14eee177-dcf3-48da-ac44-2e1c705d7d77")
 	)
 	(label "C64_RTS"
 		(at 33.02 91.44 0)
@@ -5286,7 +4746,457 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "fb4045bd-c093-4c4f-acb9-b78a72d06025")
+		(uuid "1d48e47d-65d8-4cda-b860-153bb366bf68")
+	)
+	(label "RS232_TXD"
+		(at 203.2 91.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "210c63ca-2092-4e4e-837a-e9d96e98e550")
+	)
+	(label "RS232_RI"
+		(at 203.2 106.68 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2193bfc6-6892-498b-864d-98a1d635331e")
+	)
+	(label "RS232_RTS"
+		(at 203.2 101.6 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "22e368b5-8a83-4e17-a353-29a8b1882981")
+	)
+	(label "C64_RI"
+		(at 33.02 96.52 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "28d0e3c7-c93e-4291-9955-9a87b6ca0c0f")
+	)
+	(label "RAW_5V"
+		(at 177.8 34.29 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "38e231ba-d3a0-423b-a922-04b2256fa2b5")
+	)
+	(label "C64_RXD"
+		(at 149.86 88.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "3c891c38-7ed6-4dee-9a84-1a1644b77cfa")
+	)
+	(label "C64_DSR"
+		(at 33.02 106.68 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40f16c38-5164-48eb-8a44-911e4a99c122")
+	)
+	(label "C1_MINUS"
+		(at 99.06 44.45 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "471e9c15-a3e7-4744-a352-8c2eb45dff52")
+	)
+	(label "C2_MINUS"
+		(at 111.76 44.45 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "49f0d622-68b4-4881-a0a8-ba5a277db3d3")
+	)
+	(label "VPLUS"
+		(at 124.46 36.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4a1577a9-ed0f-40a4-877e-aad9277dcab7")
+	)
+	(label "RS232_DSR"
+		(at 203.2 99.06 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "500a5a3d-90ef-4525-acbd-919e0c69face")
+	)
+	(label "RS232_DCD"
+		(at 114.3 81.28 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "57c387e4-bba1-4075-994f-ecd8ce699c04")
+	)
+	(label "+5V"
+		(at 177.8 41.91 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "64aeaf3b-0d34-4c51-9558-b5c92c7f0d1b")
+	)
+	(label "C64_RXD"
+		(at 33.02 88.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "6c4ce163-9a2b-464d-bfb6-72e3ee3b2153")
+	)
+	(label "RS232_DTR"
+		(at 203.2 93.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7046cf26-0108-4752-9033-193c15cde902")
+	)
+	(label "RS232_RI"
+		(at 114.3 83.82 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "71187bb4-d2f4-4467-8dd6-4a7ab7cc63cd")
+	)
+	(label "GND"
+		(at 58.42 83.82 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "73a82d7e-7186-4edc-971f-2113257a8944")
+	)
+	(label "C64_TXD"
+		(at 33.02 109.22 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "75958127-140b-4032-b6a0-1363166e78b4")
+	)
+	(label "C64_DTR"
+		(at 114.3 93.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "771800ef-0870-4a3e-be63-c65d8725d7fa")
+	)
+	(label "RS232_DSR"
+		(at 114.3 78.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7ed28119-041e-4a61-8df6-725720122094")
+	)
+	(label "GND"
+		(at 124.46 44.45 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7f690bb9-2b05-4281-ba13-d2ee3c69123d")
+	)
+	(label "C1_PLUS"
+		(at 99.06 36.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "82df5312-c29b-40a7-b6d1-2d7eee9a1d39")
+	)
+	(label "VPLUS"
+		(at 149.86 68.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "879e4b62-3ca3-4c1f-8128-0c4d8c75e879")
+	)
+	(label "C64_DSR"
+		(at 149.86 93.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8913a7a3-3ad4-4863-be55-535de4a774fe")
+	)
+	(label "VMINUS"
+		(at 137.16 36.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8d556e67-3545-4e40-9708-67bfe6c381a0")
+	)
+	(label "RAW_5V"
+		(at 58.42 86.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "92a29f9a-46f5-4f82-a7cc-3661d923ecf4")
+	)
+	(label "+5V"
+		(at 149.86 78.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "97458468-21e1-4858-8004-6a37c1408cf9")
+	)
+	(label "GND"
+		(at 33.02 83.82 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "9ea5f244-9fbe-477c-9232-c94edb484c23")
+	)
+	(label "GND"
+		(at 58.42 111.76 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "a31580a8-0305-4b1e-8936-e8137d3668d6")
+	)
+	(label "RS232_RTS"
+		(at 114.3 88.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "adb6de41-3cbb-4bb1-957b-2880578bf759")
+	)
+	(label "C64_RXD"
+		(at 33.02 86.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "adca4cdc-e8f8-479e-b6f8-62d959c21bcb")
+	)
+	(label "RS232_RXD"
+		(at 203.2 88.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "afd8efcb-9f50-4bff-9f8b-7718c818838a")
+	)
+	(label "GND"
+		(at 149.86 44.45 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b05211c5-ceef-4138-b98c-0e0954ff16ba")
+	)
+	(label "GND"
+		(at 149.86 73.66 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b1026dfd-5a2f-4904-8cef-1a241420dd84")
+	)
+	(label "RS232_CTS"
+		(at 203.2 104.14 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b2affaf8-db10-4293-897b-7cf907681b35")
+	)
+	(label "C64_RI"
+		(at 149.86 99.06 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b440ea97-1bf5-4334-a28b-a07b8ec92c4e")
+	)
+	(label "C64_TXD"
+		(at 114.3 99.06 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b55c92da-0397-4982-aa8c-e319186d0d3a")
+	)
+	(label "RS232_CTS"
+		(at 114.3 76.2 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b6fef9bc-a867-452d-84af-107e64a330ba")
+	)
+	(label "+5V"
+		(at 149.86 81.28 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c47fa180-4933-4319-97ff-f1655d41bb79")
+	)
+	(label "C64_CTS"
+		(at 33.02 104.14 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c59d4eb0-5c09-42b6-b33e-33fadb3a2e9d")
+	)
+	(label "RS232_RXD"
+		(at 114.3 73.66 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c82c61c5-ef9a-4dce-80ca-bff9ca32f35b")
+	)
+	(label "+5V"
+		(at 190.5 41.91 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c973683a-f3ab-4cd0-bb3f-3f1a37c8ce3b")
+	)
+	(label "C2_PLUS"
+		(at 111.76 36.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "cba1b4e0-86fd-4852-8323-918be8fda839")
+	)
+	(label "C1_PLUS"
+		(at 149.86 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "cd9039df-507f-47ad-947d-8e9b8b02368c")
+	)
+	(label "C64_DCD"
+		(at 149.86 96.52 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "cf36f30a-c97a-4314-873a-e42e21988831")
 	)
 	(label "C1_MINUS"
 		(at 149.86 76.2 0)
@@ -5296,7 +5206,97 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "fe7f0c7b-eaf1-4970-bf60-47647a780715")
+		(uuid "d6aa6ae1-cdb1-4ef9-9ef7-e3b255b98c8c")
+	)
+	(label "C64_DTR"
+		(at 33.02 93.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "dfcf8304-7454-4fcf-9d6d-ef63bb74c1d6")
+	)
+	(label "GND"
+		(at 33.02 111.76 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e107f91a-c48a-4211-b777-d26306cd0e18")
+	)
+	(label "GND"
+		(at 203.2 96.52 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e18a7eda-a306-4e90-8338-82f4bbe9cf67")
+	)
+	(label "RS232_DCD"
+		(at 203.2 86.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e30ef52a-32ba-4df0-8a30-e603190bd1bc")
+	)
+	(label "RS232_TXD"
+		(at 114.3 86.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e630ab79-39dd-4fbb-afa3-4c0143b06a63")
+	)
+	(label "RS232_DTR"
+		(at 114.3 91.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e8b02bfd-faf3-40d5-9c0e-c4d65a8e1ee8")
+	)
+	(label "+5V"
+		(at 149.86 71.12 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "eedf591c-ea2e-4a37-a17f-322c2cc4e344")
+	)
+	(label "C2_MINUS"
+		(at 114.3 68.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f6f2947a-e5a9-4b02-bf24-d242e6216b6a")
+	)
+	(label "C64_CTS"
+		(at 149.86 91.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fc2904ed-e7fa-421f-875c-89bfd0b740e2")
 	)
 	(symbol
 		(lib_name "C64_USERPORT_2")
@@ -5348,81 +5348,81 @@
 				)
 			)
 		)
-		(pin "C"
-			(uuid "f3734c29-dde4-4bf9-81d9-892213db9a83")
-		)
-		(pin "D"
-			(uuid "fd335d07-7395-46c0-af53-f88e4fb72273")
-		)
-		(pin "E"
-			(uuid "45cdaa39-10bf-45ed-bf01-2bb1cd5bf919")
-		)
-		(pin "F"
-			(uuid "9a5f9980-b257-4ed4-ab42-516d57b22116")
-		)
 		(pin "7"
-			(uuid "29ba9ea6-e81e-4108-b94b-08d670e4f1ce")
+			(uuid "88f7a7c6-e273-4820-9ec6-1c308e58a08d")
 		)
 		(pin "8"
-			(uuid "19c3f1e8-9171-420b-8a17-1281eaac8f6d")
+			(uuid "a7e4363e-94dd-4492-980a-8bbf5c5c2a47")
 		)
 		(pin "9"
-			(uuid "34a8f5a3-ad61-43f7-b4b0-993df9895180")
+			(uuid "0a0948f1-9c8c-4fd1-8bf4-478d84f5fa44")
 		)
 		(pin "10"
-			(uuid "643dd6ac-42f5-4e72-9390-572b4d782e91")
-		)
-		(pin "M"
-			(uuid "55b02e72-4b77-4f66-9475-86e1aaa1a300")
-		)
-		(pin "N"
-			(uuid "6b740ee7-4e50-4046-8c0f-fb49edd4d608")
-		)
-		(pin "1"
-			(uuid "73ea18d1-a383-42fa-8f46-68d4301018f5")
-		)
-		(pin "2"
-			(uuid "3f1441aa-2001-4d84-be41-449b8b5dd08e")
+			(uuid "29aaee4f-ae36-4798-b5d9-1f17b61900c7")
 		)
 		(pin "11"
-			(uuid "b473020e-6b29-45e7-9db3-541cb53004ee")
-		)
-		(pin "12"
-			(uuid "2f7f961e-7343-4cee-8b99-5e751369ba8c")
-		)
-		(pin "3"
-			(uuid "4bb199f7-dd96-48e3-972c-4ee477a272ea")
-		)
-		(pin "4"
-			(uuid "b7205a92-c716-40f4-b55e-b41bc9f277c6")
-		)
-		(pin "5"
-			(uuid "6e4aa562-c1d5-4385-9810-b310eed820ac")
-		)
-		(pin "6"
-			(uuid "6466d047-3eb8-4ec2-8903-ecaf2e5dda7e")
+			(uuid "74095942-0151-4501-ad77-303731141631")
 		)
 		(pin "A"
-			(uuid "a0774503-b035-49ca-9571-b32c42391ccd")
+			(uuid "69a849a2-f441-4f1b-9c5c-ed6a792684fc")
 		)
 		(pin "B"
-			(uuid "f6d31a12-79ea-48d6-ab50-e2b644b116fb")
+			(uuid "c9b27c19-8541-4fed-a251-85125090e360")
 		)
-		(pin "H"
-			(uuid "80afd0d8-c99c-4074-89c1-861e3371f235")
-		)
-		(pin "J"
-			(uuid "f3afdb8b-5914-40d1-b1f4-d9c4e457e57c")
+		(pin "C"
+			(uuid "de8fdb7d-1209-417e-869f-961796ed1e83")
 		)
 		(pin "K"
-			(uuid "e1a04e36-47f0-4628-919a-94c23326e5b6")
+			(uuid "c9a61f38-5581-4325-a85a-36128ca63113")
 		)
 		(pin "L"
-			(uuid "cb4a614a-c46b-4dc8-bfc1-759272ecc877")
+			(uuid "d9bf8e3b-6a89-4244-95e5-193a41629752")
+		)
+		(pin "M"
+			(uuid "620d7124-7a3b-4c01-b70b-c9fe726745bd")
+		)
+		(pin "N"
+			(uuid "59029f86-6d3d-48f7-bb84-971685fd666b")
+		)
+		(pin "1"
+			(uuid "ba25b2ac-7c7d-4aea-a35d-7be34c56941f")
+		)
+		(pin "D"
+			(uuid "33a2e42f-f3a8-400e-bd23-3235dded82b3")
+		)
+		(pin "E"
+			(uuid "61eb2c06-f0e9-4e85-b0eb-08ad26fb4368")
+		)
+		(pin "F"
+			(uuid "faab63f9-e679-4bc2-a190-b746e02aa17a")
+		)
+		(pin "H"
+			(uuid "bc096ae6-d528-4027-92c9-353205b08f67")
+		)
+		(pin "J"
+			(uuid "c5908710-fc27-434b-a9a3-a1b3f6665518")
+		)
+		(pin "2"
+			(uuid "66fe57a8-9a92-4a3f-b274-3ac13c85a348")
+		)
+		(pin "3"
+			(uuid "21508bf0-abeb-4f11-82e0-025a118f59f8")
+		)
+		(pin "4"
+			(uuid "db7872ba-78cc-4adf-8e4f-bfdca721fd6c")
+		)
+		(pin "5"
+			(uuid "960c45b7-1e0a-439a-9418-6a58b14baccf")
+		)
+		(pin "6"
+			(uuid "abcd1726-9430-41a9-ad3d-8ec60bf236c8")
+		)
+		(pin "12"
+			(uuid "7dd0942f-ab50-4b0f-a64d-eb6b28f5b83d")
 		)
 		(instances
 			(project "C64RS232_M1"
-				(path "/3076e7b9-84e9-49dd-8f8c-73f67d5c9a2c"
+				(path "/258ec6c9-77ec-43ce-9f8f-1428b4d11d7f"
 					(reference "J1")
 					(unit 1)
 				)
@@ -5479,93 +5479,93 @@
 				)
 			)
 		)
-		(pin "24"
-			(uuid "74361e1a-eea8-4963-9255-4faaeacfc85b")
-		)
-		(pin "23"
-			(uuid "2f27307d-21e8-4fa8-ba0a-5a2708aee923")
-		)
-		(pin "22"
-			(uuid "6ea1fc94-b0a8-4d17-9e14-16fdf3ea1d7d")
-		)
-		(pin "21"
-			(uuid "3f7af63e-5319-4148-94c3-78fb18c3ea2d")
-		)
-		(pin "20"
-			(uuid "b901efe5-fa6d-45f6-925a-86c5529100cb")
-		)
-		(pin "3"
-			(uuid "7c9da82c-f3e6-4069-8e1d-9677e6d53daf")
-		)
-		(pin "9"
-			(uuid "6d66a986-32da-4368-93ec-c0975e2039a5")
-		)
-		(pin "10"
-			(uuid "46ba6e5f-d802-42db-b58e-3278489350d3")
-		)
-		(pin "11"
-			(uuid "4512cea3-3c28-47d5-9574-36cd8c9a4c04")
-		)
-		(pin "12"
-			(uuid "2bdbb699-442b-493f-bd93-cb83f556b9f3")
-		)
-		(pin "13"
-			(uuid "4771599b-a8a4-4fcd-9c88-e468f8a308ed")
-		)
-		(pin "1"
-			(uuid "3137cacd-0f06-4e1a-a9c0-ad43e2790413")
-		)
-		(pin "2"
-			(uuid "0b58aebe-2aef-4eca-b3ca-7c3093130a04")
-		)
-		(pin "19"
-			(uuid "ee2dca6b-4f82-465c-b9ac-937894b36caf")
-		)
-		(pin "18"
-			(uuid "94e98a45-fb45-4391-aed9-6c8691f85478")
-		)
 		(pin "17"
-			(uuid "339a5b68-b2e0-4253-8ca4-a688c14d67b4")
+			(uuid "2bc04d5a-3091-41b3-b62e-f8ee85d27cd1")
 		)
 		(pin "16"
-			(uuid "4d8f5bc6-cf36-4cb1-8036-6a11c8de614c")
+			(uuid "f857180b-7b28-4461-9822-950ff9d781a8")
 		)
 		(pin "15"
-			(uuid "4b2d83af-8522-4645-a42d-7f55f1ed41fd")
+			(uuid "c82f20a9-7c75-414b-b939-dff06a33cdf4")
 		)
-		(pin "4"
-			(uuid "b8dbd4f4-c6e6-42e7-9bfc-bdd704cacc40")
+		(pin "9"
+			(uuid "b8ba8fd9-9a86-4227-be87-ad163bdf57c2")
 		)
-		(pin "5"
-			(uuid "4c6e090c-e8af-477f-b0c6-1003c799cf2a")
+		(pin "10"
+			(uuid "cd9622ff-bbe2-47e8-bf26-b731a9c7daa4")
 		)
-		(pin "6"
-			(uuid "5f9ffb8b-31ed-4677-a2e4-8c2f63157d0c")
+		(pin "11"
+			(uuid "bcd1964d-3c3d-4d0c-82b1-fb70751d99eb")
 		)
-		(pin "7"
-			(uuid "cbaafe5d-b70c-4d59-8ebe-03f0e2b21064")
+		(pin "12"
+			(uuid "2a45aac7-2959-4aac-bdb1-887b3af0176a")
 		)
-		(pin "8"
-			(uuid "5a0f0483-e021-4245-afd4-8ca688d7622b")
+		(pin "13"
+			(uuid "7791cdc8-a54d-404e-ac3a-173175a1acfe")
+		)
+		(pin "1"
+			(uuid "4626f1df-036a-490a-ab40-86fd53a243f8")
+		)
+		(pin "2"
+			(uuid "4d650e7b-adbf-4400-8540-67b295961816")
+		)
+		(pin "3"
+			(uuid "51730d5e-ba8f-4e49-9835-41f051a97c09")
+		)
+		(pin "23"
+			(uuid "5c91dc4c-1f45-4f8e-a1b1-79024386d4a1")
+		)
+		(pin "22"
+			(uuid "781cefe5-fed3-46e6-b9e7-71735592a321")
+		)
+		(pin "21"
+			(uuid "b6ddf74a-9165-4bed-bb02-2dc8732df817")
+		)
+		(pin "20"
+			(uuid "20616cb6-a309-4647-8fdd-755b2a7d9de3")
+		)
+		(pin "19"
+			(uuid "23c929f4-f6bd-4997-bede-e8f264c6fa8a")
+		)
+		(pin "18"
+			(uuid "2b6ccc02-5ace-49fe-a966-98109294437a")
 		)
 		(pin "14"
-			(uuid "d4ffb1cd-dc91-45d4-86e4-61ac312ee2d1")
+			(uuid "377b06ea-f767-4776-8dc3-ff0d3c7d00ef")
 		)
 		(pin "28"
-			(uuid "decb57b1-cc98-41a8-a8d6-fa8c89ff8355")
+			(uuid "efe349ac-96f4-427a-8aab-64ee6451f37d")
 		)
 		(pin "27"
-			(uuid "08d57e2a-30a5-447a-9066-02831eb69753")
+			(uuid "5aa19280-cef4-440e-aaa1-fe7d89f9672e")
 		)
 		(pin "26"
-			(uuid "09e060cc-628f-4b00-b4ad-f29ff582f511")
+			(uuid "ddfbf41b-13e4-4f23-b5ae-9daa5f26181c")
 		)
 		(pin "25"
-			(uuid "73ea4312-e9ff-4cb3-b399-839b0449c1f0")
+			(uuid "ab4f7d75-f0d4-469e-b83f-e808e7938a97")
+		)
+		(pin "24"
+			(uuid "23fb220b-e384-450a-ac34-fbf940889190")
+		)
+		(pin "4"
+			(uuid "68102e4d-d7ad-4f13-be87-91f629c48625")
+		)
+		(pin "5"
+			(uuid "81270ed9-c8a3-4d8c-9458-4560f7b293f4")
+		)
+		(pin "6"
+			(uuid "7a339403-83bd-40de-b10c-6c29a18d326a")
+		)
+		(pin "7"
+			(uuid "c3c1a8c0-f1ae-42b5-9a3d-987a3d632448")
+		)
+		(pin "8"
+			(uuid "f7300e8b-1c73-4630-b22f-7f5f4fd5dd2a")
 		)
 		(instances
 			(project "C64RS232_M1"
-				(path "/3076e7b9-84e9-49dd-8f8c-73f67d5c9a2c"
+				(path "/258ec6c9-77ec-43ce-9f8f-1428b4d11d7f"
 					(reference "U1")
 					(unit 1)
 				)
@@ -5622,36 +5622,36 @@
 				)
 			)
 		)
-		(pin "8"
-			(uuid "7f5242a0-4b65-4a50-a554-ec3ed5e8e2a3")
-		)
-		(pin "9"
-			(uuid "2b729470-0b71-406e-88e9-9db9665c4f9b")
-		)
-		(pin "1"
-			(uuid "67ca37f3-8e0a-45d4-abaa-73c59b6f0c19")
-		)
-		(pin "2"
-			(uuid "c8b84399-f34f-48d8-a04a-ce79128034dc")
-		)
-		(pin "3"
-			(uuid "8c2ffcd8-d4e7-411a-ac4e-e1c227139414")
-		)
 		(pin "4"
-			(uuid "acfc0410-f5c0-4deb-8d6e-32116d9881f0")
+			(uuid "2589294f-691c-4daa-b56f-88f97f172f43")
 		)
 		(pin "5"
-			(uuid "3a2dfa03-cdc6-41e9-a3e5-47c033f1726b")
+			(uuid "dc486698-f1d5-4dbc-938e-a3d663026501")
 		)
 		(pin "6"
-			(uuid "46f7a802-8cca-4b3b-b3e5-da92af52fffd")
+			(uuid "e2a532bc-ceab-43c1-9db2-f0ec58e0f851")
 		)
 		(pin "7"
-			(uuid "2576625a-5c5f-4276-b4d2-d1f74815615d")
+			(uuid "c1620eaa-69b8-4ca1-ab79-67d74a01d5e0")
+		)
+		(pin "8"
+			(uuid "ca438298-e1d9-4a29-9b86-67ad8a962b2b")
+		)
+		(pin "9"
+			(uuid "c8c335bc-169d-49d2-902d-53b00330ddef")
+		)
+		(pin "1"
+			(uuid "2e93fab6-58c9-4110-bd0a-c68d5a21ea88")
+		)
+		(pin "2"
+			(uuid "c80c10af-d0fe-46c6-bcf1-0038991436bd")
+		)
+		(pin "3"
+			(uuid "4ca80825-f171-4e87-b4a0-c8d6f6fe9dce")
 		)
 		(instances
 			(project "C64RS232_M1"
-				(path "/3076e7b9-84e9-49dd-8f8c-73f67d5c9a2c"
+				(path "/258ec6c9-77ec-43ce-9f8f-1428b4d11d7f"
 					(reference "J2")
 					(unit 1)
 				)
@@ -5677,7 +5677,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100nF"
+		(property "Value" "47nF"
 			(at 101.981 41.783 0)
 			(effects
 				(font
@@ -5711,14 +5711,14 @@
 			)
 		)
 		(pin "1"
-			(uuid "5b75e008-2226-48fe-84d7-873c67c77b0a")
+			(uuid "9fe48d73-ec03-490a-9980-0dee4ef6c945")
 		)
 		(pin "2"
-			(uuid "5d7d9364-2ec2-44a3-9d93-817a052ce9e4")
+			(uuid "766503c4-9cbb-4fcf-a8c2-f1372ab2024a")
 		)
 		(instances
 			(project "C64RS232_M1"
-				(path "/3076e7b9-84e9-49dd-8f8c-73f67d5c9a2c"
+				(path "/258ec6c9-77ec-43ce-9f8f-1428b4d11d7f"
 					(reference "C1")
 					(unit 1)
 				)
@@ -5744,7 +5744,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100nF"
+		(property "Value" "330nF"
 			(at 114.681 41.783 0)
 			(effects
 				(font
@@ -5778,14 +5778,14 @@
 			)
 		)
 		(pin "1"
-			(uuid "0edecebb-71df-4a76-9302-8b946a9c1e95")
+			(uuid "8c465265-b579-49c3-92e6-2a492363c606")
 		)
 		(pin "2"
-			(uuid "c13f6bee-7418-49c0-acf2-b2c7266ca5c4")
+			(uuid "8ffb225d-a22f-4b5a-9ef9-b12a04f60a79")
 		)
 		(instances
 			(project "C64RS232_M1"
-				(path "/3076e7b9-84e9-49dd-8f8c-73f67d5c9a2c"
+				(path "/258ec6c9-77ec-43ce-9f8f-1428b4d11d7f"
 					(reference "C2")
 					(unit 1)
 				)
@@ -5811,7 +5811,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100nF"
+		(property "Value" "330nF"
 			(at 127.381 41.783 0)
 			(effects
 				(font
@@ -5844,15 +5844,15 @@
 				)
 			)
 		)
-		(pin "2"
-			(uuid "5fe876a3-d597-48ae-a04c-f24b3f2f1dd1")
-		)
 		(pin "1"
-			(uuid "264452f7-ac90-4aeb-ac23-0b40c7269135")
+			(uuid "ff22bb3b-e0bc-40f5-af42-500ebe4b5be6")
+		)
+		(pin "2"
+			(uuid "4cfca280-1c45-48fb-ad9e-377a1d08c49e")
 		)
 		(instances
 			(project "C64RS232_M1"
-				(path "/3076e7b9-84e9-49dd-8f8c-73f67d5c9a2c"
+				(path "/258ec6c9-77ec-43ce-9f8f-1428b4d11d7f"
 					(reference "C3")
 					(unit 1)
 				)
@@ -5878,7 +5878,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100nF"
+		(property "Value" "330nF"
 			(at 140.081 41.783 0)
 			(effects
 				(font
@@ -5911,15 +5911,15 @@
 				)
 			)
 		)
-		(pin "1"
-			(uuid "9b99b13e-66b5-4b35-9bd2-604dd5e92558")
-		)
 		(pin "2"
-			(uuid "63143b97-0bff-43c0-9cd9-d15fded2c263")
+			(uuid "211219e1-8b04-4372-91e3-ad13b661ec0d")
+		)
+		(pin "1"
+			(uuid "e4052812-9402-443e-8790-211968eff285")
 		)
 		(instances
 			(project "C64RS232_M1"
-				(path "/3076e7b9-84e9-49dd-8f8c-73f67d5c9a2c"
+				(path "/258ec6c9-77ec-43ce-9f8f-1428b4d11d7f"
 					(reference "C4")
 					(unit 1)
 				)
@@ -5979,14 +5979,14 @@
 			)
 		)
 		(pin "1"
-			(uuid "a220989b-8efa-402a-b60e-e902a959332f")
+			(uuid "2c4afb48-b18e-475f-9423-97d8cbe43954")
 		)
 		(pin "2"
-			(uuid "55c03100-773d-41a0-9fd5-2f590725a5b9")
+			(uuid "bb9213c7-2d84-41e0-a7aa-f30a805159aa")
 		)
 		(instances
 			(project "C64RS232_M1"
-				(path "/3076e7b9-84e9-49dd-8f8c-73f67d5c9a2c"
+				(path "/258ec6c9-77ec-43ce-9f8f-1428b4d11d7f"
 					(reference "C5")
 					(unit 1)
 				)
@@ -6043,15 +6043,15 @@
 				)
 			)
 		)
-		(pin "1"
-			(uuid "4a610217-f132-48b9-a4c6-56d975e07d87")
-		)
 		(pin "2"
-			(uuid "4749c6d9-5fc7-42bf-bc23-85cac01c8e80")
+			(uuid "ec55ef0a-6cec-4028-b238-eb2796620b76")
+		)
+		(pin "1"
+			(uuid "d856ce26-021d-48ca-aecc-82eaec094467")
 		)
 		(instances
 			(project "C64RS232_M1"
-				(path "/3076e7b9-84e9-49dd-8f8c-73f67d5c9a2c"
+				(path "/258ec6c9-77ec-43ce-9f8f-1428b4d11d7f"
 					(reference "F1")
 					(unit 1)
 				)
@@ -6110,11 +6110,11 @@
 			)
 		)
 		(pin "1"
-			(uuid "4cb91918-8374-490a-a978-14f3428f471c")
+			(uuid "eb17285d-bcee-4733-a0a9-d675c69df95e")
 		)
 		(instances
 			(project "C64RS232_M1"
-				(path "/3076e7b9-84e9-49dd-8f8c-73f67d5c9a2c"
+				(path "/258ec6c9-77ec-43ce-9f8f-1428b4d11d7f"
 					(reference "#FLG0101")
 					(unit 1)
 				)

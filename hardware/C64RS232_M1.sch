@@ -6,11 +6,11 @@ $Descr A4 11693 8268
 Sheet 1 1
 Title "C64RS232 User Port to RS-232"
 Date "2026-09-14"
-Rev "M1.8"
+Rev "M1.9"
 Comp "Ploos-AS"
 Comment1 "C64 User Port / MAX3243 / DE-9 DTE"
 Comment2 "SLIP-capable architecture"
-Comment3 "M1.8 electrically connected baseline"
+Comment3 "M1.9 MAX3243E 5V baseline"
 Comment4 "Verify against datasheets before manufacture"
 $EndDescr
 $Comp
@@ -45,7 +45,7 @@ L C C1
 U 1 1 4
 P 3900 1600
 F 0 "C1" H 4015 1646 50 0000 L CNN
-F 1 "100nF" H 4015 1555 50 0000 L CNN
+F 1 "47nF" H 4015 1555 50 0000 L CNN
 	1    3900 1600
 	1 0 0 -1
 $EndComp
@@ -54,7 +54,7 @@ L C C2
 U 1 1 5
 P 4400 1600
 F 0 "C2" H 4515 1646 50 0000 L CNN
-F 1 "100nF" H 4515 1555 50 0000 L CNN
+F 1 "330nF" H 4515 1555 50 0000 L CNN
 	1    4400 1600
 	1 0 0 -1
 $EndComp
@@ -63,7 +63,7 @@ L C C3
 U 1 1 6
 P 4900 1600
 F 0 "C3" H 5015 1646 50 0000 L CNN
-F 1 "100nF" H 5015 1555 50 0000 L CNN
+F 1 "330nF" H 5015 1555 50 0000 L CNN
 	1    4900 1600
 	1 0 0 -1
 $EndComp
@@ -72,7 +72,7 @@ L C C4
 U 1 1 7
 P 5400 1600
 F 0 "C4" H 5515 1646 50 0000 L CNN
-F 1 "100nF" H 5515 1555 50 0000 L CNN
+F 1 "330nF" H 5515 1555 50 0000 L CNN
 	1    5400 1600
 	1 0 0 -1
 $EndComp
@@ -186,6 +186,8 @@ Text Label 5900 2800 0 50 ~ 0
 +5V
 Text Label 5900 3100 0 50 ~ 0
 +5V
+Text Label 5900 3200 0 50 ~ 0
++5V
 Text Label 5900 1450 0 50 ~ 0
 +5V
 Text Label 2300 3300 0 50 ~ 0
@@ -197,8 +199,6 @@ GND
 Text Label 1300 4400 0 50 ~ 0
 GND
 Text Label 5900 2900 0 50 ~ 0
-GND
-Text Label 5900 3200 0 50 ~ 0
 GND
 Text Label 8000 3800 0 50 ~ 0
 GND
