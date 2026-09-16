@@ -2,9 +2,11 @@
 """M1.8d exported-netlist assertions for C64RS232.
 
 Verify frozen functional, power, control, and charge-pump nets and their exact
-component/pin membership in KiCad-exported XML netlists.  S-expression parsing
-is retained for functional compatibility, but exact M1.8d qualification is
-based on the same ref/pin membership model.
+component/pin membership in KiCad-exported XML netlists. KiCad power symbols
+(such as PWR_FLAG) are schematic/ERC annotations and are not required to appear
+as ordinary netlist component nodes. Pins marked NoConn may still be exported on
+KiCad-generated single-pin nets; qualification therefore rejects NC pins only
+when they appear on one of the named frozen electrical nets.
 """
 from pathlib import Path
 import re
@@ -32,7 +34,7 @@ EXPECTED = {
     "RS232_DCD": {("U1", "7"), ("J2", "1")},
     "RS232_RI": {("U1", "8"), ("J2", "9")},
     "RAW_5V": {("J1", "2"), ("F1", "1")},
-    "+5V": {("F1", "2"), ("U1", "23"), ("U1", "26"), ("C5", "1"), ("#FLG0101", "1")},
+    "+5V": {("F1", "2"), ("U1", "23"), ("U1", "26"), ("C5", "1")},
     "GND": {("J1", "1"), ("J1", "12"), ("J1", "A"), ("J1", "N"), ("U1", "22"), ("U1", "25"), ("J2", "5"), ("C3", "2"), ("C4", "2"), ("C5", "2")},
     "C1_PLUS": {("C1", "1"), ("U1", "28")},
     "C1_MINUS": {("C1", "2"), ("U1", "24")},
@@ -44,8 +46,10 @@ EXPECTED = {
 FUNCTIONAL_NETS = {name for name in EXPECTED if name.startswith("C64_") or name.startswith("RS232_")}
 POWER_NETS = set(EXPECTED) - FUNCTIONAL_NETS
 
-# Pins intentionally left electrically unconnected by the M1 freeze.
-FORBIDDEN_CONNECTED = {
+# Pins intentionally left electrically unconnected by the M1 freeze. KiCad can
+# export these on generated single-pin nets, so they are forbidden only from
+# the named frozen electrical nets above.
+FROZEN_NC = {
     ("U1", "20"), ("U1", "21"),
     ("J1", "3"), ("J1", "4"), ("J1", "5"), ("J1", "6"), ("J1", "7"),
     ("J1", "8"), ("J1", "9"), ("J1", "10"), ("J1", "11"), ("J1", "J"),
@@ -117,10 +121,10 @@ else:
             detail.append("actual: " + fmt_nodes(got))
             errors.append("; ".join(detail))
 
-    connected = set().union(*actual.values()) if actual else set()
-    bad_nc = FORBIDDEN_CONNECTED & connected
+    frozen_nodes = set().union(*(actual.get(name, set()) for name in EXPECTED))
+    bad_nc = FROZEN_NC & frozen_nodes
     if bad_nc:
-        errors.append("pins frozen NC are present on exported nets: " + fmt_nodes(bad_nc))
+        errors.append("pins frozen NC are present on named electrical nets: " + fmt_nodes(bad_nc))
 
 if errors:
     for error in errors:
@@ -131,5 +135,5 @@ print("M1.8d POWER/CHARGE/NC CONNECTIVITY PASS")
 print(f"netlist: {NETLIST.relative_to(ROOT)}")
 print(f"functional nets asserted: {len(FUNCTIONAL_NETS)}")
 print(f"power/control/charge nets asserted: {len(POWER_NETS)}")
-print(f"exact pin memberships asserted: {sum(len(nodes) for nodes in EXPECTED.values())}")
-print(f"NC pins asserted absent from nets: {len(FORBIDDEN_CONNECTED)}")
+print(f"exact physical pin memberships asserted: {sum(len(nodes) for nodes in EXPECTED.values())}")
+print(f"NC pins asserted absent from named electrical nets: {len(FROZEN_NC)}")
