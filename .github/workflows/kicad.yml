@@ -38,11 +38,12 @@ jobs:
           command -v xdotool
           command -v import
 
-      - name: Audit M1.10 C64 User Port footprint
-        run: python3 tools/check_m1_10.py
-
-      - name: Generate M1.9 electrical connectivity
+      - name: Generate M1.10 electrical and footprint baseline
         run: python3 tools/wire_m1_8.py
+
+      - name: Audit M1.10 physical parts and footprint assignments
+        id: m1_10
+        run: python3 tools/check_m1_10.py
 
       - name: Force regeneration of native schematic
         run: rm -f hardware/C64RS232_M1.kicad_sch
@@ -72,7 +73,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add "$legacy" "$native"
-          git commit -m 'Generate electrically connected KiCad M1.9 schematic'
+          git commit -m 'Generate M1.10 KiCad schematic baseline'
           git push origin HEAD:main
 
       - name: Qualify M1.7 native schematic
@@ -108,9 +109,13 @@ jobs:
           path: build/kicad/
           if-no-files-found: warn
 
-      - name: Enforce M1.9 qualification
+      - name: Enforce M1.10 qualification
         if: always()
         run: |
+          if [ '${{ steps.m1_10.outcome }}' != 'success' ]; then
+            echo 'M1.10 physical-part/footprint qualification failed.'
+            exit 1
+          fi
           if [ '${{ steps.m1_7.outcome }}' != 'success' ]; then
             echo 'M1.7 runner qualification regressed.'
             exit 1
@@ -119,4 +124,4 @@ jobs:
             echo 'M1.9 electrical-net/ERC qualification failed.'
             exit 1
           fi
-          echo 'M1.9 electrical-net/ERC qualification passed.'
+          echo 'M1.10 footprint qualification and M1.9 electrical qualification passed.'
