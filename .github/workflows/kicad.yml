@@ -29,8 +29,6 @@ jobs:
           set -euo pipefail
           sudo add-apt-repository -y ppa:kicad/kicad-9.0-releases
           sudo apt-get update
-          # kicad-cli is shipped by the kicad package on this PPA.  Install the
-          # package without recommends so CI does not pull demos/docs/3D models.
           sudo apt-get install -y --no-install-recommends \
             kicad kicad-symbols kicad-footprints \
             xvfb xdotool imagemagick
@@ -39,6 +37,9 @@ jobs:
           command -v Xvfb
           command -v xdotool
           command -v import
+
+      - name: Audit M1.10 C64 User Port footprint
+        run: python3 tools/check_m1_10.py
 
       - name: Generate M1.9 electrical connectivity
         run: python3 tools/wire_m1_8.py
