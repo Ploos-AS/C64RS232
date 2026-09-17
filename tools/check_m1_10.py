@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Static M1.10 audit for the project-local C64 User Port footprint."""
+"""Static M1.10 audit for the C64 User Port and frozen physical parts."""
 from pathlib import Path
+import csv
 import re
 import sys
 
 FP = Path("hardware/C64RS232.pretty/C64_User_Port_Edge.kicad_mod")
+BOM = Path("hardware/BOM_M1.csv")
+GATE = Path("hardware/M1_10_FOOTPRINT_GATE.md")
 EXPECTED = [str(i) for i in range(1, 13)] + list("ABCDEFHJKLMN")
 PITCH = 3.96
 
@@ -49,9 +52,31 @@ span = by_name["12"][0] - by_name["1"][0]
 if abs(span - 43.56) > 1e-6:
     fail(f"contact-centre span is {span:.2f} mm; expected 43.56 mm")
 
-print("M1.10 USER PORT FOOTPRINT STATIC PASS")
-print("  contacts: 24 (12 front + 12 back)")
-print("  pitch: 3.96 mm")
-print("  contact-centre span: 43.56 mm")
-print("  numbering: 1-12 / A-F,H,J-N")
-print("NOTE: pad length/width, insertion depth, bevel and key/notch remain mechanical verification gates.")
+if not GATE.is_file():
+    fail(f"missing gate document: {GATE}")
+gate = GATE.read_text(encoding="utf-8")
+for required in (
+    "5747844-4",
+    "1206L010/30WR",
+    "100 mA",
+    "250 mA",
+    "30 V",
+    "1.57 mm",
+):
+    if required not in gate:
+        fail(f"gate document missing frozen part datum: {required}")
+
+if not BOM.is_file():
+    fail(f"missing BOM: {BOM}")
+with BOM.open(encoding="utf-8", newline="") as fh:
+    bom_text = fh.read()
+if "MAX3243EIPWR" not in bom_text:
+    fail("BOM lost frozen MAX3243EIPWR baseline")
+
+print("M1.10 PHYSICAL-PART AUDIT PASS")
+print("  J1 contacts: 24 (12 front + 12 back)")
+print("  J1 pitch: 3.96 mm; centre span: 43.56 mm")
+print("  J2 frozen: TE Connectivity 5747844-4")
+print("  F1 frozen: Littelfuse 1206L010/30WR (100 mA hold / 250 mA trip / 30 V)")
+print("NOTE: J1 pad length/width, insertion depth, bevel and final edge geometry remain mechanical verification gates.")
+print("NOTE: J2/F1 KiCad land-pattern assignment remains required before M1.10 completion.")
