@@ -29,10 +29,10 @@ jobs:
           set -euo pipefail
           sudo add-apt-repository -y ppa:kicad/kicad-9.0-releases
           sudo apt-get update
-          # Avoid the kicad meta-package: it pulls demos, documentation and the
-          # ~280 MB 3D model archive, none of which is needed for schematic CI.
+          # kicad-cli is shipped by the kicad package on this PPA.  Install the
+          # package without recommends so CI does not pull demos/docs/3D models.
           sudo apt-get install -y --no-install-recommends \
-            kicad-cli kicad-symbols kicad-footprints \
+            kicad kicad-symbols kicad-footprints \
             xvfb xdotool imagemagick
           kicad-cli version
           command -v eeschema
