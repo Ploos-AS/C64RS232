@@ -30,36 +30,53 @@ C5 is the local VCC bypass capacitor and remains 100 nF in the M1 BOM. Capacitor
 
 A project-local KiCad footprint is required rather than an unverified generic card-edge footprint.
 
-Gate requirements:
+Verified baseline:
 
 - 24 contacts, 12 per side.
 - 3.96 mm / 0.156 in contact pitch.
-- Nominal PCB thickness target approximately 1.6 mm, subject to final mechanical verification against the C64 User Port.
-- Correct A–N and 1–12 numbering/orientation when viewed from the component side.
-- Gold-finger/contact geometry suitable for repeated insertion.
-- Mechanical key/notch treatment must be explicitly verified before fabrication.
+- Correct C64 contact identifiers: 1–12 and A–F,H,J–N.
+- Project-local footprint and automated pitch/numbering audit are present and pass CI.
+
+Still open before fabrication:
+
+- nominal PCB thickness remains approximately 1.6 mm pending final mechanical verification;
+- gold-finger length, insertion depth and edge bevel must be verified from a sufficiently authoritative mechanical source or physical measurement;
+- key/polarisation treatment must not be assumed from the provisional footprint;
 - 9 VAC contacts remain physically present but electrically isolated from board power.
 
-M2 is blocked until this footprint has a dimensional drawing/check and automated footprint sanity check.
+M2 manufacturing release remains blocked until the open J1 mechanical dimensions are resolved.
 
 ## J2 — DE-9 female DTE
 
-Use a PCB-mount female DE-9 with the DTE electrical pinout qualified in M1.9.
+**Frozen baseline part:** TE Connectivity `5747844-4`, AMPLIMITE HD-20.
 
-The exact orderable connector and footprint are **not yet frozen**. Before M2 placement, verify:
+Manufacturer data identifies this as an active 9-position receptacle, right-angle PCB mount, through-hole solder termination, with boardlocks and 4-40 threaded inserts. The recommended PCB thickness is 1.57 mm. This matches the desired female DTE connector orientation and provides mechanical retention suitable for a board-edge serial connector.
 
-- female connector;
-- horizontal/right-angle versus vertical mounting choice;
-- pin numbering as seen from the mating face;
-- shell/mounting-hole spacing;
-- board-edge offset;
-- mechanical retention and enclosure clearance.
+Frozen requirements:
 
-Do not select a KiCad DE-9 footprint solely by visual similarity.
+- manufacturer part: `5747844-4`;
+- 9-position female receptacle;
+- right-angle PCB mounting;
+- through-hole signal contacts;
+- boardlocks;
+- 4-40 threaded inserts;
+- use the manufacturer product drawing as the dimensional authority for the PCB land pattern and board-edge offset.
+
+The KiCad footprint must be matched against the TE product drawing before M2 placement; visual similarity to a generic DE-9 footprint is not sufficient.
 
 ## F1 — +5 V protection
 
-The electrical value remains a 100 mA resettable PTC baseline. Exact manufacturer part and land pattern are **not yet frozen**. Select an active, orderable part and verify hold/trip characteristics and voltage rating before M2.
+**Frozen baseline part:** Littelfuse `1206L010/30WR`, PolySwitch 1206L series resettable PPTC.
+
+Electrical baseline:
+
+- hold current: 100 mA;
+- trip current: 250 mA;
+- maximum voltage: 30 VDC;
+- package: 1206 / 3216 metric;
+- surface mount.
+
+The 30 V rating comfortably exceeds the protected C64 +5 V rail. M2 must use a 1206 land pattern compatible with the Littelfuse package dimensions and preserve short routing between the User Port +5 V input and the protected `+5V` rail.
 
 ## M1.10 completion gate
 
@@ -67,10 +84,10 @@ M1.10 is complete only when all of the following are true:
 
 1. U1 footprint/package is assigned and machine-checked against the 28-pin qualified symbol.
 2. C1–C5 footprints and voltage/dielectric requirements are frozen.
-3. J1 project-local User Port footprint is dimensionally verified.
-4. J2 exact orderable DE-9 part and matching footprint are frozen.
-5. F1 exact orderable PTC and footprint are frozen.
-6. A footprint audit script passes in GitHub Actions.
+3. J1 project-local User Port footprint is dimensionally verified, including insertion/finger/bevel geometry.
+4. J2 `5747844-4` manufacturer drawing has been translated to and checked against the selected KiCad footprint.
+5. F1 `1206L010/30WR` has a checked 1206 land pattern.
+6. A footprint audit script passes all frozen choices in GitHub Actions.
 7. Native schematic contains the frozen footprint assignments.
 
 No PCB routing, DRC release, Gerbers, or manufacturing release is authorized until this gate passes.
