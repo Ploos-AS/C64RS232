@@ -32,14 +32,33 @@ C64RS232 is an open hardware and software project for connecting a Commodore 64 
 - +5 V protection policy defined.
 - 9 VAC explicitly excluded.
 
-### M1.2 — Native KiCad schematic + ERC
+### M1.2–M1.8 — Native KiCad conversion and electrical net qualification — COMPLETE
 
-- Convert the legacy baseline to native `.kicad_sch`.
-- Assign exact manufacturer-verified footprints.
-- Complete all physical net wiring.
-- Add power flags and design-rule annotations as appropriate.
-- Run ERC and resolve all intended warnings/errors.
-- Freeze schematic before PCB placement.
+- Legacy schematic converted to native KiCad.
+- Physical net wiring generated and qualified.
+- Frozen functional, power and charge-pump nets checked from exported KiCad netlists.
+- ERC error gate enforced in GitHub Actions.
+
+### M1.9 — MAX3243E datasheet/electrical freeze — COMPLETE
+
+- TI MAX3243E 28-pin DB/DW/PW pinout verified.
+- Normal/always-on FORCEON/FORCEOFF configuration qualified.
+- 5 V charge-pump capacitor baseline verified.
+- Exact functional and power/control/charge pin membership qualified.
+- Frozen NC pins checked against named electrical nets.
+- Native KiCad ERC: zero violations at qualification.
+
+### M1.10 — Footprint and mechanical gate — IN PROGRESS
+
+- Freeze exact orderable U1 package and KiCad footprint.
+- Freeze capacitor footprints and electrical ratings.
+- Create and dimensionally verify the C64 User Port edge footprint.
+- Select exact DE-9 female PCB connector and matching footprint/orientation.
+- Select exact 100 mA resettable PTC and footprint.
+- Add automated footprint audit to GitHub Actions.
+- Assign all frozen footprints in the native schematic.
+
+M1 completes only after M1.10 passes. No Gerbers are released from M1.
 
 ## M2 — PCB layout
 
