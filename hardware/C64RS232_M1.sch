@@ -6,11 +6,11 @@ $Descr A4 11693 8268
 Sheet 1 1
 Title "C64RS232 User Port to RS-232"
 Date "2026-09-14"
-Rev "M1.9"
+Rev "M1.10"
 Comp "Ploos-AS"
 Comment1 "C64 User Port / MAX3243 / DE-9 DTE"
 Comment2 "SLIP-capable architecture"
-Comment3 "M1.9 MAX3243E 5V baseline"
+Comment3 "M1.10 frozen footprint baseline"
 Comment4 "Verify against datasheets before manufacture"
 $EndDescr
 $Comp
@@ -19,6 +19,7 @@ U 1 1 1
 P 1800 3800
 F 0 "J1" H 1800 5100 50  0000 C CNN
 F 1 "C64 USER PORT" H 1800 5000 50 0000 C CNN
+F 2 "C64RS232:C64_User_Port_Edge" H 0 0 50 0001 C CNN
 	1    1800 3800
 	1 0 0 -1
 $EndComp
@@ -27,7 +28,8 @@ L MAX3243 U1
 U 1 1 2
 P 5200 3800
 F 0 "U1" H 5200 5350 50 0000 C CNN
-F 1 "MAX3243" H 5200 5250 50 0000 C CNN
+F 1 "MAX3243EIPWR" H 0 0 50 0000 C CNN
+F 2 "Package_SO:TSSOP-28_4.4x9.7mm_P0.65mm" H 0 0 50 0001 C CNN
 	1    5200 3800
 	1 0 0 -1
 $EndComp
@@ -36,7 +38,8 @@ L DB9_DTE J2
 U 1 1 3
 P 8500 3800
 F 0 "J2" H 8500 4450 50 0000 C CNN
-F 1 "DE-9 FEMALE / DTE" H 8500 4350 50 0000 C CNN
+F 1 "5747844-4" H 0 0 50 0000 C CNN
+F 2 "Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset9.40mm_Housed_MountingHolesOffset11.32mm" H 0 0 50 0001 C CNN
 	1    8500 3800
 	1 0 0 -1
 $EndComp
@@ -46,6 +49,7 @@ U 1 1 4
 P 3900 1600
 F 0 "C1" H 4015 1646 50 0000 L CNN
 F 1 "47nF" H 4015 1555 50 0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 0 0 50 0001 C CNN
 	1    3900 1600
 	1 0 0 -1
 $EndComp
@@ -55,6 +59,7 @@ U 1 1 5
 P 4400 1600
 F 0 "C2" H 4515 1646 50 0000 L CNN
 F 1 "330nF" H 4515 1555 50 0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 0 0 50 0001 C CNN
 	1    4400 1600
 	1 0 0 -1
 $EndComp
@@ -64,6 +69,7 @@ U 1 1 6
 P 4900 1600
 F 0 "C3" H 5015 1646 50 0000 L CNN
 F 1 "330nF" H 5015 1555 50 0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 0 0 50 0001 C CNN
 	1    4900 1600
 	1 0 0 -1
 $EndComp
@@ -73,6 +79,7 @@ U 1 1 7
 P 5400 1600
 F 0 "C4" H 5515 1646 50 0000 L CNN
 F 1 "330nF" H 5515 1555 50 0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 0 0 50 0001 C CNN
 	1    5400 1600
 	1 0 0 -1
 $EndComp
@@ -82,6 +89,7 @@ U 1 1 8
 P 5900 1600
 F 0 "C5" H 6015 1646 50 0000 L CNN
 F 1 "100nF" H 6015 1555 50 0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 0 0 50 0001 C CNN
 	1    5900 1600
 	1 0 0 -1
 $EndComp
@@ -90,7 +98,8 @@ L R F1
 U 1 1 9
 P 7000 1500
 F 0 "F1" V 6793 1500 50 0000 C CNN
-F 1 "100mA PTC" V 6884 1500 50 0000 C CNN
+F 1 "1206L010/30WR" H 0 0 50 0000 C CNN
+F 2 "Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 0 0 50 0001 C CNN
 	1    7000 1500
 	0 1 1 0
 $EndComp
@@ -107,7 +116,7 @@ RXD uses both FLAG2 (B) and PB0 (C), as required by the C64 RS-232 software conv
 Text Notes 1400 5900 0 60 ~ 12
 MAX3243 provides 3 drivers / 5 receivers, matching TXD/RTS/DTR and RXD/CTS/DSR/DCD/RI.
 Text Notes 1400 6050 0 60 ~ 12
-FORCEON is tied high and FORCEOFF low for normal always-on operation.
+FORCEON and FORCEOFF are tied high for normal always-on operation.
 Text Notes 1400 6200 0 60 ~ 12
 This is an M1 design baseline; ERC/DRC and manufacturer-specific footprint checks remain required.
 Text Label 1300 4300 0 50 ~ 0
