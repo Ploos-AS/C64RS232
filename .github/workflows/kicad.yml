@@ -18,23 +18,29 @@ permissions:
 jobs:
   schematic:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install KiCad 9 and headless GUI dependencies
+      - name: Install minimal KiCad 9 and headless GUI dependencies
+        timeout-minutes: 8
         run: |
+          set -euo pipefail
           sudo add-apt-repository -y ppa:kicad/kicad-9.0-releases
           sudo apt-get update
-          sudo apt-get install -y kicad xvfb xdotool imagemagick
+          # Avoid the kicad meta-package: it pulls demos, documentation and the
+          # ~280 MB 3D model archive, none of which is needed for schematic CI.
+          sudo apt-get install -y --no-install-recommends \
+            kicad-cli kicad-symbols kicad-footprints \
+            xvfb xdotool imagemagick
           kicad-cli version
           command -v eeschema
           command -v Xvfb
           command -v xdotool
           command -v import
 
-      - name: Generate M1.8 electrical connectivity
+      - name: Generate M1.9 electrical connectivity
         run: python3 tools/wire_m1_8.py
 
       - name: Force regeneration of native schematic
@@ -65,7 +71,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add "$legacy" "$native"
-          git commit -m 'Generate electrically connected KiCad M1.8 schematic'
+          git commit -m 'Generate electrically connected KiCad M1.9 schematic'
           git push origin HEAD:main
 
       - name: Qualify M1.7 native schematic
@@ -75,7 +81,7 @@ jobs:
           chmod +x tools/qualify_m1_7.sh
           tools/qualify_m1_7.sh
 
-      - name: Qualify M1.8 electrical nets and ERC
+      - name: Qualify M1.9 electrical nets and ERC
         id: m1_8
         if: always()
         run: |
@@ -101,7 +107,7 @@ jobs:
           path: build/kicad/
           if-no-files-found: warn
 
-      - name: Enforce M1.8b qualification
+      - name: Enforce M1.9 qualification
         if: always()
         run: |
           if [ '${{ steps.m1_7.outcome }}' != 'success' ]; then
@@ -109,7 +115,7 @@ jobs:
             exit 1
           fi
           if [ '${{ steps.m1_8.outcome }}' != 'success' ]; then
-            echo 'M1.8b electrical-net/ERC qualification failed.'
+            echo 'M1.9 electrical-net/ERC qualification failed.'
             exit 1
           fi
-          echo 'M1.8b electrical-net/ERC qualification passed.'
+          echo 'M1.9 electrical-net/ERC qualification passed.'
