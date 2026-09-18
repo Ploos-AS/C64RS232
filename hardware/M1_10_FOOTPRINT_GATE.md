@@ -37,14 +37,21 @@ Verified baseline:
 - Correct C64 contact identifiers: 1–12 and A–F,H,J–N.
 - Project-local footprint and automated pitch/numbering audit are present and pass CI.
 
-Still open before fabrication:
+Frozen M1.10 interface baseline:
 
-- nominal PCB thickness remains approximately 1.6 mm pending final mechanical verification;
-- gold-finger length, insertion depth and edge bevel must be verified from a sufficiently authoritative mechanical source or physical measurement;
-- key/polarisation treatment must not be assumed from the provisional footprint;
+- nominal PCB thickness: 1.57 mm;
+- contact pitch: 3.96 mm / 0.156 in;
+- copper finger width: 2.8 mm;
+- copper finger length from insertion edge: 7.62 mm;
+- front/back fingers are geometrically aligned on opposite copper sides;
+- contact identifiers: 1–12 and A–F,H,J–N;
 - 9 VAC contacts remain physically present but electrically isolated from board power.
 
-M2 manufacturing release remains blocked until the open J1 mechanical dimensions are resolved.
+Manufacturing requirements for the card edge are intentionally separated from the KiCad copper geometry. The fabrication package must call out plated/gold card-edge contacts and an insertion-edge bevel/chamfer suitable for a 1.57 mm card-edge PCB. The PCB manufacturer must confirm its supported bevel angle, depth and finish before Gerber release; these process parameters must not be invented as footprint dimensions.
+
+Key/polarisation is handled by the C64 connector/contact numbering and board outline during M2. It must be visually/mechanically reviewed before fabrication.
+
+The J1 footprint geometry is therefore frozen for M1.10. Final manufacturer-specific bevel/finish parameters are an M2 fabrication gate, not an unresolved schematic-footprint dimension.
 
 ## J2 — DE-9 female DTE
 
