@@ -38,6 +38,8 @@ The exact contents depend on the project and hardware revision. A release must n
 
 ## CI qualification
 
+The complete release gate is defined in [HARDWARE-RELEASE-CHECKLIST.md](HARDWARE-RELEASE-CHECKLIST.md). A board is RELEASE-READY only when all mandatory gates are PASS.
+
 The repository's `.github/workflows/manufacturing.yml` is the canonical manufacturing-package gate. A hardware release is considered package-ready only when that workflow passes for the release revision.
 
 The workflow intentionally fails if no KiCad PCB is present or if more than one PCB is found without project-specific board selection. This prevents an ambiguous or incomplete development tree from being presented as production-ready.
