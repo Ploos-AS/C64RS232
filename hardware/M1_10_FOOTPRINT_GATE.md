@@ -62,7 +62,7 @@ Frozen requirements:
 - 4-40 threaded inserts;
 - use the manufacturer product drawing as the dimensional authority for the PCB land pattern and board-edge offset.
 
-The currently assigned generic KiCad footprint is **not accepted as the final J2 land pattern**: its name encodes 2.77 mm signal pitch, while TE specifies 2.74 mm / .108 in centerline for 5747844-4. M1.10 therefore requires a project-local `C64RS232:TE_5747844-4` footprint translated from TE product drawing `ENG_CD_5747844_P.pdf`. M2 placement remains blocked until that exact footprint replaces the generic assignment and is audited.
+The generic 2.77 mm KiCad footprint has been rejected and replaced by the project-local `C64RS232:TE_5747844-4` footprint translated from TE product drawing `ENG_CD_5747844_P.pdf`. The project-local footprint uses the drawing-derived 2.74 mm / .108 in signal pitch and 2.84 mm / .112 in row spacing, and is covered by the M1.10 automated audit. J2 is no longer an M1.10 blocker.
 
 ## F1 — +5 V protection
 
