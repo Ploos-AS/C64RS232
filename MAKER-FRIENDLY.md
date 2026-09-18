@@ -19,6 +19,8 @@ Do not make a design dependent on one PCB manufacturer's proprietary process whe
 
 ## Components
 
+Component and BOM selection also follows [COMPONENT-POLICY.md](COMPONENT-POLICY.md).
+
 Prefer components that are:
 
 - actively available from multiple distributors or have documented substitutes;
