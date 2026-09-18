@@ -125,3 +125,18 @@ jobs:
             exit 1
           fi
           echo 'M1.10 footprint qualification and M1.9 electrical qualification passed.'
+          mkdir -p build/kicad
+          cat > build/kicad/M1_10_QUALIFICATION.md <<EOF
+# M1.10 Qualification
+
+Status: PASS
+
+Qualified by GitHub Actions on commit ${GITHUB_SHA}.
+
+- M1.10 physical-part and footprint audit: PASS
+- M1.7 native schematic regression: PASS
+- M1.9 electrical-net/ERC qualification: PASS
+- J2 footprint: C64RS232:TE_5747844-4
+
+This file is generated only after all enforced qualification gates pass.
+EOF
