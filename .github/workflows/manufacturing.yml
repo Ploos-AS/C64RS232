@@ -12,6 +12,6 @@ permissions:
 
 jobs:
   manufacturing:
-    uses: Ploos-AS/hardware-ci/.github/workflows/manufacturing.yml@main
+    uses: Ploos-AS/hardware-ci/.github/workflows/manufacturing.yml@v1
     with:
       publish_release: true
