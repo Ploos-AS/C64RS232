@@ -126,7 +126,7 @@ jobs:
           fi
           echo 'M1.10 footprint qualification and M1.9 electrical qualification passed.'
           mkdir -p build/kicad
-          cat > build/kicad/M1_10_QUALIFICATION.md <<EOF
+          cat > hardware/M1_10_QUALIFICATION.md <<EOF
 # M1.10 Qualification
 
 Status: PASS
@@ -140,3 +140,11 @@ Qualified by GitHub Actions on commit ${GITHUB_SHA}.
 
 This file is generated only after all enforced qualification gates pass.
 EOF
+          cp hardware/M1_10_QUALIFICATION.md build/kicad/M1_10_QUALIFICATION.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add hardware/M1_10_QUALIFICATION.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record M1.10 qualification PASS'
+            git push origin HEAD:main
+          fi
