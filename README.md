@@ -65,6 +65,10 @@ The software stack will provide:
 
 Qualification will cover schematic/PCB ERC/DRC, electrical loopback, real C64 serial interoperability, sustained transfers, and eventual SLIP/IP operation on physical hardware.
 
+## Manufacturing
+
+For fabrication files, release-package conventions, manufacturer choices, and funding/affiliate disclosure, see [MANUFACTURING.md](MANUFACTURING.md). Released hardware remains vendor-neutral and may be manufactured by any suitable PCB manufacturer.
+
 ## License
 
 Hardware design materials — including schematics, PCB layouts, manufacturing files, and HDL/RTL that describes hardware — are licensed under the **CERN Open Hardware Licence Version 2 - Permissive (CERN-OHL-P-2.0)**. See [LICENSE-HARDWARE](LICENSE-HARDWARE).
