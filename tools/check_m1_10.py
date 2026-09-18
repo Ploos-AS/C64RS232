@@ -2,7 +2,7 @@
 """Static M1.10 audit for C64RS232 frozen physical parts and footprints."""
 from pathlib import Path
 import re, sys
-FP=Path("hardware/C64RS232.pretty/C64_User_Port_Edge.kicad_mod"); BOM=Path("hardware/BOM_M1.csv"); GATE=Path("hardware/M1_10_FOOTPRINT_GATE.md"); SCH=Path("hardware/C64RS232_M1.sch")
+FP=Path("hardware/C64RS232.pretty/C64_User_Port_Edge.kicad_mod"); J2FP=Path("hardware/C64RS232.pretty/TE_5747844-4.kicad_mod"); BOM=Path("hardware/BOM_M1.csv"); GATE=Path("hardware/M1_10_FOOTPRINT_GATE.md"); SCH=Path("hardware/C64RS232_M1.sch")
 EXPECTED=[str(i) for i in range(1,13)]+list("ABCDEFHJKLMN"); PITCH=3.96
 
 def fail(msg): print(f"M1.10 FAIL: {msg}",file=sys.stderr); raise SystemExit(1)
@@ -26,15 +26,18 @@ for n,(x,y,w,h) in by.items():
 if 'layers "F.Cu" "F.Mask"' not in text or 'layers "B.Cu" "B.Mask"' not in text: fail("both copper/mask sides required")
 if "PCB EDGE / INSERTION" not in text: fail("PCB insertion-edge datum missing")
 if "1.57 mm PCB NOMINAL" not in text: fail("nominal PCB thickness annotation missing")
-for path in (GATE,BOM,SCH):
+for path in (J2FP,GATE,BOM,SCH):
     if not path.is_file(): fail(f"missing required file: {path}")
+j2fp=J2FP.read_text(encoding="utf-8")
+for required in ("5747844-4","2.7432","1.4224","12.4968","(drill 1.05)","(drill 3.18)"):
+    if required not in j2fp: fail(f"J2 exact footprint missing drawing-derived datum: {required}")
 gate=GATE.read_text(encoding="utf-8"); bom=BOM.read_text(encoding="utf-8"); sch=SCH.read_text(encoding="utf-8")
 for required in ("5747844-4","1206L010/30WR","100 mA","250 mA","30 V","1.57 mm","2.74 mm","ENG_CD_5747844_P.pdf","25 V","X7R","0805"):
     if required not in gate: fail(f"gate document missing: {required}")
 if "MAX3243EIPWR" not in bom: fail("BOM lost MAX3243EIPWR")
 for required in ("TE Connectivity 5747844-4","Littelfuse 1206L010/30WR","47nF 25V X7R 0805","330nF 25V X7R 0805","100nF 25V X7R 0805"):
     if required not in bom: fail(f"BOM missing frozen M1.10 item: {required}")
-assignments={"J1":"C64RS232:C64_User_Port_Edge","U1":"Package_SO:TSSOP-28_4.4x9.7mm_P0.65mm","J2":"Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset9.40mm_Housed_MountingHolesOffset11.32mm","F1":"Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder","C1":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","C2":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","C3":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","C4":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","C5":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"}
+assignments={"J1":"C64RS232:C64_User_Port_Edge","U1":"Package_SO:TSSOP-28_4.4x9.7mm_P0.65mm","J2":"C64RS232:TE_5747844-4","F1":"Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder","C1":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","C2":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","C3":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","C4":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","C5":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"}
 for ref,footprint in assignments.items():
     pos=sch.find(f'F 0 "{ref}"'); end=sch.find('$EndComp',pos)
     if pos<0 or end<0: fail(f"component {ref} missing")
@@ -46,5 +49,5 @@ print("  J1: 24 aligned front/back fingers, 3.96 mm pitch, 2.8 x 7.62 mm mating 
 print("  U1/J2/F1/C1-C5: frozen footprint assignments present")
 print("  C1-C5: 0805 X7R >=25 V BOM baseline frozen")
 print("  F1: Littelfuse 1206L010/30WR ordering/electrical baseline frozen")
-print("BLOCKER: J2 generic footprint is provisional; exact TE_5747844-4 project-local footprint still required.")
+print("  J2: project-local TE_5747844-4 drawing-derived footprint assigned and audited")
 print("NOTE: fabrication bevel/chamfer remains a PCB manufacturing specification, not copper-pad geometry.")
