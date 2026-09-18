@@ -1,12 +1,12 @@
 Reference,Value,Qty,Role,Notes
-J1,C64 User Port edge connector,1,C64 interface,3.96 mm / 0.156 in pitch; verify board thickness and keying
+J1,C64 User Port edge connector,1,C64 interface,24 contacts; 3.96 mm pitch; 1.57 mm nominal PCB; project-local footprint
 U1,TI MAX3243EIPWR,1,RS-232 transceiver,Active 28-pin TSSOP PW; 3 drivers / 5 receivers; -40C to 85C
-J2,DE-9 female DTE,1,RS-232 interface,Panel/PCB mount; verify mechanical orientation
-C1,47nF,1,Charge pump,TI MAX3243E 5V baseline C1; ceramic
-C2,330nF,1,Charge pump,TI MAX3243E 5V baseline C2; ceramic
-C3,330nF,1,Charge pump,TI MAX3243E V+ storage at 5V; ceramic
-C4,330nF,1,Charge pump,TI MAX3243E V- storage at 5V; ceramic
-C5,100nF,1,Decoupling,VCC to GND near U1; ceramic
-F1,100mA resettable fuse,1,+5V protection,Final part/footprint to be selected during PCB review
+J2,TE Connectivity 5747844-4,1,RS-232 interface,9-position female right-angle THT; boardlocks; 4-40 inserts; 1.57 mm recommended PCB; project-local exact footprint required before M2
+C1,47nF 25V X7R 0805,1,Charge pump,TI MAX3243E 5V baseline C1; ceramic; >=25V; X7R
+C2,330nF 25V X7R 0805,1,Charge pump,TI MAX3243E 5V baseline C2; ceramic; >=25V; X7R
+C3,330nF 25V X7R 0805,1,Charge pump,TI MAX3243E V+ storage at 5V; ceramic; >=25V; X7R
+C4,330nF 25V X7R 0805,1,Charge pump,TI MAX3243E V- storage at 5V; ceramic; >=25V; X7R
+C5,100nF 25V X7R 0805,1,Decoupling,VCC to GND near U1; ceramic; >=25V; X7R
+F1,Littelfuse 1206L010/30WR,1,+5V protection,100mA hold; 250mA trip; 30V max; 1206/3216 SMD; tape-and-reel ordering number
 LED1,TX LED,1,Optional status,Not populated in M1 baseline
 LED2,RX LED,1,Optional status,Not populated in M1 baseline
