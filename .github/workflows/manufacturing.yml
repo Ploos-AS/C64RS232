@@ -116,6 +116,63 @@ jobs:
           fi
           kicad-cli pcb pos --format csv --units mm --output build/manufacturing/CPL.csv "${{ steps.pcb.outputs.path }}"
 
+
+      - name: Maker-friendly BOM lint
+        shell: bash
+        run: |
+          set -euo pipefail
+          bom="build/manufacturing/BOM.csv"
+          if [ ! -f "$bom" ]; then
+            echo "::warning::BOM.csv was not generated; BOM structural qualification is pending."
+            exit 0
+          fi
+          python3 - "$bom" <<'PY'
+          import csv, sys
+          from pathlib import Path
+
+          path = Path(sys.argv[1])
+          rows = list(csv.DictReader(path.open(encoding="utf-8-sig", newline="")))
+          if not rows:
+              print("::error::BOM is empty.")
+              raise SystemExit(1)
+
+          fields = {f.strip().lower(): f for f in (rows[0].keys() if rows else []) if f}
+          def find(*names):
+              for n in names:
+                  if n in fields:
+                      return fields[n]
+              return None
+
+          ref = find("reference", "references", "ref", "refdes", "designator")
+          value = find("value", "description")
+          footprint = find("footprint", "package")
+          mpn = find("mpn", "manufacturer part number", "manufacturer_part_number")
+          manufacturer = find("manufacturer", "mfr")
+
+          errors = []
+          warnings = []
+          if not ref: errors.append("BOM lacks a reference-designator column.")
+          if not value: errors.append("BOM lacks a value/description column.")
+          if not footprint: warnings.append("BOM lacks footprint/package information.")
+          if not mpn: warnings.append("BOM lacks an MPN column; critical-part MPN review is required.")
+          if not manufacturer: warnings.append("BOM lacks a manufacturer column; critical-part manufacturer review is required.")
+
+          def blank_count(column):
+              if not column: return 0
+              return sum(1 for r in rows if not (r.get(column) or "").strip())
+
+          if ref and blank_count(ref): errors.append(f"{blank_count(ref)} BOM row(s) have no reference designator.")
+          if value and blank_count(value): warnings.append(f"{blank_count(value)} BOM row(s) have no value/description.")
+          if footprint and blank_count(footprint): warnings.append(f"{blank_count(footprint)} BOM row(s) have no footprint/package.")
+          if mpn and blank_count(mpn): warnings.append(f"{blank_count(mpn)} BOM row(s) have no MPN; verify whether they are freely substitutable.")
+          if manufacturer and blank_count(manufacturer): warnings.append(f"{blank_count(manufacturer)} BOM row(s) have no manufacturer.")
+
+          for msg in warnings: print(f"::warning::{msg}")
+          for msg in errors: print(f"::error::{msg}")
+          if errors: raise SystemExit(1)
+          print(f"Maker-friendly BOM lint passed structural checks for {len(rows)} BOM row(s).")
+          PY
+
       - name: Copy manufacturing documentation
         shell: bash
         run: |
