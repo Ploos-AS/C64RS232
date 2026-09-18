@@ -202,6 +202,102 @@ jobs:
           path: ${{ env.PACKAGE }}
           if-no-files-found: error
 
+
+      - name: Generate hardware qualification report
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/qualification
+          python3 <<'PY'
+          import json, os
+          from pathlib import Path
+
+          root = Path(".")
+          pcb = sorted(root.glob("**/*.kicad_pcb"))
+          sch = sorted(root.glob("**/*.kicad_sch"))
+          required_docs = [
+              "MANUFACTURING.md", "MAKER-FRIENDLY.md", "COMPONENT-POLICY.md",
+              "MANUFACTURER-PROFILES.md", "ORDERING.md",
+              "HARDWARE-RELEASE-CHECKLIST.md", "LICENSE-HARDWARE",
+              "LICENSE-SOFTWARE", "README.md",
+          ]
+          docs_ok = all((root / p).is_file() for p in required_docs)
+          package_dir = root / "build" / "manufacturing"
+          gerbers = list(package_dir.glob("gerbers/*")) if package_dir.exists() else []
+          bom = package_dir / "BOM.csv"
+          cpl = package_dir / "CPL.csv"
+
+          gates = {
+              "design_identity": {
+                  "status": "PASS" if len(pcb) == 1 else "PENDING",
+                  "evidence": {"pcb_count": len(pcb), "schematic_count": len(sch)}
+              },
+              "electrical_design": {
+                  "status": "PENDING",
+                  "evidence": "Final status depends on DRC/ERC and documented engineering review."
+              },
+              "components_bom": {
+                  "status": "PASS" if bom.is_file() else "PENDING",
+                  "evidence": {"bom_generated": bom.is_file()}
+              },
+              "maker_accessibility": {
+                  "status": "PENDING",
+                  "evidence": "Requires human review of assembly, testability, repairability and exceptions."
+              },
+              "manufacturing_package": {
+                  "status": "PASS" if gerbers and cpl.is_file() else "PENDING",
+                  "evidence": {"gerber_outputs": len(gerbers), "cpl_generated": cpl.is_file()}
+              },
+              "documentation": {
+                  "status": "PASS" if docs_ok else "PENDING",
+                  "evidence": {"required_docs_present": docs_ok}
+              },
+              "ordering": {
+                  "status": "PENDING",
+                  "evidence": "Manufacturer links/settings require release-specific validation."
+              },
+              "licensing_provenance": {
+                  "status": "PASS" if (root/"LICENSE-HARDWARE").is_file() and (root/"LICENSE-SOFTWARE").is_file() else "PENDING",
+                  "evidence": "Licence files checked structurally; third-party provenance remains a release review item."
+              },
+          }
+          statuses = [g["status"] for g in gates.values()]
+          overall = "FAIL" if "FAIL" in statuses else ("PASS" if all(x == "PASS" for x in statuses) else "PENDING")
+          report = {
+              "schema": "ploos-hardware-qualification-v1",
+              "repository": os.environ.get("GITHUB_REPOSITORY"),
+              "revision": os.environ.get("GITHUB_SHA"),
+              "ref": os.environ.get("GITHUB_REF_NAME"),
+              "overall_status": overall,
+              "gates": gates,
+          }
+          out = root/"build"/"qualification"
+          (out/"hardware-qualification.json").write_text(json.dumps(report, indent=2)+"\n")
+          lines = [
+              "# Hardware Qualification Report", "",
+              f"- Repository: `{report['repository']}`",
+              f"- Revision: `{report['revision']}`",
+              f"- Ref: `{report['ref']}`",
+              f"- Overall: **{overall}**", "",
+              "| Gate | Status |", "| --- | --- |",
+          ]
+          for name, gate in gates.items():
+              lines.append(f"| {name.replace('_',' ').title()} | **{gate['status']}** |")
+          lines += ["", "PENDING means that mandatory evidence or human engineering review is still required.",
+                    "A generated report does not upgrade PENDING gates to PASS without evidence.", ""]
+          (out/"hardware-qualification.md").write_text("\n".join(lines))
+          print((out/"hardware-qualification.md").read_text())
+          PY
+
+      - name: Upload hardware qualification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hardware-qualification
+          path: build/qualification/
+          if-no-files-found: error
+
       - name: Publish manufacturing package on GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         env:
