@@ -31,7 +31,7 @@ def set_component(ref, value=None, footprint=None):
 
 set_component("J1", footprint="C64RS232:C64_User_Port_Edge")
 set_component("U1", value="MAX3243EIPWR", footprint="Package_SO:TSSOP-28_4.4x9.7mm_P0.65mm")
-set_component("J2", value="5747844-4", footprint="Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset9.40mm_Housed_MountingHolesOffset11.32mm")
+set_component("J2", value="5747844-4", footprint="C64RS232:TE_5747844-4")
 for ref in ("C1", "C2", "C3", "C4", "C5"):
     set_component(ref, footprint="Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder")
 set_component("F1", value="1206L010/30WR", footprint="Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder")
