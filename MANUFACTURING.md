@@ -46,6 +46,8 @@ For tagged hardware releases, a successful qualification run also publishes the 
 
 ## Order a PCB
 
+For project-specific ordering choices and direct manufacturer links, see [ORDERING.md](ORDERING.md).
+
 The preferred ordering choices are:
 
 1. **PCBWay** — direct/shared-project ordering may be provided when a released board has been published there.
