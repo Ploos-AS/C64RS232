@@ -39,7 +39,7 @@ U 1 1 3
 P 8500 3800
 F 0 "J2" H 8500 4450 50 0000 C CNN
 F 1 "5747844-4" H 0 0 50 0000 C CNN
-F 2 "Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset9.40mm_Housed_MountingHolesOffset11.32mm" H 0 0 50 0001 C CNN
+F 2 "C64RS232:TE_5747844-4" H 0 0 50 0001 C CNN
 	1    8500 3800
 	1 0 0 -1
 $EndComp
