@@ -29,9 +29,11 @@ if "1.57 mm PCB NOMINAL" not in text: fail("nominal PCB thickness annotation mis
 for path in (GATE,BOM,SCH):
     if not path.is_file(): fail(f"missing required file: {path}")
 gate=GATE.read_text(encoding="utf-8"); bom=BOM.read_text(encoding="utf-8"); sch=SCH.read_text(encoding="utf-8")
-for required in ("5747844-4","1206L010/30WR","100 mA","250 mA","30 V","1.57 mm"):
+for required in ("5747844-4","1206L010/30WR","100 mA","250 mA","30 V","1.57 mm","2.74 mm","ENG_CD_5747844_P.pdf","25 V","X7R","0805"):
     if required not in gate: fail(f"gate document missing: {required}")
 if "MAX3243EIPWR" not in bom: fail("BOM lost MAX3243EIPWR")
+for required in ("TE Connectivity 5747844-4","Littelfuse 1206L010/30WR","47nF 25V X7R 0805","330nF 25V X7R 0805","100nF 25V X7R 0805"):
+    if required not in bom: fail(f"BOM missing frozen M1.10 item: {required}")
 assignments={"J1":"C64RS232:C64_User_Port_Edge","U1":"Package_SO:TSSOP-28_4.4x9.7mm_P0.65mm","J2":"Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset9.40mm_Housed_MountingHolesOffset11.32mm","F1":"Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder","C1":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","C2":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","C3":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","C4":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","C5":"Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"}
 for ref,footprint in assignments.items():
     pos=sch.find(f'F 0 "{ref}"'); end=sch.find('$EndComp',pos)
@@ -42,4 +44,7 @@ for value in ("MAX3243EIPWR","5747844-4","1206L010/30WR"):
 print("M1.10 FOOTPRINT/MECHANICAL AUDIT PASS")
 print("  J1: 24 aligned front/back fingers, 3.96 mm pitch, 2.8 x 7.62 mm mating fingers, 1.57 mm nominal PCB")
 print("  U1/J2/F1/C1-C5: frozen footprint assignments present")
+print("  C1-C5: 0805 X7R >=25 V BOM baseline frozen")
+print("  F1: Littelfuse 1206L010/30WR ordering/electrical baseline frozen")
+print("BLOCKER: J2 generic footprint is provisional; exact TE_5747844-4 project-local footprint still required.")
 print("NOTE: fabrication bevel/chamfer remains a PCB manufacturing specification, not copper-pad geometry.")
