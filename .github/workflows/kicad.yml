@@ -1,6 +1,7 @@
 name: KiCad
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'hardware/**'
