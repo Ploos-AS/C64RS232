@@ -34,6 +34,14 @@ A typical release artifact is named:
 
 The exact contents depend on the project and hardware revision. A release must not imply that unqualified hardware is production-ready.
 
+## CI qualification
+
+The repository's `.github/workflows/manufacturing.yml` is the canonical manufacturing-package gate. A hardware release is considered package-ready only when that workflow passes for the release revision.
+
+The workflow intentionally fails if no KiCad PCB is present or if more than one PCB is found without project-specific board selection. This prevents an ambiguous or incomplete development tree from being presented as production-ready.
+
+A successful run validates DRC and produces Gerber/drill data, BOM when a matching schematic is available, CPL placement data, documentation, SHA-256 checksums, and a versioned manufacturing ZIP artifact.
+
 ## Order a PCB
 
 The preferred ordering choices are:
