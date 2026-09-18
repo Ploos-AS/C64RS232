@@ -42,6 +42,8 @@ The workflow intentionally fails if no KiCad PCB is present or if more than one 
 
 A successful run validates DRC and produces Gerber/drill data, BOM when a matching schematic is available, CPL placement data, documentation, SHA-256 checksums, and a versioned manufacturing ZIP artifact.
 
+For tagged hardware releases, a successful qualification run also publishes the versioned manufacturing ZIP to the matching GitHub Release. Manual workflow runs retain the package as a CI artifact and do not create a release.
+
 ## Order a PCB
 
 The preferred ordering choices are:
