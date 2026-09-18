@@ -24,7 +24,7 @@ The board is a 5 V design. TI's MAX3243E characterization conditions at 5 V use:
 - C3 (V+ reservoir): 0.33 µF (330 nF)
 - C4 (V- reservoir): 0.33 µF (330 nF)
 
-C5 is the local VCC bypass capacitor and remains 100 nF in the M1 BOM. Capacitor footprints will be frozen before PCB placement; voltage rating and dielectric must be suitable for the charge-pump rails.
+C5 is the local VCC bypass capacitor and remains 100 nF in the M1 BOM. Frozen capacitor baseline for M2 is 0805 / 2012 metric, X7R ceramic, rated at least 25 V for C1–C5. The common 25 V minimum provides margin above both the 5 V supply and the generated charge-pump rails. TI specifies ceramic capacitors and, at 5 V ±0.5 V, 47 nF for C1 and 330 nF for C2–C4. C5 remains 100 nF local VCC bypass.
 
 ## J1 — C64 User Port edge connector
 
@@ -62,7 +62,7 @@ Frozen requirements:
 - 4-40 threaded inserts;
 - use the manufacturer product drawing as the dimensional authority for the PCB land pattern and board-edge offset.
 
-The KiCad footprint must be matched against the TE product drawing before M2 placement; visual similarity to a generic DE-9 footprint is not sufficient.
+The currently assigned generic KiCad footprint is **not accepted as the final J2 land pattern**: its name encodes 2.77 mm signal pitch, while TE specifies 2.74 mm / .108 in centerline for 5747844-4. M1.10 therefore requires a project-local `C64RS232:TE_5747844-4` footprint translated from TE product drawing `ENG_CD_5747844_P.pdf`. M2 placement remains blocked until that exact footprint replaces the generic assignment and is audited.
 
 ## F1 — +5 V protection
 
@@ -76,7 +76,7 @@ Electrical baseline:
 - package: 1206 / 3216 metric;
 - surface mount.
 
-The 30 V rating comfortably exceeds the protected C64 +5 V rail. M2 must use a 1206 land pattern compatible with the Littelfuse package dimensions and preserve short routing between the User Port +5 V input and the protected `+5V` rail.
+The Littelfuse 1206L datasheet confirms ordering number `1206L010/30WR`, 100 mA hold current, 250 mA trip current, 30 V maximum voltage and 1206 surface-mount construction. The current KiCad 1206 fuse footprint is retained as the M1.10 baseline, but final M2 DRC/fabrication review must keep the manufacturer body/termination envelope clear and preserve short routing between the User Port +5 V input and protected `+5V` rail.
 
 ## M1.10 completion gate
 
