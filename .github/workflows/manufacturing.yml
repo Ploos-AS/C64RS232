@@ -41,6 +41,55 @@ jobs:
           echo "dir=$(dirname "${boards[0]}")" >> "$GITHUB_OUTPUT"
           echo "stem=$(basename "${boards[0]}" .kicad_pcb)" >> "$GITHUB_OUTPUT"
 
+
+      - name: Maker-friendly design lint
+        shell: bash
+        run: |
+          set -euo pipefail
+          pcb="${{ steps.pcb.outputs.path }}"
+          python3 - "$pcb" <<'PY'
+          import re, sys
+          from pathlib import Path
+          pcb = Path(sys.argv[1])
+          text = pcb.read_text(encoding="utf-8", errors="replace")
+          problems = []
+          warnings = []
+
+          layers = re.search(r'\(general\s+.*?\(thickness\s+([0-9.]+)\)', text, re.S)
+          if layers:
+              thickness = float(layers.group(1))
+              if not 1.5 <= thickness <= 1.7:
+                  warnings.append(f"PCB thickness is {thickness} mm; maker-friendly default is 1.6 mm.")
+
+          copper = re.findall(r'^\s*\(\d+\s+"[^"]+"\s+signal', text, re.M)
+          if len(copper) > 2:
+              warnings.append(f"Board uses {len(copper)} copper layers; document the multilayer exception in MAKER-FRIENDLY.md.")
+
+          for key, label, preferred in [
+              ("clearance", "minimum clearance", 0.20),
+              ("track_width", "minimum track width", 0.20),
+              ("via_size", "minimum via diameter", 0.60),
+              ("via_drill", "minimum via drill", 0.30),
+          ]:
+              vals = [float(x) for x in re.findall(rf'\({key}\s+([0-9.]+)\)', text)]
+              if vals and min(vals) < preferred:
+                  warnings.append(f"{label} {min(vals):.3f} mm is below maker-friendly preference {preferred:.2f} mm.")
+
+          if "MAKER-FRIENDLY.md" not in [p.name for p in Path(".").iterdir()]:
+              problems.append("MAKER-FRIENDLY.md is missing.")
+
+          if not re.search(r'\(footprint\s+', text):
+              warnings.append("No footprints detected; verify that this is an intentional pre-layout board.")
+
+          for msg in warnings:
+              print(f"::warning::{msg}")
+          for msg in problems:
+              print(f"::error::{msg}")
+          if problems:
+              sys.exit(1)
+          print("Maker-friendly lint completed. Preference deviations are warnings and require documented review.")
+          PY
+
       - name: Run KiCad DRC
         run: |
           mkdir -p build/manufacturing/reports
