@@ -1,0 +1,97 @@
+name: Hardware manufacturing package
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "hw-v*"
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  manufacturing:
+    runs-on: ubuntu-latest
+    container:
+      image: kicad/kicad:9.0
+    steps:
+      - name: Install packaging tools
+        run: apt-get update && apt-get install -y --no-install-recommends git zip findutils coreutils python3 && rm -rf /var/lib/apt/lists/*
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Locate KiCad PCB
+        id: pcb
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t boards < <(find . -type f -name '*.kicad_pcb' -not -path './.git/*' | sort)
+          if [ "${#boards[@]}" -eq 0 ]; then
+            echo "::error::No .kicad_pcb file found. Manufacturing release is not ready."
+            exit 1
+          fi
+          if [ "${#boards[@]}" -gt 1 ]; then
+            echo "::error::Multiple .kicad_pcb files found. Set a project-specific board selection before releasing."
+            printf '%s\n' "${boards[@]}"
+            exit 1
+          fi
+          echo "path=${boards[0]}" >> "$GITHUB_OUTPUT"
+          echo "dir=$(dirname "${boards[0]}")" >> "$GITHUB_OUTPUT"
+          echo "stem=$(basename "${boards[0]}" .kicad_pcb)" >> "$GITHUB_OUTPUT"
+
+      - name: Run KiCad DRC
+        run: |
+          mkdir -p build/manufacturing/reports
+          kicad-cli pcb drc --exit-code-violations --output build/manufacturing/reports/drc.rpt "${{ steps.pcb.outputs.path }}"
+
+      - name: Export Gerbers and drill files
+        run: |
+          set -euo pipefail
+          out=build/manufacturing/gerbers
+          mkdir -p "$out"
+          kicad-cli pcb gerbers --output "$out/" "${{ steps.pcb.outputs.path }}"
+          kicad-cli pcb drill --output "$out/" "${{ steps.pcb.outputs.path }}"
+
+      - name: Export BOM and placement data
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/manufacturing
+          sch="${{ steps.pcb.outputs.dir }}/${{ steps.pcb.outputs.stem }}.kicad_sch"
+          if [ -f "$sch" ]; then
+            kicad-cli sch export bom --output build/manufacturing/BOM.csv "$sch"
+          else
+            echo "::warning::Matching KiCad schematic not found; BOM not generated."
+          fi
+          kicad-cli pcb pos --format csv --units mm --output build/manufacturing/CPL.csv "${{ steps.pcb.outputs.path }}"
+
+      - name: Copy manufacturing documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp MANUFACTURING.md build/manufacturing/
+          cp LICENSE-HARDWARE build/manufacturing/
+          for f in README.md; do [ ! -f "$f" ] || cp "$f" build/manufacturing/; done
+
+      - name: Create checksums and archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          project="${GITHUB_REPOSITORY#*/}"
+          version="${GITHUB_REF_NAME:-manual}"
+          package="${project}-${version}-manufacturing"
+          (
+            cd build/manufacturing
+            find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+          )
+          (cd build && mv manufacturing "$package" && zip -r "$package.zip" "$package")
+          echo "PACKAGE=build/$package.zip" >> "$GITHUB_ENV"
+
+      - name: Upload manufacturing artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: manufacturing-package
+          path: ${{ env.PACKAGE }}
+          if-no-files-found: error
