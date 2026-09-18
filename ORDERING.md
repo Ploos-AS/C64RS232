@@ -2,7 +2,7 @@
 
 Ploos-AS hardware projects are vendor-neutral. You may download the released manufacturing package and order the board from any suitable PCB manufacturer.
 
-See [MANUFACTURING.md](MANUFACTURING.md) for the manufacturing and qualification policy.
+See [MANUFACTURING.md](MANUFACTURING.md) for the manufacturing and qualification policy and [MANUFACTURER-PROFILES.md](MANUFACTURER-PROFILES.md) for maker-friendly ordering defaults and manufacturer-specific guidance.
 
 ## Before ordering
 
