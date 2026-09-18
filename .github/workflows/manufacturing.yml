@@ -8,7 +8,7 @@ on:
       - "v*"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   manufacturing:
@@ -95,3 +95,20 @@ jobs:
           name: manufacturing-package
           path: ${{ env.PACKAGE }}
           if-no-files-found: error
+
+      - name: Publish manufacturing package on GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "$PACKAGE" --clobber
+          else
+            gh release create "$tag" "$PACKAGE" \
+              --verify-tag \
+              --title "$tag" \
+              --generate-notes
+          fi
