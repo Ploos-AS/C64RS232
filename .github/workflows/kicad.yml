@@ -147,5 +147,7 @@ EOF
           git add hardware/M1_10_QUALIFICATION.md
           if ! git diff --cached --quiet; then
             git commit -m 'Record M1.10 qualification PASS'
+            git fetch origin main
+            git rebase origin/main
             git push origin HEAD:main
           fi
