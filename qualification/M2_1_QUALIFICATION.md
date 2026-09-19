@@ -2,7 +2,7 @@
 
 Status: PASS
 
-Qualified by GitHub Actions on source commit 930d175cc21cfe655bd58294fdbfdd010f2226b3.
+Qualified by GitHub Actions on source commit 864c2ffe9c59d50ca9cc2eebb229adfbab4de702.
 
 - Native KiCad PCB generation: PASS
 - M2.1 structural PCB qualification: PASS
