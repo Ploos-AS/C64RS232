@@ -15,7 +15,7 @@ NETLIST = ROOT / "build" / "kicad" / "m1_8" / "C64RS232_M1.net"
 
 EXPECTED = {
     "C64_TXD": {("J1", "M"), ("U1", "14")}, "C64_RTS": {("J1", "D"), ("U1", "13")},
-    "C64_DTR": {("J1", "E"), ("U1", "12")}, "C64_RXD": {("J1", "B"), ("J1", "C"), ("U1", "19")},
+    "C64_DTR": {("J1", "E"), ("U1", "12")}, "C64_RXD": {("J1", "C"), ("U1", "19")},
     "C64_CTS": {("J1", "K"), ("U1", "18")}, "C64_DSR": {("J1", "L"), ("U1", "17")},
     "C64_DCD": {("J1", "H"), ("U1", "16")}, "C64_RI": {("J1", "F"), ("U1", "15")},
     "RS232_TXD": {("U1", "9"), ("J2", "3")}, "RS232_RTS": {("U1", "10"), ("J2", "7")},
@@ -31,7 +31,7 @@ EXPECTED = {
 }
 FUNCTIONAL_NETS = {name for name in EXPECTED if name.startswith("C64_") or name.startswith("RS232_")}
 POWER_NETS = set(EXPECTED) - FUNCTIONAL_NETS
-FROZEN_NC = {("U1", "20"), ("U1", "21"), ("J1", "3"), ("J1", "4"), ("J1", "5"), ("J1", "6"), ("J1", "7"), ("J1", "8"), ("J1", "9"), ("J1", "10"), ("J1", "11"), ("J1", "J")}
+FROZEN_NC = {("U1", "20"), ("U1", "21"), ("J1", "B"), ("J1", "J"), ("J1", "3"), ("J1", "4"), ("J1", "5"), ("J1", "6"), ("J1", "7"), ("J1", "8"), ("J1", "9"), ("J1", "10"), ("J1", "11")}
 
 def logical_name(name): return name[1:] if name.startswith("/") and len(name) > 1 else name
 def fmt_nodes(nodes): return ", ".join(f"{ref}.{pin}" for ref, pin in sorted(nodes)) or "<none>"
