@@ -35,7 +35,7 @@ gate=GATE.read_text(encoding="utf-8"); bom=BOM.read_text(encoding="utf-8"); sch=
 for required in ("5747844-4","1206L010/30WR","100 mA","250 mA","30 V","1.57 mm","2.74 mm","ENG_CD_5747844_P.pdf","25 V","X7R","0805"):
     if required not in gate: fail(f"gate document missing: {required}")
 # Parse J2 instead of relying only on marker strings.
-j2pads=re.findall(r'\\(pad\\s+"([^"]+)"\\s+(thru_hole|np_thru_hole)\\s+circle\\s+\\(at\\s+([-0-9.]+)\\s+([-0-9.]+)\\).*?\\(drill\\s+([-0-9.]+)\\)',j2fp)
+j2pads=re.findall(r'\(pad\s+"([^"]+)"\s+(thru_hole|np_thru_hole)\s+circle\s+\(at\s+([-0-9.]+)\s+([-0-9.]+)\).*?\(drill\s+([-0-9.]+)\)', j2fp)
 sig={n:(kind,float(x),float(y),float(d)) for n,kind,x,y,d in j2pads if n.isdigit()}
 if sorted(sig)!=[str(i) for i in range(1,10)]: fail(f"J2 signal pad set mismatch: {sorted(sig)}")
 for n,(kind,x,y,d) in sig.items():
