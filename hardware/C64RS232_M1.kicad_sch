@@ -4688,7 +4688,7 @@
 		)
 		(uuid "0af1a222-1ddb-419a-bc2d-5b30c26282dc")
 	)
-	(label "C64_TXD"
+	(label "GND"
 		(at 33.02 109.22 0)
 		(effects
 			(font
@@ -4698,7 +4698,7 @@
 		)
 		(uuid "0e09d796-0506-4be6-bf80-5367e4d4db95")
 	)
-	(label "GND"
+	(label "NO_CONNECT_9VAC-"
 		(at 58.42 83.82 0)
 		(effects
 			(font
@@ -4818,7 +4818,7 @@
 		)
 		(uuid "5172d236-73d3-470d-8648-ffc0f368b5c2")
 	)
-	(label "C64_RXD"
+	(label "C64_DSR"
 		(at 33.02 86.36 0)
 		(effects
 			(font
@@ -4838,7 +4838,7 @@
 		)
 		(uuid "5e22afd9-feb4-4c37-a5e3-d24ab6e3bd12")
 	)
-	(label "C64_DTR"
+	(label "C64_DCD"
 		(at 33.02 93.98 0)
 		(effects
 			(font
@@ -4848,7 +4848,7 @@
 		)
 		(uuid "607d39f3-8ca4-40dd-9f3c-dcb07e5a138e")
 	)
-	(label "C64_DCD"
+	(label "C64_DTR"
 		(at 33.02 99.06 0)
 		(effects
 			(font
@@ -4888,7 +4888,7 @@
 		)
 		(uuid "686f89cd-3dca-4289-9780-8a5470a3be0c")
 	)
-	(label "C64_CTS"
+	(label "C64_RXD"
 		(at 33.02 104.14 0)
 		(effects
 			(font
@@ -4918,7 +4918,7 @@
 		)
 		(uuid "84cf1189-f8cb-41fa-91d8-f1d947997507")
 	)
-	(label "GND"
+	(label "C64_TXD"
 		(at 33.02 83.82 0)
 		(effects
 			(font
@@ -5028,7 +5028,7 @@
 		)
 		(uuid "a500e671-9afd-4861-ae18-550349c3c5fe")
 	)
-	(label "RAW_5V"
+	(label "NO_CONNECT_9VAC+"
 		(at 58.42 86.36 0)
 		(effects
 			(font
@@ -5088,7 +5088,7 @@
 		)
 		(uuid "bb7dbb4c-aed4-4679-8c79-6ace78fa86a2")
 	)
-	(label "C64_RTS"
+	(label "C64_UNUSED_J"
 		(at 33.02 91.44 0)
 		(effects
 			(font
@@ -5188,7 +5188,7 @@
 		)
 		(uuid "d5c842e9-e71a-4718-80a1-b3a01552f3ee")
 	)
-	(label "C64_DSR"
+	(label "FLAG2"
 		(at 33.02 106.68 0)
 		(effects
 			(font
