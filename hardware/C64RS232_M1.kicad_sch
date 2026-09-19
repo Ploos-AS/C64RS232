@@ -4690,24 +4690,10 @@
 	)
 	(label "GND"
 		(at 33.02 109.22 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "0e09d796-0506-4be6-bf80-5367e4d4db95")
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "11111111-1111-4111-8111-330210922")
 	)
-	(label "NO_CONNECT_9VAC-"
-		(at 58.42 83.82 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "153c9834-d6aa-4d3e-b093-cfa4360bf3ce")
-	)
+	(no_connect (at 58.42 83.82) (uuid "33333333-3333-4333-8333-0002"))
 	(label "GND"
 		(at 203.2 96.52 0)
 		(effects
@@ -4790,13 +4776,8 @@
 	)
 	(label "C64_RI"
 		(at 33.02 96.52 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "497edd44-d8bd-420b-90f8-8b3781fc718c")
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "11111111-1111-4111-8111-33029652")
 	)
 	(label "RS232_TXD"
 		(at 203.2 91.44 0)
@@ -4820,13 +4801,8 @@
 	)
 	(label "C64_DSR"
 		(at 33.02 86.36 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "5295ff7f-ac97-4227-b058-aa12a423c67b")
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "11111111-1111-4111-8111-33028636")
 	)
 	(label "GND"
 		(at 149.86 44.45 0)
@@ -4840,23 +4816,13 @@
 	)
 	(label "C64_DCD"
 		(at 33.02 93.98 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "607d39f3-8ca4-40dd-9f3c-dcb07e5a138e")
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "11111111-1111-4111-8111-33029398")
 	)
 	(label "C64_DTR"
 		(at 33.02 99.06 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "61850efd-426a-407b-a439-05f4cfa7516d")
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "11111111-1111-4111-8111-33029906")
 	)
 	(label "GND"
 		(at 137.16 44.45 0)
@@ -4890,13 +4856,8 @@
 	)
 	(label "C64_RXD"
 		(at 33.02 104.14 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "80816261-af61-4140-9fdf-1c7ea5917373")
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "11111111-1111-4111-8111-330210414")
 	)
 	(label "RS232_RTS"
 		(at 203.2 101.6 0)
@@ -4920,13 +4881,8 @@
 	)
 	(label "C64_TXD"
 		(at 33.02 83.82 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "8a23ee8a-e8db-4235-82cc-542d0c313e9e")
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "11111111-1111-4111-8111-33028382")
 	)
 	(label "RS232_DSR"
 		(at 114.3 78.74 0)
@@ -5028,16 +4984,7 @@
 		)
 		(uuid "a500e671-9afd-4861-ae18-550349c3c5fe")
 	)
-	(label "NO_CONNECT_9VAC+"
-		(at 58.42 86.36 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a7e8c153-4420-4a5d-ba2f-f60c40adf91b")
-	)
+	(no_connect (at 58.42 86.36) (uuid "33333333-3333-4333-8333-0001"))
 	(label "+5V"
 		(at 177.8 41.91 0)
 		(effects
@@ -5090,13 +5037,8 @@
 	)
 	(label "C64_UNUSED_J"
 		(at 33.02 91.44 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "c704fcc5-6774-48d3-b3bd-6fc186b2191c")
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "11111111-1111-4111-8111-33029144")
 	)
 	(label "C2_MINUS"
 		(at 114.3 68.58 0)
@@ -5188,15 +5130,10 @@
 		)
 		(uuid "d5c842e9-e71a-4718-80a1-b3a01552f3ee")
 	)
-	(label "FLAG2"
+	(label "FLAG2_UNUSED"
 		(at 33.02 106.68 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d721bb2b-0756-4154-8533-b184bdb8ab8a")
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "11111111-1111-4111-8111-330210668")
 	)
 	(label "RS232_RI"
 		(at 203.2 106.68 0)
@@ -6129,6 +6066,66 @@
 				)
 			)
 		)
+	)
+(label "C64_RTS"
+		(at 33.02 101.60 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "22222222-2222-4222-8222-330210160")
+	)
+(label "C64_CTS"
+		(at 33.02 88.90 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "22222222-2222-4222-8222-33028890")
+	)
+(label "GND"
+		(at 33.02 81.28 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "22222222-2222-4222-8222-33028128")
+	)
+(label "GND"
+		(at 58.42 109.22 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "22222222-2222-4222-8222-584210922")
+	)
+(label "+5V"
+		(at 58.42 106.68 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "22222222-2222-4222-8222-584210668")
+	)
+(label "RESET"
+		(at 58.42 104.14 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "22222222-2222-4222-8222-584210414")
+	)
+(label "CNT1"
+		(at 58.42 101.60 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "22222222-2222-4222-8222-584210160")
+	)
+(label "SP1"
+		(at 58.42 99.06 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "22222222-2222-4222-8222-58429906")
+	)
+(label "CNT2"
+		(at 58.42 96.52 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "22222222-2222-4222-8222-58429652")
+	)
+(label "SP2"
+		(at 58.42 93.98 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "22222222-2222-4222-8222-58429398")
+	)
+(label "PC2"
+		(at 58.42 91.44 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "22222222-2222-4222-8222-58429144")
+	)
+(label "ATN"
+		(at 58.42 88.90 0)
+		(effects (font (size 1.27 1.27)) (justify left bottom))
+		(uuid "22222222-2222-4222-8222-58428890")
 	)
 	(sheet_instances
 		(path "/"
