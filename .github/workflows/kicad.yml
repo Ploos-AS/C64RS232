@@ -115,6 +115,29 @@ jobs:
           print("M2 physical pad-net gate PASS")
           PY
 
+      - name: Reject floating M2 copper
+        run: |
+          python3 - <<'PY'
+          import pcbnew
+          board = pcbnew.LoadBoard("hardware/C64RS232.kicad_pcb")
+          pads_by_net = {}
+          for fp in board.GetFootprints():
+              for pad in fp.Pads():
+                  if pad.GetNetname():
+                      pads_by_net.setdefault(pad.GetNetname(), []).append((fp.GetReference(), pad.GetNumber(), pad.GetPosition()))
+          floating = []
+          for track in board.GetTracks():
+              net = track.GetNetname()
+              if not net:
+                  continue
+              starts = (track.GetStart(), track.GetEnd())
+              if not any(any(pt == pos for _, _, pos in pads_by_net.get(net, [])) for pt in starts):
+                  floating.append(net)
+          if floating:
+              raise SystemExit("M2 physical copper gate FAIL: tracks not anchored to a same-net pad: " + ", ".join(sorted(set(floating))))
+          print("M2 physical copper anchoring PASS")
+          PY
+
       - name: Qualify M2.1 PCB structure
         run: python3 tools/check_m2_1.py
 
