@@ -19,8 +19,15 @@ kicad-cli sch export pdf --output "$OUTDIR/C64RS232_M1.pdf" "$NATIVE"
 
 # Use the same ERC policy as the native conversion gate. Warnings remain in
 # the report as review evidence; electrical errors are the qualification gate.
+set +e
 kicad-cli sch erc --output "$OUTDIR/C64RS232_M1-erc.rpt" --exit-code-violations --severity-error "$NATIVE"
+erc_rc=$?
+set -e
 [ -s "$OUTDIR/C64RS232_M1-erc.rpt" ] || { echo 'ERROR: M1.7 ERC report missing' >&2; exit 6; }
+echo "--- M1.7 ERC REPORT ---"
+cat "$OUTDIR/C64RS232_M1-erc.rpt"
+echo "--- END M1.7 ERC REPORT ---"
+[ "$erc_rc" -eq 0 ] || exit "$erc_rc"
 
 echo 'M1.7 RUNNER QUALIFICATION PASS'
 echo 'ERC error-severity gate: PASS'
