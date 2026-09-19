@@ -41,9 +41,12 @@ def fp(ref, name, x, y):
         raise SystemExit(f"KiCad could not load footprint: {path}")
     loaded.SetReference(ref)
     loaded.SetPosition(pcbnew.VECTOR2I_MM(x, y))
-    # Serialize the actual KiCad footprint, including pads and geometry.
-    tmp = HW / f".{ref}.kicad_mod"\n    if not pcbnew.FootprintSave(str(tmp), loaded):\n        raise SystemExit(f"KiCad could not serialize footprint: {path}")\n    serialized = tmp.read_text()\n    tmp.unlink()\n    # FootprintSave writes the positioned/reference-updated native footprint.\n    return serialized
-
+    tmp = HW / f".{ref}.kicad_mod"
+    if not pcbnew.FootprintSave(str(tmp), loaded):
+        raise SystemExit(f"KiCad could not serialize footprint: {path}")
+    serialized = tmp.read_text()
+    tmp.unlink()
+    return serialized
 
 body = """(kicad_pcb
   (version 20240108)
