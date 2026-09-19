@@ -1,6 +1,6 @@
 # C64RS232 M2 — PCB placement baseline
 
-## M2.1 — Mechanical placement freeze — IN PROGRESS
+## M2.1 — Mechanical placement freeze — COMPLETE
 
 M2 starts from the M1.10-qualified footprints. The first PCB step is deliberately mechanical: freeze the board coordinate system, connector edges and component zones before routing.
 
@@ -72,4 +72,4 @@ No Gerbers are released from M2.1.
 
 ## Status
 
-M2.1 is in progress. Exact final board dimensions remain intentionally unfrozen until the native PCB exists and connector placement is mechanically reviewed.
+M2.1 passed the enforced GitHub Actions structural qualification gate in run #104. The native PCB baseline has 2 copper layers, 1.57 mm nominal thickness, all nine frozen footprints exactly once, a closed provisional Edge.Cuts outline, and the J1/J2 mechanical anchors. No Gerbers are released from M2.1.\n\n## M2.2 — Component placement and charge-pump/power routing — IN PROGRESS\n\nM2.2 now owns refinement of the component coordinates plus the protected +5 V, GND/bypass and MAX3243E charge-pump routing. Final board dimensions remain provisional until the later mechanical/fabrication review.
