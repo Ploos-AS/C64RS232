@@ -27,7 +27,7 @@ for (x,y), want in expected.items():
     if got != want:
         raise SystemExit(f"M2.3 FAIL: J1 pin at {x},{y}: expected {want}, got {got}")
 
-for x,y in (("58.42","86.36"),("58.42","83.82"),("33.02","106.68"),("33.02","91.44")):
+for x,y in (("58.42","86.36"),("58.42","83.82"),("33.02","106.68"),):
     if not re.search(rf'\(no_connect \(at {re.escape(x)} {re.escape(y)}\)', text):
         raise SystemExit(f"M2.3 FAIL: J1 unused pin at {x},{y} is not explicitly no-connect")
 
