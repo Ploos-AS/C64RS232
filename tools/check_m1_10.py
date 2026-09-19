@@ -34,6 +34,21 @@ for required in ("5747844-4","2.7432","1.4224","12.4968","(drill 1.05)","(drill 
 gate=GATE.read_text(encoding="utf-8"); bom=BOM.read_text(encoding="utf-8"); sch=SCH.read_text(encoding="utf-8")
 for required in ("5747844-4","1206L010/30WR","100 mA","250 mA","30 V","1.57 mm","2.74 mm","ENG_CD_5747844_P.pdf","25 V","X7R","0805"):
     if required not in gate: fail(f"gate document missing: {required}")
+# Parse J2 instead of relying only on marker strings.
+j2pads=re.findall(r'\\(pad\\s+"([^"]+)"\\s+(thru_hole|np_thru_hole)\\s+circle\\s+\\(at\\s+([-0-9.]+)\\s+([-0-9.]+)\\).*?\\(drill\\s+([-0-9.]+)\\)',j2fp)
+sig={n:(kind,float(x),float(y),float(d)) for n,kind,x,y,d in j2pads if n.isdigit()}
+if sorted(sig)!=[str(i) for i in range(1,10)]: fail(f"J2 signal pad set mismatch: {sorted(sig)}")
+for n,(kind,x,y,d) in sig.items():
+    if kind!="thru_hole" or abs(d-1.05)>1e-6: fail(f"J2 pad {n}: expected 1.05 mm plated drill")
+for row in (["1","2","3","4","5"],["6","7","8","9"]):
+    xs=[sig[n][1] for n in row]
+    for a,b in zip(xs,xs[1:]):
+        if abs((b-a)-2.7432)>1e-6: fail(f"J2 bad signal pitch: {b-a:.4f} mm")
+if abs(sig["1"][2]+1.4224)>1e-6 or abs(sig["6"][2]-1.4224)>1e-6: fail("J2 row placement mismatch")
+if abs((sig["6"][2]-sig["1"][2])-2.8448)>1e-6: fail("J2 row spacing mismatch")
+if "Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder" not in sch: fail("F1 accepted 1206 land pattern missing")
+if "1.45 mm × 1.80 mm" not in gate or "4.40 mm overall span" not in gate: fail("F1 manufacturer land-pattern verification missing from gate")
+
 if "MAX3243EIPWR" not in bom: fail("BOM lost MAX3243EIPWR")
 for required in ("TE Connectivity 5747844-4","Littelfuse 1206L010/30WR","47nF 25V X7R 0805","330nF 25V X7R 0805","100nF 25V X7R 0805"):
     if required not in bom: fail(f"BOM missing frozen M1.10 item: {required}")
