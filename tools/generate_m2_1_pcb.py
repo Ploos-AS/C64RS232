@@ -41,6 +41,14 @@ def fp(ref, name, x, y):
         raise SystemExit(f"KiCad could not load footprint: {path}")
     loaded.SetReference(ref)
     loaded.SetPosition(pcbnew.VECTOR2I_MM(x, y))
+    pad_nets = {
+        "J1": {"2":"RAW_5V","A":"GND","N":"GND","B":"C64_RXD","C":"C64_RXD","D":"C64_RTS","E":"C64_DTR","F":"C64_RI","H":"C64_DCD","K":"C64_CTS","L":"C64_DSR","M":"C64_TXD"},
+        "J2": {"1":"RS232_DCD","2":"RS232_RXD","3":"RS232_TXD","4":"RS232_DTR","5":"GND","6":"RS232_DSR","7":"RS232_RTS","8":"RS232_CTS","9":"RS232_RI"},
+        "F1": {"1":"RAW_5V","2":"+5V"},
+    }
+    # Inject net attributes after serialization; net IDs are frozen by the board header.
+    net_ids = {"RAW_5V":1,"+5V":2,"GND":3,"C64_TXD":10,"C64_RXD":11,"C64_RTS":12,"C64_CTS":13,"C64_DTR":14,"C64_DSR":15,"C64_DCD":16,"C64_RI":17,
+               "RS232_TXD":18,"RS232_RXD":19,"RS232_RTS":20,"RS232_CTS":21,"RS232_DTR":22,"RS232_DSR":23,"RS232_DCD":24,"RS232_RI":25}
     board = pcbnew.BOARD()
     board.Add(loaded)
     tmp = HW / f".{ref}.kicad_pcb"
@@ -61,7 +69,28 @@ def fp(ref, name, x, y):
                 break
     if end is None:
         raise SystemExit(f"could not extract serialized footprint: {path}")
-    return serialized_board[start:end]
+    serialized = serialized_board[start:end]
+    for pin, net in pad_nets.get(ref, {}).items():
+        marker = f'(pad "{pin}" '
+        pos = serialized.find(marker)
+        if pos < 0:
+            raise SystemExit(f"missing {ref}/{pin} while assigning {net}")
+        # Add the native pad net attribute before the pad closes; KiCad accepts it in pad scope.
+        depth = 0
+        pend = None
+        for p in range(pos, len(serialized)):
+            if serialized[p] == "(":
+                depth += 1
+            elif serialized[p] == ")":
+                depth -= 1
+                if depth == 0:
+                    pend = p
+                    break
+        if pend is None:
+            raise SystemExit(f"could not parse {ref}/{pin}")
+        attr = f'\n\t\t(net {net_ids[net]} "{net}")'
+        serialized = serialized[:pend] + attr + serialized[pend:]
+    return serialized
 
 body = """(kicad_pcb
   (version 20240108)
