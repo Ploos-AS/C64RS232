@@ -45,6 +45,14 @@ def fp(ref, name, x, y):
         "J1": {"2":"RAW_5V","A":"GND","N":"GND","B":"C64_RXD","C":"C64_RXD","D":"C64_RTS","E":"C64_DTR","F":"C64_RI","H":"C64_DCD","K":"C64_CTS","L":"C64_DSR","M":"C64_TXD"},
         "J2": {"1":"RS232_DCD","2":"RS232_RXD","3":"RS232_TXD","4":"RS232_DTR","5":"GND","6":"RS232_DSR","7":"RS232_RTS","8":"RS232_CTS","9":"RS232_RI"},
         "F1": {"1":"RAW_5V","2":"+5V"},
+        "U1": {"1":"C2_PLUS","2":"C2_MINUS","3":"VMINUS","4":"RS232_RXD","5":"RS232_CTS","6":"RS232_DSR","7":"RS232_DCD","8":"RS232_RI",
+               "9":"RS232_TXD","10":"RS232_RTS","11":"RS232_DTR","12":"C64_DTR","13":"C64_RTS","14":"C64_TXD","15":"C64_RI","16":"C64_DCD",
+               "17":"C64_DSR","18":"C64_CTS","19":"C64_RXD","22":"+5V","23":"+5V","24":"C1_MINUS","25":"GND","26":"+5V","27":"VPLUS","28":"C1_PLUS"},
+        "C1": {"1":"C1_PLUS","2":"C1_MINUS"},
+        "C2": {"1":"C2_PLUS","2":"C2_MINUS"},
+        "C3": {"1":"VPLUS","2":"GND"},
+        "C4": {"1":"VMINUS","2":"GND"},
+        "C5": {"1":"+5V","2":"GND"},
     }
     # Inject net attributes after serialization; net IDs are frozen by the board header.
     net_ids = {"RAW_5V":1,"+5V":2,"GND":3,"C64_TXD":10,"C64_RXD":11,"C64_RTS":12,"C64_CTS":13,"C64_DTR":14,"C64_DSR":15,"C64_DCD":16,"C64_RI":17,
