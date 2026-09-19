@@ -23,7 +23,7 @@ try:
     time.sleep(8)
 
     # F8 is KiCad's Update PCB from Schematic hotkey.
-    # Activate the actual eeschema window by PID; its title is not stable in CI.\n    search = subprocess.run(["xdotool", "search", "--pid", str(eeschema.pid)], env=env, check=True, capture_output=True, text=True)\n    windows = [w for w in search.stdout.splitlines() if w.strip()]\n    if not windows:\n        raise SystemExit("could not find eeschema X11 window")\n    win = windows[-1]\n    subprocess.run(["xdotool", "windowactivate", "--sync", win], env=env, check=True)\n    subprocess.run(["xdotool", "key", "--window", win, "F8"], env=env, check=True)\n    time.sleep(8)
+    # Activate the actual eeschema window by PID; its title is not stable in CI.\n    search = subprocess.run(["xdotool", "search", "--pid", str(eeschema.pid)], env=env, check=True, capture_output=True, text=True)\n    windows = [w for w in search.stdout.splitlines() if w.strip()]\n    if not windows:\n        raise SystemExit("could not find eeschema X11 window")\n    win = windows[-1]\n    subprocess.run(["xdotool", "windowactivate", "--sync", win], env=env, check=True)\n    subprocess.run(["xdotool", "key", "--window", win, "F8"], env=env, check=True)\n    time.sleep(8)\n\n    # CI diagnostics: capture the exact post-F8 GUI state instead of guessing.\n    subprocess.run(["xdotool", "search", "--onlyvisible", "--name", ".*", "getwindowname", "%@"], env=env, check=False)\n    subprocess.run(["import", "-window", "root", str(ROOT / "m2_1_after_f8.png")], env=env, check=False)
 
     # Accept/update the PCB dialog, then save the board.
     subprocess.run(["xdotool", "key", "Return"], env=env, check=False)
