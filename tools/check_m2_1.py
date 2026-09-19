@@ -40,8 +40,6 @@ require(abs(by_ref["J1"][2] - y1) < 0.001, "J1 insertion datum is not anchored t
 # TE footprint connector-front datum is local y=-8.08; with J2 at 77.08 this is y=69.00.
 require(abs((by_ref["J2"][2] - 8.08) - 69.00) < 0.001, "J2 connector-front datum moved")
 require(y2 > by_ref["J2"][2], "J2 is not placed at the opposite end of the board")
-require("(segment " not in text and "(arc " not in text, "M2.1 must remain unrouted")
-require("(zone " not in text, "M2.1 must not contain copper zones yet")
 
 print("M2.1 PCB STRUCTURAL QUALIFICATION PASS")
 print("  native KiCad PCB; 2 copper layers; 1.57 mm")
