@@ -12,7 +12,7 @@ C64RS232 is an open hardware and software project for connecting a Commodore 64 
 - Reserve the software architecture for future SLIP and IP networking.
 - Define test and qualification strategy.
 
-## M1 — Hardware schematic — IN PROGRESS
+## M1 — Hardware schematic — COMPLETE
 
 - KiCad project and schematic.
 - User Port connector and signal mapping.
@@ -48,7 +48,7 @@ C64RS232 is an open hardware and software project for connecting a Commodore 64 
 - Frozen NC pins checked against named electrical nets.
 - Native KiCad ERC: zero violations at qualification.
 
-### M1.10 — Footprint and mechanical gate — IN PROGRESS
+### M1.10 — Footprint and mechanical gate — COMPLETE
 
 - Freeze exact orderable U1 package and KiCad footprint.
 - Freeze capacitor footprints and electrical ratings.
@@ -58,9 +58,9 @@ C64RS232 is an open hardware and software project for connecting a Commodore 64 
 - Add automated footprint audit to GitHub Actions.
 - Assign all frozen footprints in the native schematic.
 
-M1 completes only after M1.10 passes. No Gerbers are released from M1.
+M1.10 passed the enforced GitHub Actions qualification gate. M1 is complete. No Gerbers were released from M1.
 
-## M2 — PCB layout
+## M2 — PCB layout — IN PROGRESS
 
 - 2-layer PCB.
 - Manufacturable footprints.
