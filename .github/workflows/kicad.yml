@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: m2-1-kicad-gui-diagnostics
-          path: m2_1_after_f8.png
+          path: hardware/m2_1_after_f8.png
           if-no-files-found: warn
 
       - name: Enforce M2.1 generation result
