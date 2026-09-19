@@ -41,12 +41,27 @@ def fp(ref, name, x, y):
         raise SystemExit(f"KiCad could not load footprint: {path}")
     loaded.SetReference(ref)
     loaded.SetPosition(pcbnew.VECTOR2I_MM(x, y))
-    tmp = HW / f".{ref}.kicad_mod"
-    if not pcbnew.FootprintSave(str(tmp), loaded):
-        raise SystemExit(f"KiCad could not serialize footprint: {path}")
-    serialized = tmp.read_text()
+    board = pcbnew.BOARD()
+    board.Add(loaded)
+    tmp = HW / f".{ref}.kicad_pcb"
+    pcbnew.SaveBoard(str(tmp), board)
+    serialized_board = tmp.read_text()
     tmp.unlink()
-    return serialized
+    start = serialized_board.index("(footprint ")
+    depth = 0
+    end = None
+    for pos in range(start, len(serialized_board)):
+        ch = serialized_board[pos]
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+            if depth == 0:
+                end = pos + 1
+                break
+    if end is None:
+        raise SystemExit(f"could not extract serialized footprint: {path}")
+    return serialized_board[start:end]
 
 body = """(kicad_pcb
   (version 20240108)
