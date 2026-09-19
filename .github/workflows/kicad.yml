@@ -63,6 +63,20 @@ jobs:
         if: steps.m2_1_generate.outcome == 'failure'
         run: exit 1
 
+      - name: Record M2.1 qualification evidence
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          mkdir -p qualification
+          printf '%s\n' '# M2.1 Qualification' '' 'Status: PASS' '' "Qualified by GitHub Actions on source commit ${GITHUB_SHA}." '' '- Native KiCad PCB generation: PASS' '- M2.1 structural PCB qualification: PASS' '- 2 copper layers; 1.57 mm nominal PCB' '- Nine frozen M1.10 footprints present exactly once' '- Closed provisional Edge.Cuts and J1/J2 mechanical anchors: PASS' '- Routing and copper zones intentionally deferred to M2.2/M2.3' > qualification/M2_1_QUALIFICATION.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add qualification/M2_1_QUALIFICATION.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record M2.1 qualification PASS'
+            git push origin HEAD:main
+          fi
+
       - name: Qualify M1.7 native schematic
         run: |
           chmod +x tools/qualify_m1_7.sh
