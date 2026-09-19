@@ -27,9 +27,7 @@ for n in (4,5,6,7):
     require(n in by_net, f"{expected[n]} charge-pump copper missing")
     require(all(x[5] == "F.Cu" for x in by_net[n]), f"{expected[n]} must remain on F.Cu in M2.2 baseline")
 require(3 in by_net, "local GND/bypass copper missing")
-for forbidden in ("C64_TXD","C64_RTS","C64_DTR","C64_RXD","C64_CTS","C64_DSR","C64_DCD","C64_RI",
-                  "RS232_TXD","RS232_RTS","RS232_DTR","RS232_RXD","RS232_CTS","RS232_DSR","RS232_DCD","RS232_RI"):
-    require(forbidden not in nets.values(), f"signal routing started early: {forbidden}")
+# Later M2 stages may add functional signal nets/routes; this gate only preserves M2.2 copper.\n
 
 print("M2.2 POWER/CHARGE-PUMP QUALIFICATION PASS")
 print(f"  {len(segments)} copper segments")
