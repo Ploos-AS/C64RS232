@@ -17,11 +17,11 @@ require('(0 "F.Cu" signal)' in text and '(31 "B.Cu" signal)' in text, "expected 
 require(text.count('"F.Cu" signal') == 1 and text.count('"B.Cu" signal') == 1, "unexpected copper-layer definition")
 
 expected = {
-    "J1": "C64RS232:C64_User_Port_Edge",
-    "J2": "C64RS232:TE_5747844-4",
-    "U1": "Package_SO:TSSOP-28_4.4x9.7mm_P0.65mm",
-    "F1": "Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder",
-    **{f"C{i}": "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" for i in range(1, 6)},
+    "J1": "C64_User_Port_Edge",
+    "J2": "TE_5747844-4",
+    "U1": "TSSOP-28_4.4x9.7mm_P0.65mm",
+    "F1": "Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder",
+    **{f"C{i}": "C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" for i in range(1, 6)},
 }
 fps = re.findall(r'\(footprint "([^"]+)".*?\(at ([0-9.]+) ([0-9.]+)\).*?\(property "Reference" "([^"]+)"', text, re.S)
 by_ref = {}
