@@ -102,15 +102,15 @@ jobs:
       - name: Enforce M1.10 qualification
         if: always()
         run: |
-          if [ '${{ steps.m1_10.outcome }}' != 'success' ]; then
+          if [ "${{ steps.m1_10.outcome }}" != 'success' ]; then
             echo 'M1.10 physical-part/footprint qualification failed.'
             exit 1
           fi
-          if [ '${{ steps.m1_7.outcome }}' != 'success' ]; then
+          if [ "${{ steps.m1_7.outcome }}" != 'success' ]; then
             echo 'M1.7 runner qualification regressed.'
             exit 1
           fi
-          if [ '${{ steps.m1_8.outcome }}' != 'success' ]; then
+          if [ "${{ steps.m1_8.outcome }}" != 'success' ]; then
             echo 'M1.9 electrical-net/ERC qualification failed.'
             exit 1
           fi
