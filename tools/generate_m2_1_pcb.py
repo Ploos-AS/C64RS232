@@ -55,7 +55,7 @@ def fp(ref, name, x, y):
         "C5": {"1":"+5V","2":"GND"},
     }
     # Inject net attributes after serialization; net IDs are frozen by the board header.
-    net_ids = {"RAW_5V":1,"+5V":2,"GND":3,"C64_TXD":10,"C64_RXD":11,"C64_RTS":12,"C64_CTS":13,"C64_DTR":14,"C64_DSR":15,"C64_DCD":16,"C64_RI":17,
+    net_ids = {"RAW_5V":1,"+5V":2,"GND":3,"C1_PLUS":4,"C1_MINUS":5,"C2_PLUS":6,"C2_MINUS":7,"VPLUS":8,"VMINUS":9,"C64_TXD":10,"C64_RXD":11,"C64_RTS":12,"C64_CTS":13,"C64_DTR":14,"C64_DSR":15,"C64_DCD":16,"C64_RI":17,
                "RS232_TXD":18,"RS232_RXD":19,"RS232_RTS":20,"RS232_CTS":21,"RS232_DTR":22,"RS232_DSR":23,"RS232_DCD":24,"RS232_RI":25}
     board = pcbnew.BOARD()
     board.Add(loaded)
