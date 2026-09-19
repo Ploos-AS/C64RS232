@@ -1,17 +1,6 @@
 name: KiCad
 
-'on':
-  workflow_dispatch:
-  push:
-    paths:
-      - 'hardware/**'
-      - 'tools/**'
-      - '.github/workflows/kicad.yml'
-  pull_request:
-    paths:
-      - 'hardware/**'
-      - 'tools/**'
-      - '.github/workflows/kicad.yml'
+on: [push, pull_request, workflow_dispatch]
 
 permissions:
   contents: write
