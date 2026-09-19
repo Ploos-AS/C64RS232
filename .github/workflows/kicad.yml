@@ -8,8 +8,24 @@ permissions:
 jobs:
   schematic:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Workflow syntax smoke test
-        run: echo "KiCad workflow syntax OK"
+
+      - name: Install minimal KiCad 9 and headless GUI dependencies
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          sudo add-apt-repository -y ppa:kicad/kicad-9.0-releases
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \\
+            kicad kicad-symbols kicad-footprints \\
+            xvfb xdotool imagemagick
+          kicad-cli version
+
+      - name: Generate M1.10 electrical and footprint baseline
+        run: python3 tools/wire_m1_8.py
+
+      - name: Audit M1.10 physical parts and footprint assignments
+        run: python3 tools/check_m1_10.py
