@@ -83,7 +83,7 @@ Electrical baseline:
 - package: 1206 / 3216 metric;
 - surface mount.
 
-The Littelfuse 1206L datasheet confirms ordering number `1206L010/30WR`, 100 mA hold current, 250 mA trip current, 30 V maximum voltage and 1206 surface-mount construction. The current KiCad 1206 fuse footprint is retained as the M1.10 baseline, but final M2 DRC/fabrication review must keep the manufacturer body/termination envelope clear and preserve short routing between the User Port +5 V input and protected `+5V` rail.
+The Littelfuse 1206L datasheet confirms ordering number `1206L010/30WR`, 100 mA hold current, 250 mA trip current, 30 V maximum voltage and 1206 surface-mount construction. Littelfuse's recommended 1206 pad layout is approximately 1.45 mm × 1.80 mm per pad with 1.50 mm inner spacing (4.40 mm overall span). The assigned KiCad `Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder` land pattern is within about 0.05 mm of those manufacturer pad dimensions and is accepted for M1.10. Final M2 DRC/fabrication review must keep the manufacturer body/termination envelope clear and preserve short routing between the User Port +5 V input and protected `+5V` rail.
 
 ## M1.10 completion gate
 
