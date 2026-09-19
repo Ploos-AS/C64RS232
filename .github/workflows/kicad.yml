@@ -61,14 +61,20 @@ jobs:
           import pcbnew
           board = pcbnew.LoadBoard("hardware/C64RS232.kicad_pcb")
           footprints = list(board.GetFootprints())
-          pads = [pad for fp in footprints for pad in fp.Pads()]
+          pad_counts = {fp.GetReference(): len(list(fp.Pads())) for fp in footprints}
+          pads = sum(pad_counts.values())
           print("KiCad pcbnew:", pcbnew.GetBuildVersion())
           print("footprints:", len(footprints))
-          print("pads:", len(pads))
+          print("pad counts:", pad_counts)
+          print("pads:", pads)
+          expected = {"J1":24, "J2":11, "U1":28, "F1":2,
+                      "C1":2, "C2":2, "C3":2, "C4":2, "C5":2}
           if len(footprints) != 9:
               raise SystemExit(f"expected 9 footprints, got {len(footprints)}")
-          if len(pads) == 0:
-              raise SystemExit("generated PCB has no real pads; M2 physical qualification blocked")
+          if pad_counts != expected:
+              raise SystemExit(f"real footprint pads required: expected {expected}, got {pad_counts}")
+          if pads != 75:
+              raise SystemExit(f"expected 75 physical pad objects, got {pads}")
           PY
 
       - name: Qualify M2.1 PCB structure
