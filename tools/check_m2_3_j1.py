@@ -7,10 +7,14 @@ SCH = Path(__file__).resolve().parents[1] / "hardware/C64RS232_M1.kicad_sch"
 text = SCH.read_text()
 
 def labels_at(x, y):
-    return re.findall(rf'\(label "([^"]+)"\s+\(at {re.escape(x)} {re.escape(y)} 0\)', text)
+    # KiCad may normalize decimal spelling (88.90 -> 88.9), so compare numerically.
+    found = []
+    pattern = r'\(label "([^"]+)"\s+\(at ([0-9.]+) ([0-9.]+) 0\)'
+    for name, sx, sy in re.findall(pattern, text):
+        if abs(float(sx) - float(x)) < 1e-6 and abs(float(sy) - float(y)) < 1e-6:
+            found.append(name)
+    return found
 
-# The legacy C64_USERPORT symbol is drawn with its pin labels on x=33.02.
-# B and C are intentionally both RXD in the established C64 RS-232 contract.
 expected = {
     "83.82": {"GND"}, "86.36": {"C64_RXD"}, "88.90": {"C64_RXD"},
     "91.44": {"C64_RTS"}, "93.98": {"C64_DTR"}, "96.52": {"C64_RI"},
@@ -29,4 +33,4 @@ for name in ("C64_TXD", "C64_RXD", "C64_RTS", "C64_CTS",
 
 print("M2.3 C64 USER PORT CONTRACT PASS")
 print("  verified: B/C=RXD, M=TXD, D=RTS, E=DTR, F=RI, H=DCD, K=CTS, L=DSR")
-print("  GND anchors verified; legacy J1 coordinate model is explicit")
+print("  GND anchors verified; coordinates are compared numerically")
