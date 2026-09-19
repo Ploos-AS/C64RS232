@@ -48,6 +48,9 @@ jobs:
         continue-on-error: true
         run: python3 tools/generate_m2_1_pcb.py
 
+      - name: Qualify M2.1 PCB structure
+        run: python3 tools/check_m2_1.py
+
       - name: Upload M2.1 GUI diagnostics
         if: steps.m2_1_generate.outcome == 'failure'
         uses: actions/upload-artifact@v4
