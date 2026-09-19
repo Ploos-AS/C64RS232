@@ -43,6 +43,9 @@ jobs:
       - name: Audit M1.10 physical parts and footprint assignments
         run: python3 tools/check_m1_10.py
 
+      - name: Generate M2.1 native PCB baseline
+        run: python3 tools/generate_m2_1_pcb.py
+
       - name: Qualify M1.7 native schematic
         run: |
           chmod +x tools/qualify_m1_7.sh
