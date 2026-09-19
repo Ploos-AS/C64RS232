@@ -44,7 +44,21 @@ jobs:
         run: python3 tools/check_m1_10.py
 
       - name: Generate M2.1 native PCB baseline
+        id: m2_1_generate
+        continue-on-error: true
         run: python3 tools/generate_m2_1_pcb.py
+
+      - name: Upload M2.1 GUI diagnostics
+        if: steps.m2_1_generate.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: m2-1-kicad-gui-diagnostics
+          path: m2_1_after_f8.png
+          if-no-files-found: warn
+
+      - name: Enforce M2.1 generation result
+        if: steps.m2_1_generate.outcome == 'failure'
+        run: exit 1
 
       - name: Qualify M1.7 native schematic
         run: |
