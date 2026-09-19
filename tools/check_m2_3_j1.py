@@ -36,5 +36,5 @@ for name in ("C64_TXD","C64_RXD","C64_RTS","C64_CTS","C64_DTR","C64_DSR","C64_DC
         raise SystemExit(f"M2.3 FAIL: missing {name}")
 
 print("M2.3 C64 USER PORT CONTRACT PASS")
-print("  C64 RS-232 signals mapped to M/C/D/K/E/L/H/F respectively")
+print("  C64 RS-232 signals mapped with B+C RXD, plus M/D/E/F/H/K/L")
 print("  power/ground and unused User Port pins explicitly constrained")
