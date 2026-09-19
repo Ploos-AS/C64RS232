@@ -5,10 +5,14 @@ M2.1 is a mechanical/placement gate. Connectivity/routing remains qualified
 from the schematic and is intentionally deferred to later M2 stages.
 """
 from pathlib import Path
+import os
+import pcbnew
 
 ROOT = Path(__file__).resolve().parents[1]
 HW = ROOT / "hardware"
 PCB = HW / "C64RS232.kicad_pcb"
+PROJECT_LIB = HW / "C64RS232.pretty"
+SYSTEM_LIB = Path(os.environ.get("KICAD9_FOOTPRINT_DIR", "/usr/share/kicad/footprints"))
 
 footprints = [
     ("J1", "C64RS232:C64_User_Port_Edge", 54.22, 20.00),
@@ -22,11 +26,24 @@ footprints = [
     ("J2", "C64RS232:TE_5747844-4", 54.22, 77.08),
 ]
 
+def footprint_file(name):
+    lib, item = name.split(":", 1)
+    if lib == "C64RS232":
+        return PROJECT_LIB / f"{item}.kicad_mod"
+    return SYSTEM_LIB / f"{lib}.pretty" / f"{item}.kicad_mod"
+
 def fp(ref, name, x, y):
-    return f'''  (footprint "{name}" (layer "F.Cu") (at {x:.2f} {y:.2f})
-    (property "Reference" "{ref}" (at 0 -3 0) (layer "F.SilkS"))
-    (property "Value" "{name.split(":")[-1]}" (at 0 3 0) (layer "F.Fab") hide)
-  )'''
+    path = footprint_file(name)
+    if not path.is_file():
+        raise SystemExit(f"missing footprint: {path}")
+    loaded = pcbnew.FootprintLoad(str(path.parent), path.stem)
+    if loaded is None:
+        raise SystemExit(f"KiCad could not load footprint: {path}")
+    loaded.SetReference(ref)
+    loaded.SetPosition(pcbnew.VECTOR2I_MM(x, y))
+    # Serialize the actual KiCad footprint, including pads and geometry.
+    return pcbnew.FootprintSave(loaded) if hasattr(pcbnew, "FootprintSave") else path.read_text()
+
 
 body = """(kicad_pcb
   (version 20240108)
