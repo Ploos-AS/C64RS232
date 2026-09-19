@@ -19,9 +19,7 @@ jobs:
           set -euo pipefail
           sudo add-apt-repository -y ppa:kicad/kicad-9.0-releases
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \\
-            kicad kicad-symbols kicad-footprints \\
-            xvfb xdotool imagemagick
+          sudo apt-get install -y --no-install-recommends kicad kicad-symbols kicad-footprints xvfb xdotool imagemagick
           kicad-cli version
 
       - name: Generate M1.10 electrical and footprint baseline
