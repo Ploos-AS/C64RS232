@@ -36,6 +36,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends kicad kicad-symbols kicad-footprints xvfb xdotool imagemagick
           kicad-cli version
+          python3 - <<'PY'
+          try:
+              import pcbnew
+              print("pcbnew Python:", pcbnew.GetBuildVersion())
+          except Exception as exc:
+              print("pcbnew Python unavailable:", repr(exc))
+          PY
 
       - name: Generate M1.10 electrical and footprint baseline
         run: python3 tools/wire_m1_8.py
