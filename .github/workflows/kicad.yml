@@ -55,6 +55,22 @@ jobs:
         continue-on-error: true
         run: python3 tools/generate_m2_1_pcb.py
 
+      - name: Validate generated PCB with KiCad parser
+        run: |
+          python3 - <<'PY'
+          import pcbnew
+          board = pcbnew.LoadBoard("hardware/C64RS232.kicad_pcb")
+          footprints = list(board.GetFootprints())
+          pads = [pad for fp in footprints for pad in fp.Pads()]
+          print("KiCad pcbnew:", pcbnew.GetBuildVersion())
+          print("footprints:", len(footprints))
+          print("pads:", len(pads))
+          if len(footprints) != 9:
+              raise SystemExit(f"expected 9 footprints, got {len(footprints)}")
+          if len(pads) == 0:
+              raise SystemExit("generated PCB has no real pads; M2 physical qualification blocked")
+          PY
+
       - name: Qualify M2.1 PCB structure
         run: python3 tools/check_m2_1.py
 
