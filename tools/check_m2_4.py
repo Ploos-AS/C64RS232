@@ -2,6 +2,7 @@
 """Qualify the frozen M2.4 mechanical footprint baseline."""
 from pathlib import Path
 import re
+import pcbnew
 
 PCB = Path(__file__).resolve().parents[1] / "hardware/C64RS232.kicad_pcb"
 text = PCB.read_text()
@@ -18,13 +19,17 @@ require('(gr_rect (start 28.00 20.00) (end 80.44 85.16)' in text,
 
 # J1 insertion edge is deliberately coincident with the top board edge.
 require('(footprint "C64_User_Port_Edge"' in text, "C64 User Port footprint missing")
-require(re.search(r'\(at 32\.44(?:0+)? 20(?:\.0+)?\)', text) is not None,
+board = pcbnew.LoadBoard(str(PCB))
+refs = {fp.GetReference(): fp for fp in board.GetFootprints()}
+j1p = refs["J1"].GetPosition()
+require(abs(pcbnew.ToMM(j1p.x) - 32.44) < 0.001 and abs(pcbnew.ToMM(j1p.y) - 20.0) < 0.001,
         "C64 User Port mechanical anchor moved")
 require('PCB EDGE / INSERTION' in text, "C64 insertion-edge marking missing")
 
 # TE 5747844-4 footprint includes the two manufacturer boardlock holes.
 require('(footprint "TE_5747844-4"' in text, "TE 5747844-4 footprint missing")
-require(re.search(r'\(at 54\.22(?:0+)? 77\.08(?:0+)?\)', text) is not None,
+j2p = refs["J2"].GetPosition()
+require(abs(pcbnew.ToMM(j2p.x) - 54.22) < 0.001 and abs(pcbnew.ToMM(j2p.y) - 77.08) < 0.001,
         "DE-9 mechanical anchor moved")
 require('(pad "MP1" thru_hole circle' in text and '(pad "MP2" thru_hole circle' in text,
         "DE-9 boardlock mounting holes missing")
