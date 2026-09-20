@@ -143,6 +143,8 @@ jobs:
               net = track.GetNetname()
               if not net:
                   continue
+              if isinstance(track, pcbnew.PCB_VIA):
+                  continue
               starts = (track.GetStart(), track.GetEnd())
               if not any(any(pt == pos for _, _, pos in pads_by_net.get(net, [])) for pt in starts):
                   floating.append(net)
