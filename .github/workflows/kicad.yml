@@ -144,7 +144,13 @@ jobs:
           items = [t for t in board.GetTracks() if t.GetNetname()]
           for net in sorted({t.GetNetname() for t in items}):
               net_items = [t for t in items if t.GetNetname() == net]
-              anchors = {(pos.x, pos.y) for _, _, pos in pads_by_net.get(net, [])}\n              # Copper on either side of a through-hole pad is physically anchored.\n              for fp in board.GetFootprints():\n                  for pad in fp.Pads():\n                      if pad.GetNetname() == net and pad.GetAttribute() == pcbnew.PAD_ATTRIB_PTH:\n                          p = pad.GetPosition()\n                          anchors.add((p.x, p.y))
+              anchors = {(pos.x, pos.y) for _, _, pos in pads_by_net.get(net, [])}
+              # Copper on either side of a through-hole pad is physically anchored.
+              for fp in board.GetFootprints():
+                  for pad in fp.Pads():
+                      if pad.GetNetname() == net and pad.GetAttribute() == pcbnew.PAD_ATTRIB_PTH:
+                          p = pad.GetPosition()
+                          anchors.add((p.x, p.y))
               if not anchors:
                   raise SystemExit(f"M2 physical copper gate FAIL: {net} has copper but no pads")
               points = []
