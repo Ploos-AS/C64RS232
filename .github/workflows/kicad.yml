@@ -146,7 +146,11 @@ jobs:
               if isinstance(track, pcbnew.PCB_VIA):
                   continue
               starts = (track.GetStart(), track.GetEnd())
-              if not any(any(pt == pos for _, _, pos in pads_by_net.get(net, [])) for pt in starts):
+              pad_positions = [pos for _, _, pos in pads_by_net.get(net, [])]
+              via_positions = [v.GetPosition() for v in board.GetTracks()
+                               if isinstance(v, pcbnew.PCB_VIA) and v.GetNetname() == net]
+              anchors = pad_positions + via_positions
+              if not any(pt in anchors for pt in starts):
                   floating.append(net)
           if floating:
               raise SystemExit("M2 physical copper gate FAIL: tracks not anchored to a same-net pad: " + ", ".join(sorted(set(floating))))
