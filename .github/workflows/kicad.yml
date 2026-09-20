@@ -157,12 +157,11 @@ jobs:
       - name: Qualify M2.3 C64 User Port mapping
         run: python3 tools/check_m2_3_j1.py
 
-      - name: Qualify M2.3 signal routing and GND plane
-        run: python3 tools/check_m2_3.py
-
       - name: Qualify M2.2 power and charge-pump copper
         run: python3 tools/check_m2_2.py
 
+      - name: Qualify M2.3 signal routing and GND plane
+        run: python3 tools/check_m2_3.py
       - name: Upload M2.1 GUI diagnostics
         if: steps.m2_1_generate.outcome == 'failure'
         uses: actions/upload-artifact@v4
