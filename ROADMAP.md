@@ -70,6 +70,44 @@ M1.10 passed the enforced GitHub Actions qualification gate. M1 is complete. No 
 - DRC clean.
 - Gerber and drill generation.
 
+### M2.1 — Mechanical placement baseline — COMPLETE
+
+- Native KiCad PCB with all nine frozen footprints and 75 physical pads.
+- J1 card-edge placement corrected and centered inside the board outline.
+- J2, U1, PTC and capacitor placement baseline established.
+- Closed two-layer board outline qualified in CI.
+
+### M2.2 — Power and charge-pump routing — COMPLETE
+
+- RAW_5V routed from User Port through the resettable PTC.
+- Protected +5 V routed to MAX3243E and bypass capacitor.
+- C1/C2 charge-pump and V+/V- capacitor nets physically routed.
+- Local GND/bypass copper present.
+- Physical pad-net and non-floating-copper gates pass.
+
+### M2.3 — Functional signal routing and GND plane — COMPLETE
+
+- All eight C64-side functional serial/control nets physically routed.
+- Both User Port RXD contacts B/C retained on the shared RXD net.
+- All eight RS-232-side functional nets physically routed to the DE-9.
+- Board-wide B.Cu GND zone restored and qualified.
+- GitHub Actions run #158 passed the complete M1 regression plus M2.1/M2.2/M2.3 gates.
+
+### M2.4 — Silkscreen, mechanical and fabrication review — NEXT
+
+- Review connector accessibility, board outline and keep-outs.
+- Verify TE 5747844-4 boardlock holes and female DE-9 pin orientation against the official manufacturer drawing.
+- Add final silkscreen labels and polarity/function markings.
+- Review C64 card-edge finish/bevel manufacturing requirements.
+- Review routing geometry and clearances before fabrication.
+
+### M2.5 — Final DRC and fabrication package
+
+- Run native KiCad PCB DRC as a blocking CI gate.
+- Resolve all layout violations and unrouted connections.
+- Generate Gerber and drill outputs.
+- Validate fabrication outputs and publish the qualified hardware package.
+
 ## M3 — C64 serial driver
 
 - CIA-based serial I/O.
