@@ -39,11 +39,15 @@ require('(drill 3.18)' in text, "DE-9 boardlock drill size missing")
 require('TE 5747844-4 / DRAWING 5747844 REV P' in text,
         "DE-9 manufacturer drawing reference missing")
 
-# Frozen J1 pad pitch / contact geometry is 3.96 mm.
-j1 = text[text.find('(footprint "C64_User_Port_Edge"'):text.find('(footprint "TE_5747844-4"')]
-require(j1.count('(pad "') == 24, "C64 User Port must expose 24 contacts")
-require(re.search(r'\(at 3\.96(?:0+)? 3\.81(?:0+)?\)', j1) is not None,
+# Frozen J1 pad inventory / pitch is verified from KiCad's parsed geometry.
+j1pads = list(refs["J1"].Pads())
+require(len(j1pads) == 24, "C64 User Port must expose 24 contacts")
+padpos = {p.GetNumber(): p.GetPosition() for p in j1pads}
+p1, p2 = padpos["1"], padpos["2"]
+require(abs((pcbnew.ToMM(p2.x) - pcbnew.ToMM(p1.x)) - 3.96) < 0.001,
         "C64 User Port 3.96 mm pitch anchor missing")
+require({p.GetNumber() for p in j1pads} == set([str(n) for n in range(1,13)] + list("ABCDEFHJKLMN")),
+        "C64 User Port contact identifiers changed")
 
 print("M2.4 MECHANICAL BASELINE PASS")
 print("  board envelope, J1 insertion edge, J2 boardlocks and frozen connector geometry verified")
