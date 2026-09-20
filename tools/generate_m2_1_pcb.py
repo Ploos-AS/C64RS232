@@ -15,7 +15,7 @@ PROJECT_LIB = HW / "C64RS232.pretty"
 SYSTEM_LIB = Path(os.environ.get("KICAD9_FOOTPRINT_DIR", "/usr/share/kicad/footprints"))
 
 footprints = [
-    ("J1", "C64RS232:C64_User_Port_Edge", 54.22, 20.00),
+    ("J1", "C64RS232:C64_User_Port_Edge", 32.44, 20.00),
     ("F1", "Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder", 54.22, 32.00),
     ("U1", "Package_SO:TSSOP-28_4.4x9.7mm_P0.65mm", 54.22, 48.00),
     ("C1", "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder", 45.00, 45.00),
@@ -114,7 +114,17 @@ body = """(kicad_pcb
   )
   (setup (pad_to_mask_clearance 0))\n  (net 0 "")\n  (net 1 "RAW_5V")\n  (net 2 "+5V")\n  (net 3 "GND")\n  (net 4 "C1_PLUS")\n  (net 5 "C1_MINUS")\n  (net 6 "C2_PLUS")\n  (net 7 "C2_MINUS")\n  (net 8 "VPLUS")\n  (net 9 "VMINUS")\n  (net 10 "C64_TXD")\n  (net 11 "C64_RXD")\n  (net 12 "C64_RTS")\n  (net 13 "C64_CTS")\n  (net 14 "C64_DTR")\n  (net 15 "C64_DSR")\n  (net 16 "C64_DCD")\n  (net 17 "C64_RI")\n  (net 18 "RS232_TXD")\n  (net 19 "RS232_RXD")\n  (net 20 "RS232_RTS")\n  (net 21 "RS232_CTS")\n  (net 22 "RS232_DTR")\n  (net 23 "RS232_DSR")\n  (net 24 "RS232_DCD")\n  (net 25 "RS232_RI")
 """ + "\n".join(fp(*x) for x in footprints) + """
-  (segment (start 54.22 32.00) (end 54.22 32.00) (width 0.60) (layer "F.Cu") (net 1))
+  (segment (start 36.40 23.81) (end 52.7325 32.00) (width 0.60) (layer "F.Cu") (net 1))
+  (segment (start 55.7075 32.00) (end 57.0825 45.0750) (width 0.60) (layer "F.Cu") (net 2))
+  (segment (start 57.0825 45.0750) (end 57.0825 47.0250) (width 0.40) (layer "F.Cu") (net 2))
+  (segment (start 57.0825 47.0250) (end 57.0825 47.6750) (width 0.40) (layer "F.Cu") (net 2))
+  (segment (start 57.0825 47.6750) (end 53.1825 56.0000) (width 0.40) (layer "F.Cu") (net 2))
+  (segment (start 57.0825 43.7750) (end 43.9625 45.0000) (width 0.25) (layer "F.Cu") (net 4))
+  (segment (start 57.0825 46.3750) (end 46.0375 45.0000) (width 0.25) (layer "F.Cu") (net 5))
+  (segment (start 51.3575 43.7750) (end 43.9625 49.0000) (width 0.25) (layer "F.Cu") (net 6))
+  (segment (start 51.3575 44.4250) (end 46.0375 49.0000) (width 0.25) (layer "F.Cu") (net 7))
+  (segment (start 57.0825 44.4250) (end 61.9625 45.0000) (width 0.25) (layer "F.Cu") (net 8))
+  (segment (start 51.3575 45.0750) (end 61.9625 49.0000) (width 0.25) (layer "F.Cu") (net 9))
   (zone (net 3) (net_name "GND") (layer "B.Cu")
     (hatch edge 0.5)
     (connect_pads (clearance 0.3))
