@@ -48,6 +48,19 @@ A successful run validates DRC and produces Gerber/drill data, BOM when a matchi
 
 For tagged hardware releases, a successful qualification run also publishes the versioned manufacturing ZIP to the matching GitHub Release. Manual workflow runs retain the package as a CI artifact and do not create a release.
 
+## C64RS232 card-edge fabrication note
+
+The C64 User Port interface is a PCB card edge and requires fabrication treatment beyond ordinary routed PCB edges. For a qualified C64RS232 hardware release:
+
+- nominal finished PCB thickness is 1.57 mm;
+- the J1 contact fingers must receive a durable plated/gold edge-connector finish supported by the selected manufacturer;
+- the J1 insertion edge must receive a manufacturer-supported bevel/chamfer suitable for a 1.57 mm card-edge connector;
+- copper finger geometry remains defined by the KiCad source and must not be resized to match a generic bevel preset;
+- bevel angle, bevel depth/setback and process tolerances are fabrication-process parameters and must be confirmed against the selected manufacturer's capabilities before release;
+- the 9 VAC contacts remain physically present but electrically isolated from board power.
+
+Do not invent or encode an unsupported bevel angle merely to make a fabrication package appear complete. The M2.5 release notes/order profile must record the actual settings selected for each qualified manufacturer.
+
 ## Order a PCB
 
 For project-specific ordering choices and direct manufacturer links, see [ORDERING.md](ORDERING.md).
