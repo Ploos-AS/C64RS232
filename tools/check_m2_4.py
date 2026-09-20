@@ -49,5 +49,10 @@ require(abs((pcbnew.ToMM(p2.x) - pcbnew.ToMM(p1.x)) - 3.96) < 0.001,
 require({p.GetNumber() for p in j1pads} == set([str(n) for n in range(1,13)] + list("ABCDEFHJKLMN")),
         "C64 User Port contact identifiers changed")
 
-print("M2.4 MECHANICAL BASELINE PASS")
+# M2.4 fabrication-facing silkscreen is part of the deterministic source.
+for label in ("C64RS232", "Ploos AS", "C64 USER PORT", "RS-232 DTE", "J1", "J2"):
+    require(f'(gr_text "{label}"' in text, f"required F.SilkS label missing: {label}")
+require('(gr_text "1"' in text, "DE-9 pin-1 orientation mark missing")
+
+print("M2.4 MECHANICAL/SILKSCREEN BASELINE PASS")
 print("  board envelope, J1 insertion edge, J2 boardlocks and frozen connector geometry verified")
