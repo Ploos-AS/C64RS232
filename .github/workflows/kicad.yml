@@ -115,6 +115,19 @@ jobs:
           print("M2 physical pad-net gate PASS")
           PY
 
+      - name: Report physical pad coordinates
+        run: |
+          python3 - <<'PY'
+          import pcbnew
+          board = pcbnew.LoadBoard("hardware/C64RS232.kicad_pcb")
+          for fp in board.GetFootprints():
+              if fp.GetReference() in {"J1","F1","U1","C1","C2","C3","C4","C5","J2"}:
+                  for pad in fp.Pads():
+                      if pad.GetNetname():
+                          p = pad.GetPosition()
+                          print(f"{fp.GetReference()}/{pad.GetNumber()} {pad.GetNetname()} {pcbnew.ToMM(p.x):.4f} {pcbnew.ToMM(p.y):.4f}")
+          PY
+
       - name: Reject floating M2 copper
         run: |
           python3 - <<'PY'
