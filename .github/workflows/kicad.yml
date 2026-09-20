@@ -175,6 +175,11 @@ jobs:
         run: |
           python3 tools/check_m2_4.py
 
+      - name: Run native KiCad PCB DRC
+        run: |
+          kicad-cli pcb drc --exit-code-violations -o hardware/C64RS232-drc.rpt hardware/C64RS232.kicad_pcb
+          cat hardware/C64RS232-drc.rpt
+
       - name: Qualify M2.3 signal routing and GND plane
         run: python3 tools/check_m2_3.py
       - name: Upload M2.1 GUI diagnostics
