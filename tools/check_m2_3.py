@@ -27,10 +27,11 @@ for name in sorted(required):
     require(name in by_name, f"{name} has no routed copper")
     require(all(w >= 0.25 for w, _ in by_name[name]), f"{name} trace below 0.25 mm")
 
-zone = re.search(r'\(zone\s+\(net 3\)\s+\(net_name "GND"\).*?\(layer "B\\.Cu"\).*?\(polygon\s+\(pts(.*?)\)\s*\)\s*\)', text, re.S)
-require(zone is not None, "B.Cu GND plane missing")
+zone_start = text.find('(zone (net 3) (net_name "GND") (layer "B.Cu")')
+require(zone_start >= 0, "B.Cu GND plane missing")
+zone_text = text[zone_start:text.find('(gr_rect', zone_start)]
 for x, y in (("28.5","20.5"),("79.94","20.5"),("79.94","84.66"),("28.5","84.66")):
-    require(re.search(rf'\(xy {re.escape(x)}0* {re.escape(y)}0*\)', zone.group(1)) is not None,
+    require(re.search(rf'\(xy {re.escape(x)}0* {re.escape(y)}0*\)', zone_text) is not None,
             f"GND plane corner {x},{y} missing")
 
 print("M2.3 SIGNAL ROUTING/GND QUALIFICATION PASS")
