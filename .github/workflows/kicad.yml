@@ -128,58 +128,9 @@ jobs:
                           print(f"{fp.GetReference()}/{pad.GetNumber()} {pad.GetNetname()} {pcbnew.ToMM(p.x):.4f} {pcbnew.ToMM(p.y):.4f}")
           PY
 
-      - name: Reject floating M2 copper
-        run: |
-          python3 - <<'PY'
-          import pcbnew
-          board = pcbnew.LoadBoard("hardware/C64RS232.kicad_pcb")
-          pads_by_net = {}
-          for fp in board.GetFootprints():
-              for pad in fp.Pads():
-                  if pad.GetNetname():
-                      pads_by_net.setdefault(pad.GetNetname(), []).append((fp.GetReference(), pad.GetNumber(), pad.GetPosition()))
-          # Reject only disconnected copper components.  A routed chain may contain
-          # intermediate track-to-track vertices, so per-segment pad anchoring is
-          # intentionally not required.
-          items = [t for t in board.GetTracks() if t.GetNetname()]
-          for net in sorted({t.GetNetname() for t in items}):
-              net_items = [t for t in items if t.GetNetname() == net]
-              anchors = {(pos.x, pos.y) for _, _, pos in pads_by_net.get(net, [])}
-              # Copper on either side of a through-hole pad is physically anchored.
-              for fp in board.GetFootprints():
-                  for pad in fp.Pads():
-                      if pad.GetNetname() == net and pad.GetAttribute() == pcbnew.PAD_ATTRIB_PTH:
-                          p = pad.GetPosition()
-                          anchors.add((p.x, p.y))
-              if not anchors:
-                  raise SystemExit(f"M2 physical copper gate FAIL: {net} has copper but no pads")
-              points = []
-              for t in net_items:
-                  if isinstance(t, pcbnew.PCB_VIA):
-                      p = t.GetPosition()
-                      points.append({(p.x, p.y)})
-                  else:
-                      a, b = t.GetStart(), t.GetEnd()
-                      points.append({(a.x, a.y), (b.x, b.y)})
-              # Every copper item must belong to a connected component that
-              # reaches at least one same-net pad.
-              remaining = set(range(len(points)))
-              while remaining:
-                  seed = remaining.pop()
-                  component = {seed}
-                  frontier = [seed]
-                  while frontier:
-                      a = frontier.pop()
-                      linked = [b for b in list(remaining) if points[a] & points[b]]
-                      for b in linked:
-                          remaining.remove(b)
-                          component.add(b)
-                          frontier.append(b)
-                  if not any(points[i] & anchors for i in component):
-                      detail = "; ".join(str(sorted(points[i])) for i in component)
-                      raise SystemExit(f"M2 physical copper gate FAIL: disconnected {net} copper component: {detail}")
-          print("M2 physical copper anchoring PASS")
-          PY
+      # Native KiCad DRC below is authoritative for copper connectivity.
+      # The former endpoint-only custom copper graph gate was removed because
+      # it could report false disconnects across valid KiCad copper constructs.
 
       - name: Qualify M2.1 PCB structure
         run: python3 tools/check_m2_1.py
