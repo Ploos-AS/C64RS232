@@ -160,6 +160,10 @@ jobs:
       - name: Qualify M2.2 power and charge-pump copper
         run: python3 tools/check_m2_2.py
 
+      - name: Qualify M2.4 mechanical baseline
+        run: |
+          python3 tools/check_m2_4.py
+
       - name: Qualify M2.3 signal routing and GND plane
         run: python3 tools/check_m2_3.py
       - name: Upload M2.1 GUI diagnostics
