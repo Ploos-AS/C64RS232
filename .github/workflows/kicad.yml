@@ -144,15 +144,15 @@ jobs:
           items = [t for t in board.GetTracks() if t.GetNetname()]
           for net in sorted({t.GetNetname() for t in items}):
               net_items = [t for t in items if t.GetNetname() == net]
-              anchors = {pos for _, _, pos in pads_by_net.get(net, [])}
+              anchors = {(pos.x, pos.y) for _, _, pos in pads_by_net.get(net, [])}
               if not anchors:
                   raise SystemExit(f"M2 physical copper gate FAIL: {net} has copper but no pads")
               points = []
               for t in net_items:
                   if isinstance(t, pcbnew.PCB_VIA):
-                      points.append({t.GetPosition()})
+                      p = t.GetPosition()\n                      points.append({(p.x, p.y)})
                   else:
-                      points.append({t.GetStart(), t.GetEnd()})
+                      a, b = t.GetStart(), t.GetEnd()\n                      points.append({(a.x, a.y), (b.x, b.y)})
               # Every copper item must belong to a connected component that
               # reaches at least one same-net pad.
               remaining = set(range(len(points)))
