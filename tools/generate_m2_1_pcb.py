@@ -125,6 +125,7 @@ body = """(kicad_pcb
   (segment (start 51.3575 44.4250) (end 46.0375 49.0000) (width 0.25) (layer "F.Cu") (net 7))
   (segment (start 57.0825 44.4250) (end 61.9625 45.0000) (width 0.25) (layer "F.Cu") (net 8))
   (segment (start 51.3575 45.0750) (end 61.9625 49.0000) (width 0.25) (layer "F.Cu") (net 9))
+  (segment (start 57.0825 45.7250) (end 55.2575 56.0000) (width 0.30) (layer "F.Cu") (net 3))
   (zone (net 3) (net_name "GND") (layer "B.Cu")
     (hatch edge 0.5)
     (connect_pads (clearance 0.3))
