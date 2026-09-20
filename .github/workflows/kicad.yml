@@ -160,6 +160,17 @@ jobs:
       - name: Qualify M2.2 power and charge-pump copper
         run: python3 tools/check_m2_2.py
 
+      - name: Report M2 mechanical anchors
+        run: |
+          python3 - <<'PY'
+          import pcbnew
+          board = pcbnew.LoadBoard("hardware/C64RS232.kicad_pcb")
+          for fp in board.GetFootprints():
+              if fp.GetReference() in {"J1","J2"}:
+                  p = fp.GetPosition()
+                  print(fp.GetReference(), fp.GetFPID().GetLibItemName(), pcbnew.ToMM(p.x), pcbnew.ToMM(p.y))
+          PY
+
       - name: Qualify M2.4 mechanical baseline
         run: |
           python3 tools/check_m2_4.py
