@@ -170,7 +170,8 @@ jobs:
                           component.add(b)
                           frontier.append(b)
                   if not any(points[i] & anchors for i in component):
-                      detail = "; ".join(str(sorted(points[i])) for i in component)\n                      raise SystemExit(f"M2 physical copper gate FAIL: disconnected {net} copper component: {detail}")
+                      detail = "; ".join(str(sorted(points[i])) for i in component)
+                      raise SystemExit(f"M2 physical copper gate FAIL: disconnected {net} copper component: {detail}")
           print("M2 physical copper anchoring PASS")
           PY
 
