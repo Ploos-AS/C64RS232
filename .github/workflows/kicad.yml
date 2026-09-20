@@ -150,9 +150,11 @@ jobs:
               points = []
               for t in net_items:
                   if isinstance(t, pcbnew.PCB_VIA):
-                      p = t.GetPosition()\n                      points.append({(p.x, p.y)})
+                      p = t.GetPosition()
+                      points.append({(p.x, p.y)})
                   else:
-                      a, b = t.GetStart(), t.GetEnd()\n                      points.append({(a.x, a.y), (b.x, b.y)})
+                      a, b = t.GetStart(), t.GetEnd()
+                      points.append({(a.x, a.y), (b.x, b.y)})
               # Every copper item must belong to a connected component that
               # reaches at least one same-net pad.
               remaining = set(range(len(points)))
