@@ -138,22 +138,37 @@ jobs:
               for pad in fp.Pads():
                   if pad.GetNetname():
                       pads_by_net.setdefault(pad.GetNetname(), []).append((fp.GetReference(), pad.GetNumber(), pad.GetPosition()))
-          floating = []
-          for track in board.GetTracks():
-              net = track.GetNetname()
-              if not net:
-                  continue
-              if isinstance(track, pcbnew.PCB_VIA):
-                  continue
-              starts = (track.GetStart(), track.GetEnd())
-              pad_positions = [pos for _, _, pos in pads_by_net.get(net, [])]
-              via_positions = [v.GetPosition() for v in board.GetTracks()
-                               if isinstance(v, pcbnew.PCB_VIA) and v.GetNetname() == net]
-              anchors = pad_positions + via_positions
-              if not any(pt in anchors for pt in starts):
-                  floating.append(net)
-          if floating:
-              raise SystemExit("M2 physical copper gate FAIL: tracks not anchored to a same-net pad: " + ", ".join(sorted(set(floating))))
+          # Reject only disconnected copper components.  A routed chain may contain
+          # intermediate track-to-track vertices, so per-segment pad anchoring is
+          # intentionally not required.
+          items = [t for t in board.GetTracks() if t.GetNetname()]
+          for net in sorted({t.GetNetname() for t in items}):
+              net_items = [t for t in items if t.GetNetname() == net]
+              anchors = {pos for _, _, pos in pads_by_net.get(net, [])}
+              if not anchors:
+                  raise SystemExit(f"M2 physical copper gate FAIL: {net} has copper but no pads")
+              points = []
+              for t in net_items:
+                  if isinstance(t, pcbnew.PCB_VIA):
+                      points.append({t.GetPosition()})
+                  else:
+                      points.append({t.GetStart(), t.GetEnd()})
+              # Every copper item must belong to a connected component that
+              # reaches at least one same-net pad.
+              remaining = set(range(len(points)))
+              while remaining:
+                  seed = remaining.pop()
+                  component = {seed}
+                  frontier = [seed]
+                  while frontier:
+                      a = frontier.pop()
+                      linked = [b for b in list(remaining) if points[a] & points[b]]
+                      for b in linked:
+                          remaining.remove(b)
+                          component.add(b)
+                          frontier.append(b)
+                  if not any(points[i] & anchors for i in component):
+                      raise SystemExit(f"M2 physical copper gate FAIL: disconnected {net} copper component")
           print("M2 physical copper anchoring PASS")
           PY
 
