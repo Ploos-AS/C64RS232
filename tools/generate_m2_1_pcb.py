@@ -6,6 +6,8 @@ from the schematic and is intentionally deferred to later M2 stages.
 """
 from pathlib import Path
 import os
+import re
+import uuid
 import pcbnew
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -78,7 +80,7 @@ def fp(ref, name, x, y):
     if end is None:
         raise SystemExit(f"could not extract serialized footprint: {path}")
     serialized = serialized_board[start:end]
-    for pin, net in pad_nets.get(ref, {}).items():
+    # pcbnew assigns fresh UUIDs while serializing footprints.  They do not\n    # affect PCB geometry, but make byte-for-byte output vary between CI runs.\n    # Replace every serialized UUID with a stable UUIDv5 derived from the\n    # reference and its occurrence order before injecting net attributes.\n    uuid_index = 0\n    def stable_uuid(match):\n        nonlocal uuid_index\n        value = uuid.uuid5(uuid.NAMESPACE_URL, f"C64RS232/M2/{ref}/{uuid_index}")\n        uuid_index += 1\n        return f"(uuid {value})"\n    serialized = re.sub(r"\\(uuid [0-9a-fA-F-]{36}\\)", stable_uuid, serialized)\n    for pin, net in pad_nets.get(ref, {}).items():
         marker = f'(pad "{pin}" '
         pos = serialized.find(marker)
         if pos < 0:
