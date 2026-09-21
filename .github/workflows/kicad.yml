@@ -58,12 +58,17 @@ jobs:
       - name: Verify deterministic M2 PCB generation
         run: |
           set -euo pipefail
-          first="$(sha256sum hardware/C64RS232.kicad_pcb | awk '{print $1}')"
+          cp hardware/C64RS232.kicad_pcb /tmp/C64RS232-first.kicad_pcb
+          first="$(sha256sum /tmp/C64RS232-first.kicad_pcb | awk '{print $1}')"
           python3 tools/generate_m2_1_pcb.py
           second="$(sha256sum hardware/C64RS232.kicad_pcb | awk '{print $1}')"
           echo "first PCB SHA-256:  $first"
           echo "second PCB SHA-256: $second"
-          test "$first" = "$second" || { echo "M2 PCB generation is not deterministic"; exit 1; }
+          if [ "$first" != "$second" ]; then
+            echo "M2 PCB generation is not deterministic"
+            diff -u /tmp/C64RS232-first.kicad_pcb hardware/C64RS232.kicad_pcb || true
+            exit 1
+          fi
 
       - name: Validate generated PCB with KiCad parser
         run: |
