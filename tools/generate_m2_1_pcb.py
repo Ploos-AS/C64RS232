@@ -89,8 +89,8 @@ def fp(ref, name, x, y):
         nonlocal uuid_index
         value = uuid.uuid5(uuid.NAMESPACE_URL, f"C64RS232/M2/{ref}/{uuid_index}")
         uuid_index += 1
-        return f"(uuid \"{value}\")"
-    serialized = re.sub(r"\(uuid [0-9a-fA-F-]{36}\)", stable_uuid, serialized)
+        return f"(uuid {value})"
+    serialized = re.sub(r"\(uuid \"?([0-9a-fA-F-]{36})\"?\)", stable_uuid, serialized)
     for pin, net in pad_nets.get(ref, {}).items():
         marker = f'(pad "{pin}" '
         pos = serialized.find(marker)
