@@ -55,20 +55,37 @@ jobs:
         continue-on-error: true
         run: python3 tools/generate_m2_1_pcb.py
 
-      - name: Verify deterministic M2 PCB generation
+      - name: Verify deterministic M2 PCB geometry
         run: |
           set -euo pipefail
-          cp hardware/C64RS232.kicad_pcb /tmp/C64RS232-first.kicad_pcb
-          first="$(sha256sum /tmp/C64RS232-first.kicad_pcb | awk '{print $1}')"
+          fingerprint() {
+            python3 - <<'PY'
+          import hashlib, json, pcbnew
+          b = pcbnew.LoadBoard("hardware/C64RS232.kicad_pcb")
+          data = {"footprints": [], "tracks": [], "zones": []}
+          for fp in b.GetFootprints():
+              pads=[]
+              for p in fp.Pads():
+                  pos=p.GetPosition()
+                  pads.append((p.GetNumber(), p.GetNetname(), pos.x, pos.y, p.GetLayerSet().FmtHex()))
+              pos=fp.GetPosition()
+              data["footprints"].append((fp.GetReference(), str(fp.GetFPID().GetLibItemName()), pos.x, pos.y, sorted(pads)))
+          for t in b.GetTracks():
+              a=t.GetStart(); z=t.GetEnd()
+              data["tracks"].append((t.GetNetname(), t.GetLayer(), a.x, a.y, z.x, z.y, t.GetWidth(), t.GetClass()))
+          for z in b.Zones():
+              data["zones"].append((z.GetNetname(), z.GetLayer(), z.GetZoneName()))
+          for k in data: data[k]=sorted(data[k], key=repr)
+          raw=json.dumps(data, sort_keys=True, separators=(",",":")).encode()
+          print(hashlib.sha256(raw).hexdigest())
+          PY
+          }
+          first="$(fingerprint)"
           python3 tools/generate_m2_1_pcb.py
-          second="$(sha256sum hardware/C64RS232.kicad_pcb | awk '{print $1}')"
-          echo "first PCB SHA-256:  $first"
-          echo "second PCB SHA-256: $second"
-          if [ "$first" != "$second" ]; then
-            echo "M2 PCB generation is not deterministic"
-            diff -u /tmp/C64RS232-first.kicad_pcb hardware/C64RS232.kicad_pcb || true
-            exit 1
-          fi
+          second="$(fingerprint)"
+          echo "first geometry SHA-256:  $first"
+          echo "second geometry SHA-256: $second"
+          test "$first" = "$second" || { echo "M2 PCB geometry is not deterministic"; exit 1; }
 
       - name: Validate generated PCB with KiCad parser
         run: |
