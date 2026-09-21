@@ -18,7 +18,7 @@ footprints = [
     ("J1", "C64RS232:C64_User_Port_Edge", 32.44, 20.00),
     ("F1", "Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder", 54.22, 32.00),
     ("U1", "Package_SO:TSSOP-28_4.4x9.7mm_P0.65mm", 54.22, 48.00),
-    ("C1", "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder", 62.00, 45.00),
+    ("C1", "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder", 61.00, 45.00),
     ("C2", "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder", 47.00, 44.10),
     ("C3", "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder", 61.00, 42.50),
     ("C4", "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder", 47.00, 46.50),
@@ -131,9 +131,9 @@ body = """(kicad_pcb
   (segment (start 59.9625 47.5000) (end 55.5000 40.0000) (width 0.30) (layer "B.Cu") (net 2))
   (segment (start 55.5000 40.0000) (end 66.5000 40.0000) (width 0.30) (layer "B.Cu") (net 2))
   (segment (start 57.0825 43.7750) (end 59.0000 43.7750) (width 0.20) (layer "F.Cu") (net 4))
-  (segment (start 59.0000 43.7750) (end 60.9625 45.0000) (width 0.20) (layer "F.Cu") (net 4))
+  (segment (start 59.0000 43.7750) (end 59.9625 45.0000) (width 0.20) (layer "F.Cu") (net 4))
   (segment (start 57.0825 46.3750) (end 60.0000 46.3750) (width 0.20) (layer "F.Cu") (net 5))
-  (segment (start 60.0000 46.3750) (end 63.0375 45.0000) (width 0.20) (layer "F.Cu") (net 5))
+  (segment (start 60.0000 46.3750) (end 62.0375 45.0000) (width 0.20) (layer "F.Cu") (net 5))
   (segment (start 51.3575 43.7750) (end 49.5000 43.7750) (width 0.20) (layer "F.Cu") (net 6))
   (segment (start 49.5000 43.7750) (end 45.9625 44.1000) (width 0.20) (layer "F.Cu") (net 6))
   (segment (start 51.3575 44.4250) (end 49.5000 44.4250) (width 0.20) (layer "F.Cu") (net 7))
