@@ -135,7 +135,7 @@ body = """(kicad_pcb
   (segment (start 57.0825 46.3750) (end 60.0000 46.3750) (width 0.20) (layer "F.Cu") (net 5))
   (segment (start 60.0000 46.3750) (end 62.0375 45.0000) (width 0.20) (layer "F.Cu") (net 5))
   (segment (start 51.3575 43.7750) (end 49.5000 43.7750) (width 0.20) (layer "F.Cu") (net 6))
-  (segment (start 49.5000 43.7750) (end 47.0000 43.5000) (width 0.20) (layer "F.Cu") (net 6))\n  (segment (start 47.0000 43.5000) (end 45.9625 44.1000) (width 0.20) (layer "F.Cu") (net 6))
+  (segment (start 49.5000 43.7750) (end 45.9625 44.1000) (width 0.20) (layer "F.Cu") (net 6))
   (segment (start 51.3575 44.4250) (end 49.5000 44.4250) (width 0.20) (layer "F.Cu") (net 7))
   (segment (start 49.5000 44.4250) (end 48.0375 44.1000) (width 0.20) (layer "F.Cu") (net 7))
   (segment (start 57.0825 44.4250) (end 59.0000 44.4250) (width 0.20) (layer "F.Cu") (net 8))
