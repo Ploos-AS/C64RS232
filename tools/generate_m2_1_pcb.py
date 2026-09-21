@@ -109,8 +109,7 @@ def fp(ref, name, x, y):
                     break
         if pend is None:
             raise SystemExit(f"could not parse {ref}/{pin}")
-        attr = f'
-\t\t(net {net_ids[net]} "{net}")'
+        attr = f'\\n\\t\\t(net {net_ids[net]} "{net}")'
         serialized = serialized[:pend] + attr + serialized[pend:]
     return serialized
 
