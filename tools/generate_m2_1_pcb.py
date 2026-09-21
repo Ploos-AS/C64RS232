@@ -152,8 +152,7 @@ body = """(kicad_pcb
   (net 23 "RS232_DSR")
   (net 24 "RS232_DCD")
   (net 25 "RS232_RI")
-""" + "
-".join(fp(*x) for x in footprints) + """
+""" + "\\n".join(fp(*x) for x in footprints) + """
   (segment (start 36.40 23.81) (end 52.7325 32.00) (width 0.60) (layer "F.Cu") (net 1))
   (segment (start 55.7075 32.00) (end 60.0000 38.0000) (width 0.60) (layer "F.Cu") (net 2))
   (segment (start 60.0000 38.0000) (end 60.0000 41.0000) (width 0.40) (layer "F.Cu") (net 2))
