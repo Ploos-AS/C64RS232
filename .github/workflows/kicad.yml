@@ -156,6 +156,12 @@ jobs:
         run: |
           python3 tools/check_m2_4.py
 
+      - name: Record deterministic PCB fingerprint
+        run: |
+          set -euo pipefail
+          sha256sum tools/generate_m2_1_pcb.py hardware/C64RS232.kicad_pcb
+          kicad-cli version
+
       - name: Run native KiCad PCB DRC
         run: |
           set +e
