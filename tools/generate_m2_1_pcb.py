@@ -115,7 +115,8 @@ body = """(kicad_pcb
   (setup (pad_to_mask_clearance 0))\n  (net 0 "")\n  (net 1 "RAW_5V")\n  (net 2 "+5V")\n  (net 3 "GND")\n  (net 4 "C1_PLUS")\n  (net 5 "C1_MINUS")\n  (net 6 "C2_PLUS")\n  (net 7 "C2_MINUS")\n  (net 8 "VPLUS")\n  (net 9 "VMINUS")\n  (net 10 "C64_TXD")\n  (net 11 "C64_RXD")\n  (net 12 "C64_RTS")\n  (net 13 "C64_CTS")\n  (net 14 "C64_DTR")\n  (net 15 "C64_DSR")\n  (net 16 "C64_DCD")\n  (net 17 "C64_RI")\n  (net 18 "RS232_TXD")\n  (net 19 "RS232_RXD")\n  (net 20 "RS232_RTS")\n  (net 21 "RS232_CTS")\n  (net 22 "RS232_DTR")\n  (net 23 "RS232_DSR")\n  (net 24 "RS232_DCD")\n  (net 25 "RS232_RI")
 """ + "\n".join(fp(*x) for x in footprints) + """
   (segment (start 36.40 23.81) (end 36.40 27.00) (width 0.60) (layer "F.Cu") (net 1))
-  (segment (start 36.40 27.00) (end 52.7325 32.00) (width 0.60) (layer "F.Cu") (net 1))
+  (segment (start 36.40 27.00) (end 36.40 30.00) (width 0.60) (layer "F.Cu") (net 1))
+  (segment (start 36.40 30.00) (end 52.7325 32.00) (width 0.60) (layer "F.Cu") (net 1))
   (segment (start 55.7075 32.00) (end 60.0000 38.0000) (width 0.60) (layer "F.Cu") (net 2))
   (segment (start 60.0000 38.0000) (end 60.0000 41.0000) (width 0.40) (layer "F.Cu") (net 2))
   (segment (start 60.0000 41.0000) (end 66.5000 41.0000) (width 0.40) (layer "F.Cu") (net 2))
