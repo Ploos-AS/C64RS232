@@ -17,6 +17,10 @@ SYSTEM_LIB = Path(os.environ.get("KICAD9_FOOTPRINT_DIR", "/usr/share/kicad/footp
 footprints = [
     ("J1", "C64RS232:C64_User_Port_Edge", 32.44, 20.00),
     ("F1", "Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder", 54.22, 32.00),
+    # U1 remains at the M2.1 mechanical anchor for now. Before further signal
+    # micro-routing, qualify alternate placement/orientation as a coherent
+    # topology change: charge-pump capacitors must follow U1 and both C64/RS232
+    # escape corridors must be regenerated together.
     ("U1", "Package_SO:TSSOP-28_4.4x9.7mm_P0.65mm", 54.22, 48.00),
     ("C1", "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder", 61.00, 45.00),
     ("C2", "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder", 47.00, 44.10),
