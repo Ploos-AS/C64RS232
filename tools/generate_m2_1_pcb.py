@@ -154,7 +154,7 @@ body = """(kicad_pcb
   (segment (start 59.7064 75.6576) (end 68.5000 66.0000) (width 0.30) (layer "F.Cu") (net 3))
   (segment (start 68.5000 66.0000) (end 68.5000 54.0000) (width 0.30) (layer "F.Cu") (net 3))
   (segment (start 68.5000 54.0000) (end 64.0375 49.0000) (width 0.30) (layer "F.Cu") (net 3))
-  (segment (start 72.0400 23.8100) (end 72.0400 39.0000) (width 0.25) (layer "B.Cu") (net 10))
+  # Routing policy for M2.4 DRC convergence:\n  # - C64-side signals approach U1 primarily on B.Cu and transition locally.\n  # - RS-232-side signals leave U1 and run toward J2 on F.Cu.\n  # - Power/GND topology is treated as fixed infrastructure unless a dedicated power pass changes it.\n  # Keep these routing domains explicit; avoid ad-hoc local detours that cross another domain.\n  (segment (start 72.0400 23.8100) (end 72.0400 39.0000) (width 0.25) (layer "B.Cu") (net 10))
   (segment (start 72.0400 39.0000) (end 49.0000 52.2250) (width 0.25) (layer "B.Cu") (net 10))
   (segment (start 49.0000 52.2250) (end 51.3575 52.2250) (width 0.25) (layer "F.Cu") (net 10))
   (segment (start 36.4000 23.8100) (end 36.4000 33.0000) (width 0.25) (layer "B.Cu") (net 11))
