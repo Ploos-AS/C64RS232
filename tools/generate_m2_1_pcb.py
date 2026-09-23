@@ -45,6 +45,12 @@ def fp(ref, name, x, y):
         raise SystemExit(f"KiCad could not load footprint: {path}")
     loaded.SetReference(ref)
     loaded.SetPosition(pcbnew.VECTOR2I_MM(x, y))
+    # U1 is rotated 180 degrees for the M2.4 topology trial. This puts the
+    # C64-facing signal bank toward J1 and the RS-232 bank toward J2; the
+    # following routing block is intentionally left unchanged so native DRC
+    # can quantify whether orientation alone improves escape topology.
+    if ref == "U1":
+        loaded.SetOrientationDegrees(180)
     pad_nets = {
         "J1": {"2":"RAW_5V","A":"GND","N":"GND","B":"C64_RXD","C":"C64_RXD","D":"C64_RTS","E":"C64_DTR","F":"C64_RI","H":"C64_DCD","K":"C64_CTS","L":"C64_DSR","M":"C64_TXD"},
         "J2": {"1":"RS232_DCD","2":"RS232_RXD","3":"RS232_TXD","4":"RS232_DTR","5":"GND","6":"RS232_DSR","7":"RS232_RTS","8":"RS232_CTS","9":"RS232_RI"},
