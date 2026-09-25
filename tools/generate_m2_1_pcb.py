@@ -205,10 +205,11 @@ body = """(kicad_pcb
   )
   # Local GND breakout: keep the U1/C4 connection on F.Cu and enter the
   # board-wide B.Cu ground plane once, clear of the +5V fanout corridors.
-  (segment (start 57.0825 45.7250) (end 56.0000 46.8000) (width 0.30) (layer "F.Cu") (net 3))
-  (via (at 56.0000 46.8000) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 3))
-  (segment (start 64.0375 49.0000) (end 64.0375 50.0000) (width 0.30) (layer "F.Cu") (net 3))
-  (via (at 64.0375 50.0000) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 3))
+  (segment (start 57.0825 45.7250) (end 56.0000 45.7250) (width 0.30) (layer "F.Cu") (net 3))
+  (segment (start 56.0000 45.7250) (end 55.5000 46.8000) (width 0.30) (layer "F.Cu") (net 3))
+  (via (at 55.5000 46.8000) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 3))
+  (segment (start 64.0375 49.0000) (end 66.0000 50.0000) (width 0.30) (layer "F.Cu") (net 3))
+  (via (at 66.0000 50.0000) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 3))
   (via (at 49.0000 52.2250) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 10))
   (via (at 62.0000 49.6250) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 11))
   (via (at 48.0000 51.5750) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 12))
