@@ -220,11 +220,6 @@ body = """(kicad_pcb
   (via (at 55.5000 46.8000) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 3))
   (segment (start 68.5000 50.5000) (end 68.5000 49.2000) (width 0.30) (layer "F.Cu") (net 3))
   (via (at 68.5000 49.2000) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 3))
-  # Ground the right-side decoupling capacitors locally into the B.Cu plane.
-  (segment (start 62.0375 42.5000) (end 63.0000 42.5000) (width 0.30) (layer "F.Cu") (net 3))
-  (via (at 63.0000 42.5000) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 3))
-  (segment (start 62.0375 47.5000) (end 63.0000 47.5000) (width 0.30) (layer "F.Cu") (net 3))
-  (via (at 63.0000 47.5000) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 3))
   (via (at 49.0000 52.2250) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 10))
   (via (at 62.0000 49.6250) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 11))
   (via (at 46.2000 49.6000) (size 0.8) (drill 0.4) (layers "F.Cu" "B.Cu") (net 12))
