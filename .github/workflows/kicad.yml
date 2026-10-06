@@ -194,6 +194,20 @@ jobs:
           sha256sum tools/generate_m2_1_pcb.py hardware/C64RS232.kicad_pcb
           kicad-cli version
 
+      - name: Fill PCB copper zones with native KiCad
+        run: |
+          set -euo pipefail
+          kicad-cli pcb render --help >/dev/null 2>&1 || true
+          python3 - <<'PY'
+          import pcbnew
+          path = "hardware/C64RS232.kicad_pcb"
+          board = pcbnew.LoadBoard(path)
+          filler = pcbnew.ZONE_FILLER(board)
+          filler.Fill(board.Zones())
+          pcbnew.SaveBoard(path, board)
+          print(f"Filled {len(list(board.Zones()))} copper zone(s)")
+          PY
+
       - name: Run native KiCad PCB DRC
         run: |
           set +e
